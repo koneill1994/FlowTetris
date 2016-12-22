@@ -1,0 +1,255 @@
+﻿
+
+                                   LAPSES DEMAND SELECTION TASK
+
+
+  QUESTIONS?
+
+     For questions or to report errors, you may email the programmer directly at:
+
+             randall.green@wright.edu
+
+     For errors, please include your parameter file you are using and any data files it 
+     produced. You must put them in a folder and zip it before sending. On a Mac, sending 
+     files without ziping WILL corrupt the files and make them unreadable to the LDS Program.
+
+ 
+  SYSTEM REQUIREMENTS:
+
+     This program was written in the JAVA programming language. It will run on
+     Windows or Macintosh computers. You need a three-button mouse for the focus task.  
+
+
+  PARAMETER FILES:
+
+     The variable values for the experiment are not included in this program. They are read 
+     in from a parameter file instead. This way the experimenter can alter the way it works
+     without the need of a programmer.
+     Open the LDS folder. Open the folder named EXPERIMENT and then open the folder 
+     named PARAMETERS. In it is all of your parameter files. You can edit or create these
+     using a plain text editor such as Notepad for Windows or TextEdit for Macs.
+
+     Because this is a plain text file, it is important to keep out non-printing characters
+     that can confuse the program. To do this, do not leave blank lines. Put a '/' on the
+     line and the program will ignore it and any other text after it. Use a comma at the
+     end of lines to prevent non-printing characters there.
+
+     The first line will set the program into DEBUG_MODE if set to TRUE. This will cause
+     printout of variables on the screen. If you don't want to debug, set it to FALSE.
+
+     There are 3 types of tasks you can perform. The first one is the TEXT_TASK, useful for
+     giving instructions to the subject. At the top of the file are 6 lines that affect the
+     text when displayed:
+ 
+            /for TEXT_TASKs
+            TEXT_BACKGROUND_COLOR_RGB,0,0,0,  
+            TEXT_COLOR_RGB,0,0,255,           
+            TEXT_FONT_SIZE,25,
+            TEXT_X_START,400,
+            TEXT_Y_START,200,
+	    TEXT_Y_SPACING,45,
+            
+     The background color and text color are set with 3 Red Green and Blue values which must
+     be between 0 and 255. The remaining lines' values are in pixels. X is the horizontal axis
+     of the screen, and Y is the vertical axis going from top to bottom, with pixel 0 at the top.
+
+     An example of a TEXT_TASK is as follows:
+
+            /--------------------------------------------------------------------
+            BEGIN_TEXT_TASK,
+            TEXT_ON_LINE,0,                                  FOCUS DEMONSTRATION
+            TEXT_ON_LINE,2,CHOOSE AN IMAGE BY MOVING THE MOUSE CURSOR INSIDE OF IT.
+            TEXT_ON_LINE,3,A BLUE OR YELLOW CIRCLE WILL APPEAR IN THE SELECTED IMAGE.
+            TEXT_ON_LINE,4,A STREAM OF 16 DIGITS WHICH MIGHT CONTAIN A TARGET LETTER WILL
+            TEXT_ON_LINE,5,BE PRESENTED IN THE CIRCLE.
+            TEXT_ON_LINE,6,IF THE CIRCLE IS BLUE THE TARGET LETTER WILL BE RIGHT SIDE UP.
+            TEXT_ON_LINE,7,IF THE CIRCLE IS YELLOW THE TARGET LETTER WILL BE UPSIDE DOWN.
+            TEXT_ON_LINE,8,IF THE TARGET LETTER IS A P, THEN PRESS THE LEFT MOUSE BUTTON.
+            TEXT_ON_LINE,9,IF THE TARGET LETTER IS A T, THEN PRESS THE RIGHT MOUSE BUTTON.
+            TEXT_ON_LINE,10,IF THERE IS NO TARGET LETTER THEN PRESS THE MIDDLE BUTTON.
+            END_TASK,
+            /--------------------------------------------------------------------
+
+     The numeric values are the line numbers. The subject will read this text and press a 
+     DONE button to continue. You may use commas inside the TEXT_ON_LINE text. No commas 
+     are needed at the end of text.
+
+     The second kind of task is the SWITCHING_TASK. This is an example:
+
+            BEGIN_SWITCHING_TASK,SWITCHING1,
+            /
+            SET_NO_OF_BLOCKS,8,
+            SET_NO_OF_TRIALS,75,
+            SET_PROBABILITY_OF_SWITCHING,10,90,
+            /
+            SHOW_ACCURACY,TRUE,
+            CRITERION_TO_PERCENT,75,1,
+            CRITERION_TO_TRIALS,3,
+            /
+            END_TASK,
+
+    The chosen file name for the data output of this example task is SWITCHING1. It will
+    run 8 blocks of 75 trials each. The SET_PROBABILITY_OF_SWITCHING sets the probability
+    of switching from Greater Than Less Than 5 Task to the Odd Even Task and back again.
+    The first value affects IMAGE_0 and the second affects IMAGE_1 (See images in the
+    IMAGES folder).
+
+    SHOW_ACCURACY, CRITERION_TO_PERCENT and CRITERION_TO_TRIALS are optional commands. SHOW_ACCURACY
+    set to true will  display accuracy to the subject after each trial. CRITERION_TO_PERCENT,75,1 will
+    cause the program to go on if the final score is at or above 75 percent, or to jump back 1 task to
+    the TEXT_TASK that precedes it if the score is below 75 percent. You can jump back as many tasks 
+    as you wish. If the jump back number is 0, then it will repeat the same task again. If a task
+    repeats, the data will be appended to the previous data file. REPETITION_NO in the data will 
+    be 1 for the first time through and 2 for the second time through, etc. CRITERION_TO_TRIALS,3,
+    will tell the program to end if the subject gets less than 75 percent on 3 straight trys. The
+    message 'CALL EXPERIMENTER' will then be displayed. The CRITERION_TO_TRIALS command can only be
+    used with the CRITERION_TO_PERCENT command. If CRITERION_TO_TRIALS is omitted, then the program
+    will repeat the test until the subject gets at or above 75 percent.
+
+    The third kind of task is the FOCUS_TASK. This is an example:
+ 
+            BEGIN_FOCUS_TASK,FOCUS2,
+            /
+            SET_NO_OF_BLOCKS,8,
+            SET_NO_OF_TRIALS,75,
+            SET_PROBABILITY_OF_HIGH_FOCUS,10,90,
+            /
+            SET_TARGET_LETTERS,P,T,
+            NO_OF_SYMBOLS,16,
+            LETTER_NOT_IN_FIRST,5,
+            LETTER_NOT_IN_LAST,2,
+            SYMBOL_DISPLAY_TIME,3,
+            /
+            SHOW_ACCURACY,TRUE,
+            CRITERION_TO_PERCENT,75,1,
+            CRITERION_TO_TRIALS,3,
+           /
+            END_TASK,
+
+    The chosen file name for the data output of this example task is FOCUS2. It will
+    run 8 blocks of 75 trials each. The SET_PROBABILITY_OF_HIGH_FOCUS sets the probability
+    of seeing an upside down character. The first value affects IMAGE_0 and the second 
+    affects IMAGE_1. SET_TARGET_LETTERS,P,T, sets the 2 target letters. NO_OF_SYMBOLS,16,
+    will generate a random string of 16 digits. The program makes sure that the same digit
+    does not appear twice in a row. For each trial, there is a one in three chance a letter
+    'P' will be present, a one third chance a 'T' will be present, and a one third chance 
+    there will be no letter at all. The target letter, if used, replaces one of the digits.
+    It should not appear in the first 5 positions, and it is not to appear as the last 2
+    characters. The SYMBOL_DISPLAY_TIME must be multiples of the frame rate (16.6 msecs).
+    The display time of each character is therefore 3 times 16.6 milliseconds (49.8 msecs).
+
+    SHOW_ACCURACY & CRITERION_TO_PERCENT are optional commands (see description above).
+
+    At the end of the file you must use the STOP command.
+
+
+  DATA FILES:
+
+     The data are stored in the DATA folder. The names of the data files consist of 3 parts. The first 
+     is the task file name given in the parameter file. So for the line BEGIN_FOCUS_TASK,FOCUS2, then 
+     FOCUS2 would be the first part of the filename. The 2nd part is the task name, either SWITCHING_TASK 
+     or FOCUS_TASK. The 3rd part is the subject name taken from line 1 of the Setup Menu screen, as typed 
+     by the experimenter when the program starts. So an example of a valid file name might be: 
+     "SWITCHING_DEMO SWITCHING_TASK SUBJECT2". The extension for these files is '.CSV' which stands for
+     Comma Seperated Variables. By using this extension, clicking on the file will cause Excel to start 
+     immediately and import the file without any further questions. 
+
+     All times are in milliseconds.
+        
+     ANGLE_0 and ANGLE_1 are the angles of the two images.
+
+     In the Focus Task data:
+     
+        WAIT_FOR_MOUSE time is the time the mouse pointer remains unmoved.
+
+        ENTER_CIRCLE_TIME is the time it takes from starting to move the mouse until it enters a circle.
+
+        TIME_TO_TARGET is the time from when the digits are starting to be displayed until the time
+                       the letter is displayed. There is a one third chance there will be no letter 
+                       present. If so, TIME_TO_TARGET will be the time from when the digits are starting 
+                       to be displayed until the time after the last digit is displayed. At this time the
+                       subject should know there is no target. 
+
+        DECISION_TIME is the time from when the target appears until the subject answers. If the subject 
+                      clicks the mouse before the target appears then the time will be negative.
+
+        TARGET_STRING is the sequence of characters that were displayed. A '!' mark is added on the end 
+                      to prevent Excel from trying to represent this as a large floating point number.
+
+        TARGET_LETTER is the letter that was imbedded in the string of digits. It will have a '*' symbol
+                      if no letter was present.
+
+        TARGET_INDEX is the position the target letter was in the TARGET_STRING. A 0 means a letter was
+                     not present.
+
+        
+    In the Switching Task data:
+     
+        WAIT_FOR_MOUSE time is the time the mouse pointer remains unmoved.
+
+        ENTER_CIRCLE_TIME is the time it takes from starting to move the mouse until it enters a circle.
+
+        DECISION_TIME is the time from when the target appears until the subject answers.
+
+
+  TO RUN THE PROGRAM: 
+
+     1. Open the LDS folder and click on LDS.jar file. 
+        The program should start. On a Mac, you may get the following error: 
+        “LDS.jar” can’t be opened because it is from an unidentified developer". 
+        To open it, right mouse click and select open from the menu. After the first time, 
+        it runs without this error.  
+   
+     2. The setup screen ignores mouse inputs. To select a field, use the up and
+        down arrow keys. You can delete an entry by pressing the delete key.
+        The first line is the data file output name. The program prevents you from overwriting
+        a previos file with the same name. You can use the filename JUNK when debuging and
+        it will overwrite a previous JUNK file without a warning, useful in trying out the program
+        without producing a lot of data files.
+        The second line is an optional data tag that appears in a column of the data. You could 
+        put anything you wish here, like the experimenter's initials, the sex of the subject, ect.
+        On the 3rd and 4th line are the parameter file names that control the experiment. In this 
+        case, we have SWITCHING_FIRST and FOCUS_FIRST to allow counterbalancing the order of the 
+        two tasks.      
+
+     3. Press the START button next to the parameter file you wish to execute.
+     
+     4. When instructions appear, you may read them and press DONE button when through.
+     
+     5. If you wish to stop the program, hold down control key (command key on a Mac) and press Q.
+        The program ignores the normal exit buttons on the window to prevent the subject from
+        accidently exiting.
+
+     Data is appended to the output file in the DATA folder after each trial.
+
+     If you wish to see a short demo of how the program works then use the DEBUG parameter file.
+     Arrow down to the third line and enter DEBUG, then press START button. In it, DEBUG_MODE
+     is set to TRUE, so there will be an output of variables on the screen.
+
+
+  SYSTEM FILE:
+
+     In the EXPERIMENT folder there is a SYSTEM folder. In it is the SYTEM_SETUP file:
+
+        SCREEN_SIZE,1300,800,
+        OVERIDE_DATA_FILE,JUNK,
+        OVERIDE_EXPERIMENT_PARAMETER_FILE_1,FOCUS_FIRST,
+        OVERIDE_EXPERIMENT_PARAMETER_FILE_2,SWITCHING_FIRST,
+        STOP,
+        /
+
+     SCREEN_SIZE sets the area of the program window. The first value should be set to the width of 
+     the monitor you are using, in pixels. The second value should be set to the height of your monitor,
+     in pixels. This will cover up your desktop when running and prevent the subject from seeing your
+     icons on the desktop.
+
+     The next 3 lines set the default data file name and the 2 parameter file names.
+
+  VERSION CONTROL:
+
+     The name of the folder is the unique version number. It is "LDS" followed by the date 
+     it was compiled. The version number is important for you to track changes or errors in 
+     the program. When running, the version is displayed in the upper left hand corner of the 
+     window. When data is produced, the version is embedded in the last column of the data 
+     header so that later you may know which program produced it. Therefore, please do not change 
+     the folder name.
