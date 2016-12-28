@@ -12,13 +12,21 @@ import java.io.IOException;
  * modified by Kevin O'Neill
  * oneill.45@wright.edu
  */
-public class Data {
+
+/*
+
+
+
+
+*/
+
+public class FineData {
     
     String SubjNo = "SUBJ1";
     char Tab = ',';
     boolean FirstWriteToFile = true;
     String ExpCond = "NONE";
-    public Data() {
+    public FineData() {
         
     }
     

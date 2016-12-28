@@ -29,7 +29,7 @@ public class Tetris extends Applet {
         int totalTrappedSpaces;
         int SessionNo = 1;
         Data D = new Data();
-		FineData D = new FineData();
+        FineData F = new FineData();
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
         private final static int INITIAL_DELAY = 1000;
