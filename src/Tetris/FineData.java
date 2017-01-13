@@ -30,9 +30,13 @@ public class FineData {
     boolean FirstWriteToFile = true;
     String ExpCond = "NONE";
     
-    List<String> HeaderLabels = Arrays.asList("TimeStamp", "EventType", "ZoidAppears",
-            "ZoidPlaced","RowRemovalThreshold","AccumulationHeight","SpeedLevel",
-            "LeftKey","RightKey","UpKey","DownKey");
+    // these are the header columns to be used
+    // edit this to add more columns
+    // make sure you also change the logging to make sure
+    // it logs the same number of items as this list's length
+    List<String> HeaderLabels = Arrays.asList("TimeStamp", "EventLabel",
+            "RowRemovalThreshold","AccumulationHeight",
+            "SpeedLevel");
 
     
     public FineData() {
@@ -43,11 +47,19 @@ public class FineData {
         System.out.println(S);
     }
     
+    // this will be run once when the program starts
+    // to create the headers on the data file
     public boolean CreateLogHeader(){
-        
+        String Line = "";
+        for(String Label: HeaderLabels){
+            Line+=Label+Tab;
+        }
         return true;
     }
     
+    // this will be called by the program any time a significant event happens
+    // the data to log will be passed in as an argument,
+    // formatted, and then added as a line in the data file
     public boolean LogEvent(String Data){
         
         return true;
