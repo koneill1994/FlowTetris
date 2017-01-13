@@ -29,6 +29,7 @@ public class FineData {
     char Tab = ',';
     boolean FirstWriteToFile = true;
     String ExpCond = "NONE";
+
     
     // these are the header columns to be used
     // edit this to add more columns
@@ -37,12 +38,28 @@ public class FineData {
     List<String> HeaderLabels = Arrays.asList("TimeStamp", "EventLabel",
             "RowRemovalThreshold","AccumulationHeight",
             "SpeedLevel");
+    
+    String FileName = "DATA/" + "FineData" + ".csv";
 
+    File file = new File(FileName);
+    
+    FileWriter fileWritter;
+    BufferedWriter BW;
+    
+    // NB: row removal threshold is measuring the variable
+    // Parameters.RemoveBiggestPartialRowIfBlockInRow
     
     public FineData() {
-        
+        try{
+            FileWriter fileWritter = new FileWriter(FileName,true);
+            BufferedWriter BW = new BufferedWriter(fileWritter);
+        }catch(IOException e){
+            e.printStackTrace();
+    	}
     }
     
+    // This function writes S to system output
+    // i think randy was using it for debug purposes
     public void W(String S) {
         System.out.println(S);
     }
@@ -54,6 +71,19 @@ public class FineData {
         for(String Label: HeaderLabels){
             Line+=Label+Tab;
         }
+        Line+="\r\n";
+        try{
+            file.delete();
+            file.createNewFile();
+            
+            BW.write(Line);
+            BW.close();
+            
+        }catch(IOException e){
+            e.printStackTrace();
+    	}
+        
+        
         return true;
     }
     
@@ -61,14 +91,34 @@ public class FineData {
     // the data to log will be passed in as an argument,
     // formatted, and then added as a line in the data file
     public boolean LogEvent(String Data){
-        
+        try{
+            BW.write(Data+"\r\n");
+            BW.close();
+            
+        }catch(IOException e){
+            e.printStackTrace();
+    	}
         return true;
     }    
+    
+    
+    
+    // randy's code includes all of the above in a single function
+    // which then checks to see if it is the first time logging something
+    // to see if it should put in the headers first
+    
+    // i think this is because he needed to open a log file to write to it   
+    // or maybe its just a java convention I don't know
+    
+    // may also be to keep all the stuff that could throw an exception
+    // in a single try/catch block
+    
     
     
     // this is randy's code
     // using it for reference
     // delete later
+    // also visible in Data.java for historical purposes
     public boolean OutputData(String Data) {
  
     	try{
