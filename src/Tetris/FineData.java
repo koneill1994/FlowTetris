@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.*;
+
 
 /**
  *
@@ -15,6 +17,7 @@ import java.io.IOException;
 
 /*
 
+write a timestamp and an action
 
 
 
@@ -26,6 +29,12 @@ public class FineData {
     char Tab = ',';
     boolean FirstWriteToFile = true;
     String ExpCond = "NONE";
+    
+    List<String> HeaderLabels = Arrays.asList("TimeStamp", "EventType", "ZoidAppears",
+            "ZoidPlaced","RowRemovalThreshold","AccumulationHeight","SpeedLevel",
+            "LeftKey","RightKey","UpKey","DownKey");
+
+    
     public FineData() {
         
     }
@@ -33,7 +42,21 @@ public class FineData {
     public void W(String S) {
         System.out.println(S);
     }
-       
+    
+    public boolean CreateLogHeader(){
+        
+        return true;
+    }
+    
+    public boolean LogEvent(String Data){
+        
+        return true;
+    }    
+    
+    
+    // this is randy's code
+    // using it for reference
+    // delete later
     public boolean OutputData(String Data) {
  
     	try{
