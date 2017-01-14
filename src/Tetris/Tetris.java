@@ -27,6 +27,7 @@ public class Tetris extends Applet {
 	
 	int totalBlocks;
         int totalTrappedSpaces;
+        int accumulationHeight;
         int SessionNo = 1;
         Data D = new Data();
         FineData F = new FineData();
@@ -181,6 +182,7 @@ public class Tetris extends Applet {
 		public TetrisPiece(int type) {
                         totalBlocks = countBlocks();
                         totalTrappedSpaces = countTrappedSpaces();
+                        accumulationHeight = computeAccumulationHeight();
 			this.type = type;
 			this.squares = new boolean[4][4];
 			for(int i=0; i<4; i++)
@@ -574,6 +576,18 @@ public class Tetris extends Applet {
                 
 	}
 	
+        
+	private int computeAccumulationHeight() {
+                   
+            for(int i=ROWS-1; i>=0; i--) {
+		for(int j=0; j<COLUMNS; j++) {
+                        if (grid[i][j] != EMPTY) return i;                                                
+                    }                
+                }                
+                return 0;                
+	}
+        
+        
 	private int countBlocks() {
                 int count = 0;
 		for(int j=0; j<COLUMNS; j++)
