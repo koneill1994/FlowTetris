@@ -588,7 +588,7 @@ public class Tetris extends Applet {
                    
             for(int i=ROWS-1; i>=0; i--) {
 		for(int j=0; j<COLUMNS; j++) {
-                        if (grid[i][j] != EMPTY) return i;                                                
+                        if (grid[i][j] != EMPTY) return ROWS-i;                                                
                     }                
                 }                
                 return 0;                
