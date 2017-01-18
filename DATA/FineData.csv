@@ -1,1 +1,10 @@
 TimeStamp,EventLabel,RowRemovalThreshold,AccumulationHeight,SpeedLevel,
+1508221,spawn_new_piece,6,0,0
+1694,spawn_new_piece,6,37,0
+3044,spawn_new_piece,6,37,0
+4395,spawn_new_piece,6,37,0
+5701,spawn_new_piece,6,37,0
+7277,spawn_new_piece,6,37,0
+8677,spawn_new_piece,6,37,0
+10288,spawn_new_piece,6,37,1
+11708,spawn_new_piece,6,37,1

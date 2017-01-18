@@ -31,6 +31,7 @@ public class Tetris extends Applet {
         int SessionNo = 1;
         Data D = new Data();
         FineData F = new FineData();
+        char Tab = ',';
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
         private final static int INITIAL_DELAY = 1000;
@@ -332,7 +333,7 @@ public class Tetris extends Applet {
 		public void run() {
 			while(true) {
 
-                                char Tab = ',';
+                                //char Tab = ',';
                             
                                 if ((!m_fast & !m_paused) | OutputTheDataWhenFirstFast) D.OutputData(""+((TotalRunTime + System.nanoTime() - StartTime)/1000000) + Tab
                                                + SessionNo + Tab + totalBlocks + Tab + totalTrappedSpaces + Tab +
@@ -517,6 +518,9 @@ public class Tetris extends Applet {
 		}
 		else
 			gameOver();
+                F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + "spawn_new_piece"+Tab
+                    +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
+                    +computeAccumulationHeight()+Tab+speed);
 	}
 	
 	private void gameOver() {
@@ -525,6 +529,9 @@ public class Tetris extends Applet {
 		pause_resume_butt.setEnabled(false);
 //		int score = Integer.parseInt(score_label.getText());
 		sounds.playGameOverSound();
+                F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + "game_over"+Tab
+                    +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
+                    +computeAccumulationHeight()+Tab+speed);
 	}
 	
 	private boolean rowIsFull(int row) {
