@@ -31,6 +31,7 @@ public class Tetris extends Applet {
         int SessionNo = 1;
         Data D = new Data();
         FineData F = new FineData();
+        F.CreateLogHeader();
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
         private final static int INITIAL_DELAY = 1000;
