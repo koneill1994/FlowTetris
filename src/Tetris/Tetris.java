@@ -31,11 +31,8 @@ public class Tetris extends Applet {
         int SessionNo = 1;
         Data D = new Data();
         FineData F = new FineData();
-<<<<<<< HEAD
-        F.CreateLogHeader();
-=======
         char Tab = ',';
->>>>>>> 1db2a380abe1954bb06ff4f85cbbdda5a1e06d55
+
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
         private final static int INITIAL_DELAY = 1000;
