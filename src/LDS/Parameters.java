@@ -463,6 +463,11 @@ public class Parameters {
           return false;
       } 
             
+      SwitchToTetris();
+      // ^^ DEBUG CODE
+      // DELETE FOR ACTUAL EXPERIMENT
+      // VERY IMPORTANT
+      
 //W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
 
       if (!ExperimentDone) {

@@ -42,20 +42,16 @@ public class FineData {
     String FileName = "DATA/" + "FineData" + ".csv";
 
     File file = new File(FileName);
-    
+    /*
     FileWriter fileWritter;
     BufferedWriter BW;
-    
+*/    
+
     // NB: row removal threshold is measuring the variable
     // Parameters.RemoveBiggestPartialRowIfBlockInRow
     
     public FineData() {
-        try{
-            FileWriter fileWritter = new FileWriter(FileName,true);
-            BufferedWriter BW = new BufferedWriter(fileWritter);
-        }catch(IOException e){
-            e.printStackTrace();
-    	}
+        CreateLogHeader();
     }
     
     // This function writes S to system output
@@ -64,6 +60,9 @@ public class FineData {
         System.out.println(S);
     }
     
+    // [The process cannot access the file because it is being used by another process]
+    //   vvv 
+    
     // this will be run once when the program starts
     // to create the headers on the data file
     public boolean CreateLogHeader(){
@@ -71,10 +70,13 @@ public class FineData {
         for(String Label: HeaderLabels){
             Line+=Label+Tab;
         }
-        Line+="\r\n";
-        try{
+        Line+="\r\n";        
+        try{            
             file.delete();
             file.createNewFile();
+            
+            FileWriter fileWritter = new FileWriter(FileName,true);
+            BufferedWriter BW = new BufferedWriter(fileWritter);
             
             BW.write(Line);
             BW.close();
@@ -91,7 +93,11 @@ public class FineData {
     // the data to log will be passed in as an argument,
     // formatted, and then added as a line in the data file
     public boolean LogEvent(String Data){
-        try{
+        try{          
+            
+            FileWriter fileWritter = new FileWriter(FileName,true);
+            BufferedWriter BW = new BufferedWriter(fileWritter);
+
             BW.write(Data+"\r\n");
             BW.close();
             
