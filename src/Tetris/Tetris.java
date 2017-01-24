@@ -32,6 +32,7 @@ public class Tetris extends Applet {
         Data D = new Data();
         FineData F = new FineData();
         char Tab = ',';
+
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
         private final static int INITIAL_DELAY = 1000;
