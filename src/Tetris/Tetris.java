@@ -348,7 +348,8 @@ public class Tetris extends Applet {
 			while(true) {
 
                                 //char Tab = ',';
-                            
+                                timer.setFast(false);  // reset drop speed from last tick
+                                                                
                                 if ((!m_fast & !m_paused) | OutputTheDataWhenFirstFast) D.OutputData(""+((TotalRunTime + System.nanoTime() - StartTime)/1000000) + Tab
                                                + SessionNo + Tab + totalBlocks + Tab + totalTrappedSpaces + Tab +
                                                + score + Tab + m_delay + Tab + speed + Tab 
@@ -884,7 +885,8 @@ public class Tetris extends Applet {
 					KeyCounter[3]++;
                                         timer.setFast(true);
                                         OutputTheDataWhenFirstFast = true;
-				}
+				} 
+                                
                                 
                                 LogEvent("key_press_"+ e.getKeyText(e.getKeyCode()));
                                 
