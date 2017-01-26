@@ -348,7 +348,7 @@ public class Tetris extends Applet {
 			while(true) {
 
                                 //char Tab = ',';
-                                timer.setFast(false);  // reset drop speed from last tick
+                                //timer.setFast(false);  // reset drop speed from last tick
                                                                 
                                 if ((!m_fast & !m_paused) | OutputTheDataWhenFirstFast) D.OutputData(""+((TotalRunTime + System.nanoTime() - StartTime)/1000000) + Tab
                                                + SessionNo + Tab + totalBlocks + Tab + totalTrappedSpaces + Tab +
@@ -891,6 +891,14 @@ public class Tetris extends Applet {
                                 LogEvent("key_press_"+ e.getKeyText(e.getKeyCode()));
                                 
 			}
+                        
+                        public void keyReleased(KeyEvent e) {
+                            if (e.getKeyCode() == 40) { //down arrow pressed; drop piece
+                                        timer.setFast(false);
+				}
+                            LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
+                        }
+                        
 		};
 		
 		// add the key listener to all components that might get focus
