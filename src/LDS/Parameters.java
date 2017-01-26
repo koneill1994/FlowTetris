@@ -45,6 +45,8 @@ public class Parameters {
   static boolean DebugMode;
   boolean InsideTask;
   
+  public boolean OnlyTetris = false; // for debug purposes
+
   Random R = new Random();
   
   public Parameters(JFrame FrameIn, String ParameterFileName) {
@@ -210,7 +212,11 @@ public class Parameters {
                         Task.PresentRandomGamePercent[1] = Temp;
                     }
                 } else
-
+//------------------------------------------------------------------------------               
+                if (Cmd.equals("DEBUG_TETRIS_ONLY")){
+                    OnlyTetris=true;
+                } else                    
+                    
 //------------------------------------------------------------------------------
                     
                 if (Cmd.equals("NO_OF_SYMBOLS")) {
@@ -462,11 +468,11 @@ public class Parameters {
                   ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, TextFontHeight);
           return false;
       } 
-            
-      SwitchToTetris();
-      // ^^ DEBUG CODE
-      // DELETE FOR ACTUAL EXPERIMENT
-      // VERY IMPORTANT
+          
+      if(OnlyTetris){
+        SwitchToTetris();
+      }
+      // ^^ set this to true when you want to test just tetris
       
 //W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
 
