@@ -158,6 +158,16 @@ public class Tetris extends Applet {
 	//public static final Button pause_resume_butt = new TetrisButton("Pause");									
 	final Button pause_resume_butt = new TetrisButton("Pause");									
 	
+        private void LogEvent(String event){
+            F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
+                +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
+                +computeAccumulationHeight()+Tab+speed);
+        }
+        
+        
+        
+        
+        
 	//
 	// INNER CLASSES
 	//
@@ -265,6 +275,9 @@ public class Tetris extends Applet {
 			for(int i=0; i<4; i++)
 				for(int j=0; j<4; j++)
 					squares[j][i] = tmp_grid[i][3-j];
+                        
+                        //log rotation
+                        LogEvent("rotate");
 		}
 		public void rotateBack() {
 			// copy originally saved version back
@@ -519,9 +532,7 @@ public class Tetris extends Applet {
 		}
 		else
 			gameOver();
-                F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + "spawn_new_piece"+Tab
-                    +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
-                    +computeAccumulationHeight()+Tab+speed);
+                LogEvent("spawn_new_piece");
 	}
 	
 	private void gameOver() {
@@ -530,9 +541,7 @@ public class Tetris extends Applet {
 		pause_resume_butt.setEnabled(false);
 //		int score = Integer.parseInt(score_label.getText());
 		sounds.playGameOverSound();
-                F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + "game_over"+Tab
-                    +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
-                    +computeAccumulationHeight()+Tab+speed);
+                LogEvent("game_over");
 	}
 	
 	private boolean rowIsFull(int row) {
@@ -719,7 +728,7 @@ public class Tetris extends Applet {
             
             }
             game_grid.repaint();
-
+            LogEvent("row_removed");
         }
         
 	public void start() {
@@ -806,6 +815,8 @@ public class Tetris extends Applet {
                 TotalRunTime += System.nanoTime() - StartTime;
 		pause_resume_butt.setLabel("Resume");
 		sounds.stopSoundtrack();
+                
+                LogEvent("game_paused");
 	}
 	
 	public void resumeGame() {
@@ -813,6 +824,8 @@ public class Tetris extends Applet {
 		StartTime = System.nanoTime();
 		pause_resume_butt.setLabel("Pause");
 		sounds.playSoundtrack();
+                
+                LogEvent("game_resumed");
 	}
 	
 	public void init() {
@@ -854,6 +867,7 @@ public class Tetris extends Applet {
 						cur_piece.paste();
 					}
 					game_grid.repaint();
+                                        
 				}
 				else if (e.getKeyCode() == 38) { //rotate
                                         KeyCounter[2]++;
@@ -871,6 +885,9 @@ public class Tetris extends Applet {
                                         timer.setFast(true);
                                         OutputTheDataWhenFirstFast = true;
 				}
+                                
+                                LogEvent("key_press_"+ e.getKeyText(e.getKeyCode()));
+                                
 			}
 		};
 		

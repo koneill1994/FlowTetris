@@ -4,9 +4,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/Tetris/FineData.java</file>
             <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/Tetris/Tetris.java</file>
             <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/Tetris/Data.java</file>
+=======
+            <file>file:/C:/Users/Student/Documents/FlowTetris/src/Tetris/Parameters.java</file>
+            <file>file:/C:/Users/Student/Documents/FlowTetris/src/LDS/ControlCode.java</file>
+            <file>file:/C:/Users/Student/Documents/FlowTetris/src/Tetris/Tetris.java</file>
+            <file>file:/C:/Users/Student/Documents/FlowTetris/src/Tetris/FineData.java</file>
+>>>>>>> ccf1013ae215be024489a9676f9bab53432d7f25
         </group>
     </open-files>
 </project-private>

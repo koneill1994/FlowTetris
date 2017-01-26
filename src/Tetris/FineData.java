@@ -19,7 +19,10 @@ import java.util.*;
 
 write a timestamp and an action
 
-
+Sample code:
+F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + "spawn_new_piece"+Tab
+                    +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
+                    +computeAccumulationHeight()+Tab+speed);
 
 */
 

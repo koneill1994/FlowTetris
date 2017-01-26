@@ -49,6 +49,8 @@ public class Parameters {
   public static int MaxLevels;
   public static int MaxSecondsInLevel = 0;
   
+  public boolean OnlyTetris = false; // for debug purposes
+  
   public Parameters(String ParameterFileName) {
         
         ParameterFile = ParameterFileName;
@@ -129,6 +131,10 @@ public class Parameters {
                     MaxSecondsInLevel = GetInteger(2);
                 } else
         
+                if (Cmd.equals("DEBUG_TETRIS_ONLY")){
+                    OnlyTetris=true;
+                } else
+                    
 ////////////////////////////////////////////////////////////////////////////////                    
                 
                 {
