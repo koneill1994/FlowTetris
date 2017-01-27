@@ -18,6 +18,8 @@ import java.util.Random;
 import java.net.URL;
 import java.net.MalformedURLException;
 import LDS.ControlCode;
+import java.util.*;  // queue
+
 
 public class Tetris extends Applet {
 	
@@ -569,6 +571,22 @@ public class Tetris extends Applet {
 			}
 		}
 	}
+        
+        
+        private double computeVariance(Queue<Integer> q){
+            Queue<Integer> q_tmp=q;
+            int sum = 0;
+            while(q_tmp.size()>0){
+                sum = sum + q_tmp.remove();
+            }
+            double mean= sum/q.size();
+            
+            
+            
+            //placeholder for now
+            return 1.0;
+        }
+        
 	
 	private int countTrappedSpaces() {
             
@@ -765,7 +783,11 @@ public class Tetris extends Applet {
                                     }
 
                                 }
-            
+                                
+                                
+                                
+                                
+                                
 				game_grid.repaint();
 			}
 		});
