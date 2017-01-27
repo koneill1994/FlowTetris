@@ -576,15 +576,16 @@ public class Tetris extends Applet {
         private double computeVariance(Queue<Integer> q){
             Queue<Integer> q_tmp=q;
             int sum = 0;
+            int n=q.size();
             while(q_tmp.size()>0){
                 sum = sum + q_tmp.remove();
             }
-            double mean= sum/q.size();
-            
-            
-            
-            //placeholder for now
-            return 1.0;
+            double mean= sum/n;
+            double vsum = 0;
+            while(q.size()>0){
+                vsum = vsum + Math.pow(q.remove()-mean,2);
+            }
+            return vsum/(n-1);
         }
         
 	
