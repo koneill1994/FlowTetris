@@ -34,6 +34,12 @@ public class Tetris extends Applet {
         Data D = new Data();
         FineData F = new FineData();
         char Tab = ',';
+        
+        //logging
+        int queue_history =10; // how many seconds back it remembers //TODO: add to parameter file
+        Queue<Integer> HeightQueue = new LinkedList<Integer>();
+        
+        
 
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
@@ -572,7 +578,10 @@ public class Tetris extends Applet {
 		}
 	}
         
-        
+        // a queue of values which will be used to compute variance 
+        // of those values
+        // Make sure they're evenly distributed in time
+        // queue to you can add to front and take off from end
         private double computeVariance(Queue<Integer> q){
             Queue<Integer> q_tmp=q;
             int sum = 0;
@@ -588,7 +597,13 @@ public class Tetris extends Applet {
             return vsum/(n-1);
         }
         
-	
+        //  work on this later
+	private Queue<Integer> addToQueue(Queue<Integer> q, int item){
+            
+            
+            return q;
+        }       
+        
 	private int countTrappedSpaces() {
             
                 int spaceCount = 0;
