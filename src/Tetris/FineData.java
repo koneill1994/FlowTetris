@@ -40,7 +40,7 @@ public class FineData {
     // it logs the same number of items as this list's length
     List<String> HeaderLabels = Arrays.asList("TimeStamp", "EventLabel",
             "RowRemovalThreshold","AccumulationHeight",
-            "SpeedLevel");
+            "SpeedLevel","HeightVariance");
     
     String FileName = "DATA/" + "FineData" + ".csv";
 

@@ -169,7 +169,7 @@ public class Tetris extends Applet {
         private void LogEvent(String event){
             F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
                 +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
-                +computeAccumulationHeight()+Tab+speed);
+                +computeAccumulationHeight()+Tab+speed+Tab+computeVariance(HeightQueue,queue_history));
         }
         
         
@@ -365,6 +365,13 @@ public class Tetris extends Applet {
                                                + System.getProperty("user.dir"));
                                 
                                 OutputTheDataWhenFirstFast = false;
+                                
+                                //update accum variance queue
+                                addToQueue(HeightQueue, computeAccumulationHeight(), queue_history);
+        
+                                
+                                
+                                
                                 
                                 //clear key counters
                                 for (int i = 0; i < 4; i++)
@@ -582,7 +589,8 @@ public class Tetris extends Applet {
         // of those values
         // Make sure they're evenly distributed in time
         // queue to you can add to front and take off from end
-        private double computeVariance(Queue<Integer> q){
+        private double computeVariance(Queue<Integer> q, int maxLength){   //entirely NaN's and 0.0s TODO bugfix
+            if(q.size() < maxLength-1)   return Double.NaN;  //we dont have a full queue yet, so dont output a valid variance
             Queue<Integer> q_tmp=q;
             int sum = 0;
             int n=q.size();
@@ -598,9 +606,11 @@ public class Tetris extends Applet {
         }
         
         //  work on this later
-	private Queue<Integer> addToQueue(Queue<Integer> q, int item){
-            
-            
+	private Queue<Integer> addToQueue(Queue<Integer> q, int item, int maxLength){
+            q.add(item);
+            while(q.size() > maxLength){
+                q.remove();  //make sure the queue size isn't larger than its supposed to be
+            }
             return q;
         }       
         
