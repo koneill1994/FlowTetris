@@ -367,9 +367,10 @@ public class Tetris extends Applet {
                                 OutputTheDataWhenFirstFast = false;
                                 
                                 //update accum variance queue
-                                addToQueue(HeightQueue, computeAccumulationHeight(), queue_history);
+                                HeightQueue=addToQueue(HeightQueue, computeAccumulationHeight(), queue_history);
         
-                                
+                                //NB really this should only run when a piece is placed
+                                // it counts the falling block as part of the accumulation
                                 
                                 
                                 
@@ -599,9 +600,11 @@ public class Tetris extends Applet {
             }
             double mean= sum/n;
             double vsum = 0;
-            while(q.size()>0){
-                vsum = vsum + Math.pow(q.remove()-mean,2);
+            while(q_tmp.size()>0){
+                vsum = vsum + Math.pow(q_tmp.remove()-mean,2);
             }
+            System.out.println("queue " + q);
+            System.out.println("variance " + vsum/(n-1));
             return vsum/(n-1);
         }
         
@@ -611,6 +614,7 @@ public class Tetris extends Applet {
             while(q.size() > maxLength){
                 q.remove();  //make sure the queue size isn't larger than its supposed to be
             }
+            System.out.println("queue_after_added " + q);
             return q;
         }       
         
