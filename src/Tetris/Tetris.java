@@ -169,7 +169,7 @@ public class Tetris extends Applet {
         private void LogEvent(String event){
             F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
                 +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
-                +computeAccumulationHeight()+Tab+speed+Tab+computeVariance(HeightQueue,queue_history));
+                +accumulationHeight+Tab+speed+Tab+computeVariance(HeightQueue,queue_history));
         }
         
         
@@ -367,7 +367,7 @@ public class Tetris extends Applet {
                                 OutputTheDataWhenFirstFast = false;
                                 
                                 //update accum variance queue
-                                HeightQueue=addToQueue(HeightQueue, computeAccumulationHeight(), queue_history);
+                                //HeightQueue=addToQueue(HeightQueue, computeAccumulationHeight(), queue_history);
         
                                 //NB really this should only run when a piece is placed
                                 // it counts the falling block as part of the accumulation
@@ -542,6 +542,10 @@ public class Tetris extends Applet {
 		cur_piece.setPosition(3, -4); //-4 to start above top of grid
 		if (timer != null) ComputeScoreAndDelay(-4 * Parameters.PointsSubtractedPerNewBlock);
                 if(cur_piece.canPaste()) {
+                        //update accum variance queue before next piece appears, to capture only accum
+                        HeightQueue=addToQueue(HeightQueue, computeAccumulationHeight(), queue_history);
+                        System.out.println("accum: "+computeAccumulationHeight());
+        
 			next_piece = randomPiece();
 			next_piece.setPosition(0, 0);
 			next_piece.paste(next_piece_grid);
@@ -644,13 +648,13 @@ public class Tetris extends Applet {
 	
         
 	private int computeAccumulationHeight() {
-                   
-            for(int i=ROWS-1; i>=0; i--) {
+            System.out.println("calculating accumulation:");
+            for(int i=0; i<ROWS; i++) {
 		for(int j=0; j<COLUMNS; j++) {
-                        if (grid[i][j] != EMPTY) return ROWS-i;                                                
-                    }                
+                    if (grid[i][j] != EMPTY) return ROWS-i;                                                
                 }                
-                return 0;                
+            }                
+            return 0;                
 	}
         
         
