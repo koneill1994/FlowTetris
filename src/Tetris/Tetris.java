@@ -594,9 +594,9 @@ public class Tetris extends Applet {
         // of those values
         // Make sure they're evenly distributed in time
         // queue to you can add to front and take off from end
-        private double computeVariance(Queue<Integer> q, int maxLength){   //entirely NaN's and 0.0s TODO bugfix
+        private double computeVariance(Queue<Integer> q, int maxLength){   
             if(q.size() < maxLength-1)   return Double.NaN;  //we dont have a full queue yet, so dont output a valid variance
-            Queue<Integer> q_tmp=q;
+            Queue<Integer> q_tmp=new LinkedList(q);
             int sum = 0;
             int n=q.size();
             while(q_tmp.size()>0){
@@ -604,11 +604,11 @@ public class Tetris extends Applet {
             }
             double mean= sum/n;
             double vsum = 0;
+            q_tmp=new LinkedList(q); // NB you have to do this to copy the queue and not just make a reference to it
             while(q_tmp.size()>0){
-                vsum = vsum + Math.pow(q_tmp.remove()-mean,2);
+                int k = q_tmp.remove();
+                vsum = vsum + Math.pow(k-mean,2);
             }
-            System.out.println("queue " + q);
-            System.out.println("variance " + vsum/(n-1));
             return vsum/(n-1);
         }
         
