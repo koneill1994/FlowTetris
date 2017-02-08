@@ -38,8 +38,8 @@ public class Tetris extends Applet {
         //logging
         int queue_history =10; // how many seconds back it remembers //TODO: add to parameter file
         Queue<Integer> HeightQueue = new LinkedList<Integer>();
-        
-        
+        Queue<Integer> RowRemovalQueue = new LinkedList<Integer>();
+        int SizeLastRowRemoved = -1;
 
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
@@ -168,8 +168,8 @@ public class Tetris extends Applet {
 	
         private void LogEvent(String event){
             F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
-                +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
-                +accumulationHeight+Tab+speed+Tab+computeVariance(HeightQueue,queue_history)
+                +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
+                +speed+Tab+accumulationHeight+Tab+computeVariance(HeightQueue,queue_history)
                 );
         }
         
@@ -767,6 +767,8 @@ public class Tetris extends Applet {
                     biggestRow = i;
                 }
             }
+            SizeLastRowRemoved=biggestRow;  //this is returning a number larger than the size of a row, TOO BIG PLS FIX
+            RowRemovalQueue=addToQueue(RowRemovalQueue, biggestRowAmount, queue_history);
             removeRow(biggestRow);
             System.out.println("REMOVING ROW "+biggestRow);
             return biggestRowAmount;
