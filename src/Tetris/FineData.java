@@ -41,7 +41,8 @@ public class FineData {
     List<String> HeaderLabels = Arrays.asList("TimeStamp", "EventLabel",
             "SizeLastRowRemoved","SizeLastRowRemovedVariance",
             "SpeedLevel",
-            "AccumulationHeight","HeightVariance");
+            "AccumulationHeight","HeightVariance",
+            "LastDropDuration","DropDurationVariance");
     
     String FileName = "DATA/" + "FineData" + ".csv";
 

@@ -40,6 +40,8 @@ public class Tetris extends Applet {
         Queue<Integer> HeightQueue = new LinkedList<Integer>();
         Queue<Integer> RowRemovalQueue = new LinkedList<Integer>();
         int SizeLastRowRemoved = -1;
+        long DropStartTime=0;
+        Queue<Integer> DropDurationQueue = new LinkedList<Integer>();
 
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
@@ -170,6 +172,7 @@ public class Tetris extends Applet {
             F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
                 +speed+Tab+accumulationHeight+Tab+computeVariance(HeightQueue,queue_history)
+                +Tab+DropDurationQueue.peek()+Tab+ computeVariance(DropDurationQueue,queue_history)
                 );
         }
         
@@ -946,6 +949,7 @@ public class Tetris extends Applet {
 				}
 				if (e.getKeyCode() == 40) { //down arrow pressed; drop piece
 					KeyCounter[3]++;
+                                        DropStartTime=System.nanoTime();
                                         timer.setFast(true);
                                         OutputTheDataWhenFirstFast = true;
 				} 
@@ -957,8 +961,10 @@ public class Tetris extends Applet {
                         
                         public void keyReleased(KeyEvent e) {
                             if (e.getKeyCode() == 40) { //down arrow pressed; drop piece
-                                        timer.setFast(false);
-				}
+                                timer.setFast(false);
+                                DropDurationQueue=addToQueue(DropDurationQueue, (int) (System.nanoTime()-DropStartTime)/1000000, queue_history); 
+                                System.out.println("ddq: "+DropDurationQueue);  //the reason the variance is so massive is because its squared, this is normal
+                            }
                             LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
                         }
                         
