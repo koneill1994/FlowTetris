@@ -139,7 +139,7 @@ public class Tetris extends Applet {
 	int SecondsInCurrentLevel;
         int score;
         int KeyCounter[] = new int[4];
-        public static long StartTime;
+        public static long StartTime = System.nanoTime();
         long TotalRunTime;
         long speed = 0;
         long old_speed = 0;
@@ -169,7 +169,8 @@ public class Tetris extends Applet {
         private void LogEvent(String event){
             F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
                 +Parameters.RemoveBiggestPartialRowIfBlockInRow+Tab
-                +accumulationHeight+Tab+speed+Tab+computeVariance(HeightQueue,queue_history));
+                +accumulationHeight+Tab+speed+Tab+computeVariance(HeightQueue,queue_history)
+                );
         }
         
         
@@ -770,6 +771,10 @@ public class Tetris extends Applet {
             System.out.println("REMOVING ROW "+biggestRow);
             return biggestRowAmount;
         }
+        
+        // NB ^^^ This removes the row lower on the grid than Parameters.RemoveBiggestPartialRowIfBlockInRow
+        // with the highest number of blocks
+        // it does not have a changing threshhold for number of blocks removed
         
         public void RemoveRowsIfStackedTooHigh() {
             		
