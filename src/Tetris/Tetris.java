@@ -52,7 +52,8 @@ public class Tetris extends Applet {
             }
         }
         
-        
+        Queue<Tuple<Long,Long>> DownQueue = new LinkedList<Tuple<Long,Long>>();
+        // tuple (start_time, end_time)
         
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
@@ -660,6 +661,22 @@ public class Tetris extends Applet {
                 
 	}
 	
+        Queue<Tuple<Long,Long>> removeExpiredFromQueue(Queue<Tuple<Long,Long>> q, long current_time, long time_window){
+            Queue<Tuple<Long,Long>> output = new LinkedList<Tuple<Long,Long>>();
+            for(Tuple<Long,Long> e: q){
+                if(e.y<current_time-time_window){
+                    q.remove(e);//technically not necessary if we arent returinging q itself
+                }
+                else if(e.x<current_time-time_window){
+                    output.add(new Tuple<Long,Long>(current_time-time_window,e.y));
+                }
+                else if(e.y==null){  //hopefully this should be superfluous, 
+                    //ideally chop off current drop and add it before running this function
+                    output.add(new Tuple<Long,Long>(e.x,current_time));
+                }
+            }
+            return output;
+        }
         
 	private int computeAccumulationHeight() {
             for(int i=0; i<ROWS; i++) {
