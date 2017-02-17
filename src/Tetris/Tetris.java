@@ -184,7 +184,7 @@ public class Tetris extends Applet {
 	final Button pause_resume_butt = new TetrisButton("Pause");									
 	
         private void LogEvent(String event){
-            long drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, System.nanoTime()/1000000, DownStartTime, DownEndTime);
+            float drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, System.nanoTime()/1000000, DownStartTime, DownEndTime);
 
             F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
@@ -679,8 +679,8 @@ public class Tetris extends Applet {
             return output;
         }
         
-        long DropPercentageCalculate(LinkedList<Tuple<Long,Long>> q, long time_window){
-            long sum=0;
+        float DropPercentageCalculate(LinkedList<Tuple<Long,Long>> q, long time_window){
+            float sum=0;
             for(Tuple<Long,Long> e: q){
                 sum+=(e.y-e.x); //duration of a drop event                
             }
@@ -688,10 +688,12 @@ public class Tetris extends Applet {
         }
         
         // helper function to sanitize the q and return the percent
-        long DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
+        float DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
             // return NaN if we dont have time window's worth of drop queue
-            if(q.getLast().y-q.getFirst().x<time_window){
-                return -1;
+            if(q.size()>0){
+                if((q.getLast().y-q.getFirst().x)<time_window){
+                    return -1;
+                }
             }
             
             LinkedList<Tuple<Long,Long>> q_new = removeExpiredFromQueue(q,current_time,time_window);
@@ -700,6 +702,7 @@ public class Tetris extends Applet {
             }
             return DropPercentageCalculate(q, time_window);
         }
+        //BUG TODO: it doesn't look like old drops are ebing removed from the droplist
         
 	private int computeAccumulationHeight() {
             for(int i=0; i<ROWS; i++) {
