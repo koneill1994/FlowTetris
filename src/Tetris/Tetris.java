@@ -43,6 +43,17 @@ public class Tetris extends Applet {
         long DropStartTime=0;
         Queue<Integer> DropDurationQueue = new LinkedList<Integer>();
 
+        private class Tuple<X,Y>{
+            public final X x;
+            public final Y y;
+            public Tuple(X x, Y y){
+                this.x=x;
+                this.y=y;
+            }
+        }
+        
+        
+        
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
         private final static int INITIAL_DELAY = 1000;
@@ -548,7 +559,6 @@ public class Tetris extends Applet {
                 if(cur_piece.canPaste()) {
                         //update accum variance queue before next piece appears, to capture only accum
                         HeightQueue=addToQueue(HeightQueue, computeAccumulationHeight(), queue_history);
-                        System.out.println("accum: "+computeAccumulationHeight());
         
 			next_piece = randomPiece();
 			next_piece.setPosition(0, 0);
@@ -652,7 +662,6 @@ public class Tetris extends Applet {
 	
         
 	private int computeAccumulationHeight() {
-            System.out.println("calculating accumulation:");
             for(int i=0; i<ROWS; i++) {
 		for(int j=0; j<COLUMNS; j++) {
                     if (grid[i][j] != EMPTY) return ROWS-i;                                                
