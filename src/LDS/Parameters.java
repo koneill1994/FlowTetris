@@ -49,6 +49,8 @@ public class Parameters {
 
   Random R = new Random();
   
+  public static ArrayList SurveyArrayList = new ArrayList();
+  
   public Parameters(JFrame FrameIn, String ParameterFileName) {
         
         ParameterFile = ParameterFileName;
@@ -305,6 +307,12 @@ public class Parameters {
                 } else
 
 ////////////////////////////////////////////////////////////////////////////////
+                                    
+                if (Cmd.equals("TAKE_SURVEY")) {
+                    SurveyArrayList.add(new SurveyList(GetString(2), GetString(3), GetInteger(4)));
+                } else
+                
+////////////////////////////////////////////////////////////////////////////////
                     
                 if (Cmd.charAt(0) == '/') {
                         
@@ -472,6 +480,38 @@ public class Parameters {
       if(OnlyTetris){
         SwitchToTetris();
       }
+      
+          //W("SurveyList.size()="+SurveyList.size());
+
+      if (SurveyList.size() > 0) {
+
+          SurveyCode = (Survey)SurveyList.get(0);
+
+          if (SurveyCode.Update(g2, MouseX, MouseY, Button1)) {
+
+        //                    TakingASurvey = false;
+
+              W("SURVEY DONE");
+
+              if (SurveyCode.SendReady) {
+
+                  TakingASurvey = false;
+
+                  C.TransmitToServer(Client.MyName + ",SURVEY_DONE");
+
+              }
+
+              SurveyList.remove(0);
+
+              W("2 SurveyList.size()="+SurveyList.size());
+
+              return;
+
+          }
+
+      }
+
+
       // ^^ set this to true when you want to test just tetris
       
 //W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
@@ -589,7 +629,5 @@ public class Parameters {
         ControlCode.t.suspend();
         
     }
-    
-
 
 }
