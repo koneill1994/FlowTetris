@@ -22,7 +22,7 @@ public class Survey {
     
     DoneBtn DoneWithQuestionBtn = new DoneBtn(0, 0);
   
-    SurveyInstructions SI = null;
+//    SurveyInstructions SI = null;
     
     Graphics2D g2;
     Font BigFont = new Font("Helvetica", Font.PLAIN, 18);
@@ -157,10 +157,7 @@ public class Survey {
 //
 //                } else
 //                                                            
-                if (Cmd.equals("ANSWER_ALL_PLAYERS")) {
-                    AnswerAllPlayers = true;
-                } else
-                                                            
+                                          
                 if (Cmd.equals("TEXT_COLOR_RGB")) {
                     TextColor = new Color(GetInteger(2), GetInteger(3), GetInteger(4));
                 } else
@@ -372,12 +369,12 @@ public class Survey {
                 
                 DoneWithQuestionBtn.SelectBtn(-1);
                 
-                C.TransmitToServer("MONITOR,START_MASTER_TIMER");
+                //C.TransmitToServer("MONITOR,START_MASTER_TIMER");
                 
             }
             
             //return finished if is model
-            if (Client.IsModel | ControlCode.SubjectHasLeftEarly) return true;
+            //if (Client.IsModel | ControlCode.SubjectHasLeftEarly) return true;
             
             return false;
             
@@ -387,7 +384,7 @@ public class Survey {
             
             g2.setPaint(Color.BLACK);
         
-            g2.fillRect(0, 0, 1920, ControlCode.StageHeight);
+            //g2.fillRect(0, 0, 1920, ControlCode.StageHeight);
               
             if (StartBreakCountdown) {
                 
@@ -456,7 +453,7 @@ public class Survey {
             g2.setPaint(Color.GREEN);
             DrawProgressBar(ElapseTime, BreakBeforeSessionTime * 1000);
             
-            C.DisplayScoresToPlayer(g2);
+//            C.DisplayScoresToPlayer(g2);
             
             return false;
             
@@ -465,7 +462,7 @@ public class Survey {
             BreakMessageMode = 0;
 
 
-
+/*
         if (SurveyInstructions) {
             
             if (SurveyMessageMode <= 3) {
@@ -492,7 +489,7 @@ public class Survey {
             //put the done button 40 pixels below the survey button 
             DoneWithQuestionBtn.Yo = SurveyButton[0].BottomY + 40;
         }
-        
+        */
         g2.setFont(new Font("Helvetica", Font.BOLD, SurveyBtn.TextHeight));
         
         SurveyBtn.ButtonWidth = 0;
@@ -510,10 +507,10 @@ public class Survey {
         
         g2.setPaint(Color.BLACK);
         
-        g2.fillRect(0, 0, 1920, ControlCode.StageHeight);
+        //g2.fillRect(0, 0, 1920, ControlCode.StageHeight);
               
         int MessageX = 420 + 100;
-        if (AnswerAllPlayers) MessageX = 840;
+        //if (AnswerAllPlayers) MessageX = 840;
         
         //draw instructions
         g2.setPaint(Color.WHITE);
@@ -526,7 +523,7 @@ public class Survey {
         
         if (SendReady & (QuestionNo == (QuestionList.size() - 1)))
             DoneWithQuestionBtn.buttonLabel[0] = "DONE";
-        
+        /*
         //draw answer buttons
         int Stop = 1;
         if (AnswerAllPlayers) {
@@ -540,14 +537,14 @@ public class Survey {
                 //W("UPDATING SURVEY BUTTONS NO="+SurveyBtn.NoOfButtons);
 //                SurveyBtn.NoOfButtons = 5;
             }
-        
+        */
         boolean AllQuestionsAnswered = true;
-        
+        /*
         for (int i = 0; i < Stop; i++)
             if ((!AnswerAllPlayers | (Client.MyPlayerIndex != i))
                     & (SurveyButton[i].ButtonSelected == -1))
                 AllQuestionsAnswered = false;
-        
+        */
         boolean GoToNextQuestion = false;
         
         //if (AllQuestionsAnswered & AnswerAllPlayers) {
@@ -569,13 +566,13 @@ public class Survey {
         
         if (GoToNextQuestion) {
             
-            for (int i = 0; i < Stop; i++)
-                Answers[Order[QuestionNo]] += "," + (SurveyButton[i].ButtonSelected + 1);
+            //for (int i = 0; i < Stop; i++)
+            //    Answers[Order[QuestionNo]] += "," + (SurveyButton[i].ButtonSelected + 1);
             
             QuestionNo++;
             
             int NoOfAnswers = QuestionList.size();
-            
+/*            
             if (AnswerAllPlayers)
                 NoOfAnswers = QuestionList.size() * Client.NoOfPlayers;
             
@@ -594,7 +591,7 @@ public class Survey {
                 return true;
             
             }
-            
+ */           
             for (int i = 0; i < 4; i++)
                 SurveyButton[i].SelectBtn(-1);
                 
@@ -694,8 +691,8 @@ public class Survey {
     
     public void LoadJpg(int JpgNo) {
 
-        String FileName = ControlCode.MainDir + 
-            "/SURVEYS/" + JpgFolder + "/" + JpgFileName + JpgNo + ".jpg";
+       // String FileName = ControlCode.MainDir + 
+       //     "/SURVEYS/" + JpgFolder + "/" + JpgFileName + JpgNo + ".jpg";
 
         System.out.println("FILENAME="+FileName);
 

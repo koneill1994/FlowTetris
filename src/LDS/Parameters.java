@@ -482,7 +482,7 @@ public class Parameters {
       }
       
           //W("SurveyList.size()="+SurveyList.size());
-
+/*
       if (SurveyList.size() > 0) {
 
           SurveyCode = (Survey)SurveyList.get(0);
@@ -497,7 +497,7 @@ public class Parameters {
 
                   TakingASurvey = false;
 
-                  C.TransmitToServer(Client.MyName + ",SURVEY_DONE");
+                 // C.TransmitToServer(Client.MyName + ",SURVEY_DONE");
 
               }
 
@@ -510,7 +510,7 @@ public class Parameters {
           }
 
       }
-
+*/
 
       // ^^ set this to true when you want to test just tetris
       
