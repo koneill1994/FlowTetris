@@ -42,8 +42,9 @@ public class Tetris extends Applet {
         int SizeLastRowRemoved = -1;
         long DropStartTime=0;
         Queue<Integer> DropDurationQueue = new LinkedList<Integer>();
-        long DownStartTime = -1;
-        long DownEndTime = -1;
+        long LongMin = Long.MIN_VALUE;
+        long DownStartTime = LongMin;
+        long DownEndTime = LongMin;
 
         private class Tuple<X,Y>{
             public final X x;
@@ -184,7 +185,7 @@ public class Tetris extends Applet {
 	final Button pause_resume_butt = new TetrisButton("Pause");									
 	
         private void LogEvent(String event){
-            float drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, System.nanoTime()/1000000, DownStartTime, DownEndTime);
+            float drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime);
 
             F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
@@ -669,13 +670,14 @@ public class Tetris extends Applet {
         LinkedList<Tuple<Long,Long>> removeExpiredFromQueue(LinkedList<Tuple<Long,Long>> q, long current_time, long time_window){
             LinkedList<Tuple<Long,Long>> output = new LinkedList<Tuple<Long,Long>>();
             for(Tuple<Long,Long> e: q){
-                if(e.y<current_time-time_window){ // just to skip over it
-                    // i know its not that readable, fix it later (wishful thinking)
-                }
-                else if(e.x<current_time-time_window){
+                System.out.println(""+e.x+">"+(current_time-time_window));
+                System.out.println(""+e.y+"<="+(current_time));
+                // if it starts & ends within the window
+                if(e.x>current_time-time_window && e.y<=current_time){ 
                     output.add(new Tuple<Long,Long>(current_time-time_window,e.y));
                 }
             }
+            DisplayDropPercentList(output, time_window);
             return output;
         }
         
@@ -689,21 +691,22 @@ public class Tetris extends Applet {
         
         // helper function to sanitize the q and return the percent
         float DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
-            // return NaN if we dont have time window's worth of drop queue
+            // return NaN (or equivalent) if we dont have time window's worth of drop queue
             if(q.size()>0){
                 if((q.getLast().y-q.getFirst().x)<time_window){
-                    return -1;
+                    return LongMin;
                 }
             }
             
             LinkedList<Tuple<Long,Long>> q_new = removeExpiredFromQueue(q,current_time,time_window);
                     
             //DisplayDropPercentList(q_new, time_window);
+            //if(DownEndTime==LongMin){ // dont know if this was intentional or not
             
-            if(DownEndTime==-1){
+            if(DownEndTime==LongMin && DownStartTime!=LongMin){
                 q_new.add(new Tuple<Long,Long>(DownStartTime,current_time));
             }
-            return DropPercentageCalculate(q, time_window);
+            return DropPercentageCalculate(q_new, time_window);
         }
         //BUG TODO: it doesn't look like old drops are being removed from the droplist
         
@@ -713,7 +716,12 @@ public class Tetris extends Applet {
             for(Tuple<Long,Long> e: q){
                 System.out.println("("+e.x +"," +e.y+")");
             }
-            System.out.println("Length: "+ (q.getLast().y-q.getFirst().x));
+            if(q.size()>0){
+                System.out.println("Length: "+ (q.getLast().y-q.getFirst().x));
+            }
+            else{
+                System.out.println("Length: 0");
+            }
             System.out.println("window: "+time_window);
             System.out.println("\n");
         }
@@ -1033,11 +1041,13 @@ public class Tetris extends Applet {
                                 DropDurationQueue=addToQueue(DropDurationQueue, (int) (System.nanoTime()-DropStartTime)/1000000, queue_history); 
                                 DownEndTime=(System.nanoTime()- StartTime)/1000000;
                                 
+                                System.out.println(DownStartTime+" "+DownEndTime);
                                 // drop percent stuff
                                 DownQueue.add(new Tuple<Long,Long>(DownStartTime,DownEndTime));
-                                DisplayDropPercentList(DownQueue, DropPercentageTimeWindow);
-                                DownStartTime = -1; // reset them back to "not dropping"
-                                DownEndTime = -1;
+                                DownQueue = removeExpiredFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
+                                //DisplayDropPercentList(DownQueue, DropPercentageTimeWindow);
+                                DownStartTime = LongMin; // reset them back to "not dropping"
+                                DownEndTime = LongMin;
                             }
                             LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
                         }
