@@ -675,7 +675,7 @@ public class Tetris extends Applet {
                 // if it starts & ends within the window
                 if(e.x>current_time-time_window && e.y<=current_time){ 
                     output.add(new Tuple<Long,Long>(current_time-time_window,e.y));
-                }
+                }   // this is where the problem is i screwed up here
             }
             DisplayDropPercentList(output, time_window);
             return output;
@@ -1027,6 +1027,9 @@ public class Tetris extends Applet {
                                         DownStartTime=(System.nanoTime()- StartTime)/1000000;
                                         timer.setFast(true);
                                         OutputTheDataWhenFirstFast = true;
+                                        
+                                        System.out.println("DST: "+System.nanoTime()+" "+StartTime);
+                                        System.out.println("DST "+(System.nanoTime()- StartTime));
 				} 
                                 
                                 
@@ -1044,10 +1047,10 @@ public class Tetris extends Applet {
                                 System.out.println(DownStartTime+" "+DownEndTime);
                                 // drop percent stuff
                                 DownQueue.add(new Tuple<Long,Long>(DownStartTime,DownEndTime));
-                                DownQueue = removeExpiredFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
                                 //DisplayDropPercentList(DownQueue, DropPercentageTimeWindow);
                                 DownStartTime = LongMin; // reset them back to "not dropping"
                                 DownEndTime = LongMin;
+                                DownQueue = removeExpiredFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
                             }
                             LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
                         }
