@@ -698,20 +698,23 @@ public class Tetris extends Applet {
             
             LinkedList<Tuple<Long,Long>> q_new = removeExpiredFromQueue(q,current_time,time_window);
                     
-            DisplayDropPercentList(q_new, time_window);
+            //DisplayDropPercentList(q_new, time_window);
             
             if(DownEndTime==-1){
                 q_new.add(new Tuple<Long,Long>(DownStartTime,current_time));
             }
             return DropPercentageCalculate(q, time_window);
         }
-        //BUG TODO: it doesn't look like old drops are ebing removed from the droplist
+        //BUG TODO: it doesn't look like old drops are being removed from the droplist
+        
         void DisplayDropPercentList(LinkedList<Tuple<Long,Long>> q, long time_window){
 
             System.out.println("\nDropPercent, size "+q.size());
             for(Tuple<Long,Long> e: q){
                 System.out.println("("+e.x +"," +e.y+")");
             }
+            System.out.println("Length: "+ (q.getLast().y-q.getFirst().x));
+            System.out.println("window: "+time_window);
             System.out.println("\n");
         }
         
@@ -1013,7 +1016,7 @@ public class Tetris extends Applet {
 				if (e.getKeyCode() == 40) { //down arrow pressed; drop piece
 					KeyCounter[3]++;
                                         DropStartTime=System.nanoTime();
-                                        DownStartTime=System.nanoTime()/1000000;
+                                        DownStartTime=(System.nanoTime()- StartTime)/1000000;
                                         timer.setFast(true);
                                         OutputTheDataWhenFirstFast = true;
 				} 
@@ -1026,10 +1029,13 @@ public class Tetris extends Applet {
                         public void keyReleased(KeyEvent e) {
                             if (e.getKeyCode() == 40) { //down arrow pressed; drop piece
                                 timer.setFast(false);
+                                // down queue stuff
                                 DropDurationQueue=addToQueue(DropDurationQueue, (int) (System.nanoTime()-DropStartTime)/1000000, queue_history); 
-                                DownEndTime=System.nanoTime()/1000000;
+                                DownEndTime=(System.nanoTime()- StartTime)/1000000;
                                 
+                                // drop percent stuff
                                 DownQueue.add(new Tuple<Long,Long>(DownStartTime,DownEndTime));
+                                DisplayDropPercentList(DownQueue, DropPercentageTimeWindow);
                                 DownStartTime = -1; // reset them back to "not dropping"
                                 DownEndTime = -1;
                             }
