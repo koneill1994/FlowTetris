@@ -638,7 +638,7 @@ public class Tetris extends Applet {
             while(q.size() > maxLength){
                 q.remove();  //make sure the queue size isn't larger than its supposed to be
             }
-            System.out.println("queue_after_added " + q);
+            //System.out.println("queue_after_added " + q);
             return q;
         }       
         
@@ -697,12 +697,23 @@ public class Tetris extends Applet {
             }
             
             LinkedList<Tuple<Long,Long>> q_new = removeExpiredFromQueue(q,current_time,time_window);
+                    
+            DisplayDropPercentList(q_new, time_window);
+            
             if(DownEndTime==-1){
                 q_new.add(new Tuple<Long,Long>(DownStartTime,current_time));
             }
             return DropPercentageCalculate(q, time_window);
         }
         //BUG TODO: it doesn't look like old drops are ebing removed from the droplist
+        void DisplayDropPercentList(LinkedList<Tuple<Long,Long>> q, long time_window){
+
+            System.out.println("\nDropPercent, size "+q.size());
+            for(Tuple<Long,Long> e: q){
+                System.out.println("("+e.x +"," +e.y+")");
+            }
+            System.out.println("\n");
+        }
         
 	private int computeAccumulationHeight() {
             for(int i=0; i<ROWS; i++) {

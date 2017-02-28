@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package client;
+package LDS;
 
 import java.awt.*;
 

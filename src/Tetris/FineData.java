@@ -42,7 +42,8 @@ public class FineData {
             "SizeLastRowRemoved","SizeLastRowRemovedVariance",
             "SpeedLevel",
             "AccumulationHeight","HeightVariance",
-            "LastDropDuration","DropDurationVariance");
+            "LastDropDuration","DropDurationVariance",
+            "DropPerecentage");
     
     String FileName = "DATA/" + "FineData" + ".csv";
 
