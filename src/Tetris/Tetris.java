@@ -670,12 +670,25 @@ public class Tetris extends Applet {
         LinkedList<Tuple<Long,Long>> removeExpiredFromQueue(LinkedList<Tuple<Long,Long>> q, long current_time, long time_window){
             LinkedList<Tuple<Long,Long>> output = new LinkedList<Tuple<Long,Long>>();
             for(Tuple<Long,Long> e: q){
-                System.out.println(""+e.x+">"+(current_time-time_window));
-                System.out.println(""+e.y+"<="+(current_time));
-                // if it starts & ends within the window
-                if(e.x>current_time-time_window && e.y<=current_time){ 
+                //if it starts after the start of the window:
+                if(e.x>current_time-time_window){
+                    //if it starts but doesnt end, lop it off now
+                    // THERE ARE PROBLEMS WITH THIS
+                    // ONLY LOP IT OFF FOR CALCULATION PURPOSES
+                    if(e.y==LongMin){
+                        output.add(new Tuple<Long,Long>(e.x,current_time));
+                    }
+                    // if it ends before the current time
+                    else{
+                        output.add(new Tuple<Long,Long>(e.x,e.y));
+                    }
+                }
+                //if it starts before the window but ends within it
+                else if(e.y>current_time-time_window){
                     output.add(new Tuple<Long,Long>(current_time-time_window,e.y));
-                }   // this is where the problem is i screwed up here
+                }
+                
+                
             }
             DisplayDropPercentList(output, time_window);
             return output;
@@ -686,6 +699,8 @@ public class Tetris extends Applet {
             for(Tuple<Long,Long> e: q){
                 sum+=(e.y-e.x); //duration of a drop event                
             }
+            System.out.println(sum);
+            System.out.println(time_window);
             return sum/time_window; //divide by time span to get drop percentage (between 0 and 1)
         }
         
@@ -693,7 +708,7 @@ public class Tetris extends Applet {
         float DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
             // return NaN (or equivalent) if we dont have time window's worth of drop queue
             if(q.size()>0){
-                if((q.getLast().y-q.getFirst().x)<time_window){
+                if((current_time-q.getFirst().x)<time_window){
                     return LongMin;
                 }
             }
@@ -1027,9 +1042,6 @@ public class Tetris extends Applet {
                                         DownStartTime=(System.nanoTime()- StartTime)/1000000;
                                         timer.setFast(true);
                                         OutputTheDataWhenFirstFast = true;
-                                        
-                                        System.out.println("DST: "+System.nanoTime()+" "+StartTime);
-                                        System.out.println("DST "+(System.nanoTime()- StartTime));
 				} 
                                 
                                 
@@ -1044,10 +1056,8 @@ public class Tetris extends Applet {
                                 DropDurationQueue=addToQueue(DropDurationQueue, (int) (System.nanoTime()-DropStartTime)/1000000, queue_history); 
                                 DownEndTime=(System.nanoTime()- StartTime)/1000000;
                                 
-                                System.out.println(DownStartTime+" "+DownEndTime);
                                 // drop percent stuff
                                 DownQueue.add(new Tuple<Long,Long>(DownStartTime,DownEndTime));
-                                //DisplayDropPercentList(DownQueue, DropPercentageTimeWindow);
                                 DownStartTime = LongMin; // reset them back to "not dropping"
                                 DownEndTime = LongMin;
                                 DownQueue = removeExpiredFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
