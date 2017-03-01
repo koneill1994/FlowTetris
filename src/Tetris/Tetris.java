@@ -185,7 +185,7 @@ public class Tetris extends Applet {
 	final Button pause_resume_butt = new TetrisButton("Pause");									
 	
         private void LogEvent(String event){
-            float drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime);
+            String drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime);
 
             F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
@@ -667,14 +667,25 @@ public class Tetris extends Applet {
                 
 	}
 	
-        LinkedList<Tuple<Long,Long>> removeExpiredFromQueue(LinkedList<Tuple<Long,Long>> q, long current_time, long time_window){
+        LinkedList<Tuple<Long,Long>> removeOldFromQueue(LinkedList<Tuple<Long,Long>> q, long current_time, long time_window){
+            LinkedList<Tuple<Long,Long>> output = new LinkedList<Tuple<Long,Long>>();
+            for(Tuple<Long,Long> e: q){
+                // if the drop ends after the time window starts
+                // add it to the output
+                if(e.y>=(current_time-time_window)){
+                    output.add(new Tuple<Long,Long>(e.x,e.y));
+                }
+            }
+            DisplayDropPercentList(output, time_window);
+            return output;
+        }
+        
+        //only for calculation purposes, don't use this on the actual queue. just on a copy
+        LinkedList<Tuple<Long,Long>> ContainWithinTimeWindow(LinkedList<Tuple<Long,Long>> q, long current_time, long time_window){
             LinkedList<Tuple<Long,Long>> output = new LinkedList<Tuple<Long,Long>>();
             for(Tuple<Long,Long> e: q){
                 //if it starts after the start of the window:
                 if(e.x>current_time-time_window){
-                    //if it starts but doesnt end, lop it off now
-                    // THERE ARE PROBLEMS WITH THIS
-                    // ONLY LOP IT OFF FOR CALCULATION PURPOSES
                     if(e.y==LongMin){
                         output.add(new Tuple<Long,Long>(e.x,current_time));
                     }
@@ -687,10 +698,8 @@ public class Tetris extends Applet {
                 else if(e.y>current_time-time_window){
                     output.add(new Tuple<Long,Long>(current_time-time_window,e.y));
                 }
-                
-                
             }
-            DisplayDropPercentList(output, time_window);
+            //DisplayDropPercentList(output, time_window);
             return output;
         }
         
@@ -705,23 +714,29 @@ public class Tetris extends Applet {
         }
         
         // helper function to sanitize the q and return the percent
-        float DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
+        String DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
             // return NaN (or equivalent) if we dont have time window's worth of drop queue
+            
+            String s ="_";
+            
             if(q.size()>0){
-                if((current_time-q.getFirst().x)<time_window){
-                    return LongMin;
+                s = ""+(current_time-q.getFirst().x);
+                //if we haven't had time_window's worth of gameplay yet
+                // output nonsense
+                if((current_time-time_window)<=0){
+                    return ""+"null"+Tab+s;
                 }
             }
             
-            LinkedList<Tuple<Long,Long>> q_new = removeExpiredFromQueue(q,current_time,time_window);
+            LinkedList<Tuple<Long,Long>> q_new = ContainWithinTimeWindow(q,current_time,time_window);
                     
             //DisplayDropPercentList(q_new, time_window);
             //if(DownEndTime==LongMin){ // dont know if this was intentional or not
-            
+            /*
             if(DownEndTime==LongMin && DownStartTime!=LongMin){
                 q_new.add(new Tuple<Long,Long>(DownStartTime,current_time));
-            }
-            return DropPercentageCalculate(q_new, time_window);
+            }*/
+            return ""+DropPercentageCalculate(q_new, time_window)+Tab+s;
         }
         //BUG TODO: it doesn't look like old drops are being removed from the droplist
         
@@ -1060,7 +1075,7 @@ public class Tetris extends Applet {
                                 DownQueue.add(new Tuple<Long,Long>(DownStartTime,DownEndTime));
                                 DownStartTime = LongMin; // reset them back to "not dropping"
                                 DownEndTime = LongMin;
-                                DownQueue = removeExpiredFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
+                                DownQueue = removeOldFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
                             }
                             LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
                         }

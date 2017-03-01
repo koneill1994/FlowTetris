@@ -43,7 +43,7 @@ public class FineData {
             "SpeedLevel",
             "AccumulationHeight","HeightVariance",
             "LastDropDuration","DropDurationVariance",
-            "DropPerecentage");
+            "DropPercentage");
     
     String FileName = "DATA/" + "FineData" + ".csv";
 
