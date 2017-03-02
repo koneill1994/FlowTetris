@@ -724,7 +724,7 @@ public class Tetris extends Applet {
                 //if we haven't had time_window's worth of gameplay yet
                 // output nonsense
                 if((current_time-time_window)<=0){
-                    return ""+"null"+Tab+s;
+                    return ""+"null";
                 }
             }
             
@@ -736,7 +736,7 @@ public class Tetris extends Applet {
             if(DownEndTime==LongMin && DownStartTime!=LongMin){
                 q_new.add(new Tuple<Long,Long>(DownStartTime,current_time));
             }*/
-            return ""+DropPercentageCalculate(q_new, time_window)+Tab+s;
+            return ""+DropPercentageCalculate(q_new, time_window);
         }
         //BUG TODO: it doesn't look like old drops are being removed from the droplist
         
