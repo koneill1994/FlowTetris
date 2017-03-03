@@ -621,7 +621,10 @@ public class Parameters {
         //reset Symbol DisplayTime for Focus Task
         Task.SymbolDisplayTime = Task.OriginalSymbolDisplayTime;
         
-        Tetris.StartTime = System.currentTimeMillis();
+        //Tetris.StartTime = System.currentTimeMillis();
+        // I have a feeling this is subverting the original intent of these variables
+        // but it solves a current issue
+        Tetris.StartTime=System.nanoTime();
         Tetris.StartTimeInLevel = System.nanoTime();
         Tetris.timer.setPaused(false);
         Tetris.frame.setVisible(true);

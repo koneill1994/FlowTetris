@@ -187,14 +187,17 @@ public class Tetris extends Applet {
         private void LogEvent(String event){
             String drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime);
 
-            F.LogEvent(""+(TotalRunTime + System.nanoTime() - StartTime)/1000000 + Tab + event+Tab
+            F.LogEvent(""+ CurrentTime() + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
                 +speed+Tab+accumulationHeight+Tab+computeVariance(HeightQueue,queue_history)
                 +Tab+DropDurationQueue.peek()+Tab+ computeVariance(DropDurationQueue,queue_history)
                 +Tab+drop_percent);
         }
         
-        
+        //returns current time from start in ms
+        private long CurrentTime(){
+            return (TotalRunTime + System.nanoTime() - StartTime)/1000000;
+        }
         
         
         
@@ -717,10 +720,10 @@ public class Tetris extends Applet {
         String DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
             // return NaN (or equivalent) if we dont have time window's worth of drop queue
             
-            String s ="_";
+            String s ="_";  // remove when no longer needed
             
             if(q.size()>0){
-                s = ""+(current_time-q.getFirst().x);
+                s = ""+(current_time-q.getFirst().x);  // remove when no longer needed
                 //if we haven't had time_window's worth of gameplay yet
                 // output nonsense
                 if((current_time-time_window)<=0){
