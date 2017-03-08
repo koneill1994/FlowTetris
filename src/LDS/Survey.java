@@ -1,29 +1,16 @@
 
 package LDS;
 
-import static LDS.Parameters.ErrorCode;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 
 public class Survey {
     
-    public static int SurveyMessageMode;
-    
-    int BreakMessageMode;
-    
-    CurrentTime CT = new CurrentTime();
-
-    SurveyBtn SurveyButton[] = { new SurveyBtn(420-50, 206), new SurveyBtn(1260+50, 206), 
-                                 new SurveyBtn(420-50, 718), new SurveyBtn(1260+50, 718) }; 
+    SurveyBtn SurveyButton = new SurveyBtn(420-50, 206); 
     
     DoneBtn DoneWithQuestionBtn = new DoneBtn(0, 0);
   
-//    SurveyInstructions SI = null;
-    
     Graphics2D g2;
     Font BigFont = new Font("Helvetica", Font.PLAIN, 18);
     int TextHeight = 20;
@@ -36,47 +23,23 @@ public class Survey {
     int QuestionNo = 0;
     ArrayList QuestionList = new ArrayList();
     String Instructions = "";
-    //boolean AnswerAllPlayers;
-    //boolean SurveyInstructions;
     String FileName = "";
     int MySurveyNo;
     int SessionNo;
-    boolean SendReady;
-    boolean SendReadyForBreakFlag;
-    boolean WaitingForOtherPlayersFlag = true;
-    boolean BreakBeforeSession;
-    public static int BreakBeforeSessionTime;
-    boolean GetProgressBarStartTime;
-    long ProgressBarStartTime;
-    public boolean DuringSchoolTime;
-    static boolean StartBreakCountdown;
-    String ModeString; //either HOME_TIME or SCHOOL_TIME
     int Order[] = new int[1000];
     
-    //for showing JPG slides
-    boolean JpgSlideViewer;
-    boolean JpgFirstTime = true;
-    int JpgNo;
-    int JpgX;
-    int JpgY;
-    double JpgScaleFactor;
-    String JpgFolder;
-    String JpgFileName;
-    int JpgNoOfSlides;
-    public static BufferedImage BuffImage[] = new BufferedImage[1];
-    int ImageWidth;
-    int ImageHeight;
-    
     int NoOfButtons;
+    int NoOfAnswers;
     
-    boolean Flag, Flag2;
+    public static int BEFORE_LDS = 0;
+    public static int BEFORE_TETRIS = 1;
+    int BeforeMode;
     
-    public static boolean DisplayPlayersPoints;
+    boolean RandomizeQuestions;
     
-    public Survey(String FileNameIn, int SessionNoIn, int MySurveyNoIn, String ReadyString, String ModeString) {
+    public Survey(String FileNameIn, String BeforeLDSorTETRIS, int SessionNoIn) {
         
         SessionNo = SessionNoIn;
-        MySurveyNo = MySurveyNoIn;
         FileName = FileNameIn;
         ReadSurvey();
         DoneWithQuestionBtn.OldButton1 = true;
@@ -84,14 +47,20 @@ public class Survey {
         DoneWithQuestionBtn.SelectBtn(-1);
         DoneWithQuestionBtn.Xo = (1920 - DoneWithQuestionBtn.buttonWidth)/2;
         DoneWithQuestionBtn.Yo = 970;
+            
+        if (BeforeLDSorTETRIS.equals("BEFORE_LDS"))
+            BeforeMode = BEFORE_LDS;
         
+        if (BeforeLDSorTETRIS.equals("BEFORE_TETRIS"))
+            BeforeMode = BEFORE_TETRIS;
+     
     }
     
     public void W(String S) {
         System.out.println(S);
     }
     
-    public void RandomizeQuestions() {
+    public void RandomizeTheQuestions() {
 
         int N = QuestionList.size();
         
@@ -100,6 +69,8 @@ public class Survey {
             Order[n] = n;
         }
             
+        if (!RandomizeQuestions) return;
+        
         if (N < 2) return;
         
         for (int n = 0; n < 1000; n++)
@@ -115,12 +86,10 @@ public class Survey {
     }
     
     public void ReadSurvey() {
-           
-       SurveyBtn.PlayerCounter = 0;
+    
        
        try {
-            FileInputStream fstream = new FileInputStream( 
-                    "SURVEYS/" + FileName + ".txt");
+            FileInputStream fstream = new FileInputStream("SURVEYS/" + FileName + ".txt");
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String S;
@@ -140,38 +109,9 @@ public class Survey {
                     //System.exit(10);
                     break;
                 } else
-                    
-//                if (Cmd.equals("SURVEY_INSTRUCTIONS")) {
-//                    
-//                    SurveyInstructions = true;
-//                    
-//                    SI = new SurveyInstructions();
-//                                
-//                    while ((S = br.readLine()) != null)   {
-//                
-//                        SI.InstructionList.add(S);
-//                                   
-//                    }
-//                    
-//                    break;
-//
-//                } else
-//                                                            
-                                          
-                if (Cmd.equals("TEXT_COLOR_RGB")) {
-                    TextColor = new Color(GetInteger(2), GetInteger(3), GetInteger(4));
-                } else
-                    
-                if (Cmd.equals("TEXT_Y_SPACING")) {
-                    TextYSpacing = GetInteger(2);
-                } else
-
-                if (Cmd.equals("TEXT_HEIGHT")) {
-                    TextHeight = GetInteger(2);
-                } else
-               
+                                                                                               
                 if (Cmd.equals("ANSWER")) {
-                    SurveyButton[0].AddBtn(GetString(2));
+                    SurveyButton.AddBtn(GetString(2));
                     W("ADDING ANSWER = "+GetString(2));
                     NoOfButtons++;
                     W("XXX NO OF BUTTONS="+SurveyBtn.NoOfButtons);
@@ -187,45 +127,12 @@ public class Survey {
                 if (Cmd.equals("QUESTION")) {
                     QuestionList.add(GetRestOfString(Arg));
                 } else
-                    
-                if (Cmd.equals("BREAK_BEFORE_SESSION_TIME")) {
-                    BreakBeforeSession = true;
-                    BreakBeforeSessionTime = GetInteger(2);
-                } else
-                    
-                if (Cmd.equals("JPG_SLIDE_VIEWER")) {
-                    JpgSlideViewer = true;
-                } else
-                    
-                if (Cmd.equals("JPG_X")) {
-                    JpgX = GetInteger(2);
-                } else
-                    
-                if (Cmd.equals("JPG_Y")) {
-                    JpgY = GetInteger(2);
-                } else
-                    
-                if (Cmd.equals("JPG_SCALE_FACTOR")) {
-                    JpgScaleFactor = GetFloat(2);
-                } else
-                    
-                if (Cmd.equals("JPG_FOLDER")) {
-                    JpgFolder = GetString(2);
-                } else
-                    
-                if (Cmd.equals("JPG_FILE_NAME")) {
-                    JpgFileName = GetString(2);
-                } else
-                    
-                if (Cmd.equals("JPG_NO_OF_SLIDES")) {
-                    JpgNoOfSlides = GetInteger(2);
-                } else
-                    
+                                        
                 if (Cmd.charAt(0) == '/') continue;
                 
                 else {
-                    ErrorCode = "ERROR: DO NOT RECOGNIZE SURVEY FILE LINE "+LineNo+" LINE = '"+Arg+"'";
-                    W("ErrorCode");
+                    Parameters.ErrorCode = "ERROR: DO NOT RECOGNIZE SURVEY FILE LINE "+LineNo+" LINE = '"+Arg+"'";
+                    W("ErrorCode "+Parameters.ErrorCode);
                     return;
                 }
                    
@@ -233,12 +140,11 @@ public class Survey {
  
             in.close();
             
-//            C.TransmitToServer(Client.MyName + ",AT END OF LOAD  NO OF BUTTONS="+SurveyBtn.NoOfButtons);
             
-            if (QuestionList.size() > 0) RandomizeQuestions();
+            if (QuestionList.size() > 0) RandomizeTheQuestions();
             
         } catch (Exception e) {
-            ErrorCode = "Parameter File Error: " + e.getMessage();
+            Parameters.ErrorCode = "Parameter File Error: " + e.getMessage();
             System.err.println("Parameter File Error: " + e.getMessage());
         }
             
@@ -268,24 +174,7 @@ public class Survey {
         return RestOfArg;
     
     }
-    
-    public void DrawProgressBar(long DurationTime, long TotalDurationTime) {
-        
-        int Width = 400;
-        int Height = 20;
-        int x = (1680 - Width)/2;
-        int y = 1050/2 - 70;
-        
-        long RemainingTime = TotalDurationTime - DurationTime;
-        int BarWidth = (int)(Width * (RemainingTime/(double)TotalDurationTime));
-        //W("IN PROGRESS BAR");
-        g2.setStroke(new BasicStroke(3));
-        g2.drawRect(x, y, Width, Height);
-        g2.setStroke(new BasicStroke(1));
-        g2.fillRect(x, y, BarWidth, Height);
-               
-    }
- 
+     
     public void DisplayMessage(int Xcenter, int Ycenter, String Message) {
                 
         String MessageString[] = new String[30];
@@ -330,166 +219,11 @@ public class Survey {
         g2 = g2in;
  
         SurveyBtn.NoOfButtons = NoOfButtons;
-                
-        if (JpgSlideViewer) {
-            
-            if (JpgFirstTime) {
-             
-                //make button red and bigger
-                DoneWithQuestionBtn.buttonColor = Color.RED;
-                DoneWithQuestionBtn.buttonWidth += 6;
-                DoneWithQuestionBtn.buttonHeighth += 4;
-                DoneWithQuestionBtn.LabelIndentY += 3;
-                DoneWithQuestionBtn.BtnFont = new Font("Helvetica", Font.BOLD, 16);
-                DoneWithQuestionBtn.buttonLabel[0] = "NEXT";
-                DoneWithQuestionBtn.Yo = 970 + 50;
-                JpgNo = 1;
-                JpgFirstTime = false;
-                LoadJpg(1);
-                
-            }
-            
-            if (JpgNo == JpgNoOfSlides) 
-                DoneWithQuestionBtn.buttonLabel[0] = "DONE";
-                
-            g2.drawImage(BuffImage[0],
-                  JpgX, JpgY,
-                  ImageWidth, ImageHeight,
-                  ControlCode.Frame);
-            
-            int DoneNo = DoneWithQuestionBtn.Update(g2, MouseX, MouseY, Button1);
-            
-            if (DoneNo == 0) {
         
-                JpgNo++;
-            
-                if (JpgNo > JpgNoOfSlides) return true;
-                
-                LoadJpg(JpgNo);
-                
-                DoneWithQuestionBtn.SelectBtn(-1);
-                
-                //C.TransmitToServer("MONITOR,START_MASTER_TIMER");
-                
-            }
-            
-            //return finished if is model
-            //if (Client.IsModel | ControlCode.SubjectHasLeftEarly) return true;
-            
-            return false;
-            
-        }
+        DoneWithQuestionBtn.Xo = (int)(1160 - DoneWithQuestionBtn.buttonWidth/2);
+        //put the done button 40 pixels below the survey button 
+        DoneWithQuestionBtn.Yo = SurveyButton.BottomY + 40;
         
-        if (BreakBeforeSession) {
-            
-            g2.setPaint(Color.BLACK);
-        
-            //g2.fillRect(0, 0, 1920, ControlCode.StageHeight);
-              
-            if (StartBreakCountdown) {
-                
-                StartBreakCountdown = false;
-                
-                WaitingForOtherPlayersFlag = false;
-                
-            }
-            
-//            if (WaitingForOtherPlayersFlag) {
-//                
-//                g2.setPaint(Color.GREEN);
-//                
-//                g2.setFont(BigFont);
-//                
-//                DrawString("PLEASE WAIT", 1920/2, 1080/2);
-//                
-//                if (!SendReadyForBreakFlag) {
-//                    
-//                    SendReadyForBreakFlag = true;
-//                                    
-//                    C.TransmitToServer(Client.MyName + ",READY_FOR_BREAK");
-//
-//                }
-//                
-//                return false;
-//                
-//            }
-//            
-//            if (!GetProgressBarStartTime) {
-//                
-//                GetProgressBarStartTime = true;
-//                ProgressBarStartTime = CT.currentTimeMillis();
-//                
-//            }
-//            
-            long ElapseTime = CT.currentTimeMillis() - ProgressBarStartTime;
-            
-            if (ElapseTime >= (BreakBeforeSessionTime * 1000)) {
-                W("RETURN TRUE 1");
-                DisplayPlayersPoints = false;
-                return true;
-            }
-                
-            g2.setPaint(Color.GREEN);    
-            g2.setFont(BigFont);
-                
-            if (DuringSchoolTime) 
-                DrawString("ENTERING CLASS TIME - PREPARE TO STUDY", 1680/2, 200);
-            else
-                DrawString("ENTERING HOME TIME - PLEASE CHOOSE AN ACTIVITY", 1680/2, 200);
-            
-            SurveyMessageMode = 0;
-//            W("--------------------------");
-//            W("ENTERING CLASS TIME");
-//            W("");
-            
-            
-            if (BreakMessageMode <= 3) {
-                ControlCode.Frame.setState(JFrame.ICONIFIED);
-                BreakMessageMode++;
-            }
-             
-            DisplayPlayersPoints = true;
-            
-            g2.setPaint(Color.GREEN);
-            DrawProgressBar(ElapseTime, BreakBeforeSessionTime * 1000);
-            
-//            C.DisplayScoresToPlayer(g2);
-            
-            return false;
-            
-        } else
-            
-            BreakMessageMode = 0;
-
-
-/*
-        if (SurveyInstructions) {
-            
-            if (SurveyMessageMode <= 3) {
-                ControlCode.Frame.setState(JFrame.ICONIFIED);
-                SurveyMessageMode++;
-            }
-            
-            if (Client.IsModel | ControlCode.SubjectHasLeftEarly) return true;
-            
-            if (SI.Update(g2, MouseX, MouseY, Button1)) {
-                W("RETURN TRUE 2");
-                return true;   
-            }
-            
-            return false;
-            
-        }
-        
-        //return finished if is model
-        if (Client.IsModel | ControlCode.SubjectHasLeftEarly) return true;
-            
-        if (!AnswerAllPlayers) {
-            DoneWithQuestionBtn.Xo = (int)(1160 - DoneWithQuestionBtn.buttonWidth/2);
-            //put the done button 40 pixels below the survey button 
-            DoneWithQuestionBtn.Yo = SurveyButton[0].BottomY + 40;
-        }
-        */
         g2.setFont(new Font("Helvetica", Font.BOLD, SurveyBtn.TextHeight));
         
         SurveyBtn.ButtonWidth = 0;
@@ -502,15 +236,12 @@ public class Survey {
         }
         
         SurveyBtn.ButtonWidth += 26;
-        
-//        W("SurveyBtn.ButtonWidth="+SurveyBtn.ButtonWidth);
-        
+                
         g2.setPaint(Color.BLACK);
         
-        //g2.fillRect(0, 0, 1920, ControlCode.StageHeight);
+        g2.fillRect(0, 0, 1920, 1080);
               
-        int MessageX = 420 + 100;
-        //if (AnswerAllPlayers) MessageX = 840;
+        int MessageX = 840;
         
         //draw instructions
         g2.setPaint(Color.WHITE);
@@ -521,92 +252,107 @@ public class Survey {
         g2.setPaint(Color.MAGENTA);
         DisplayMessage(MessageX, 512, (String)QuestionList.get(Order[QuestionNo]));
         
-        if (SendReady & (QuestionNo == (QuestionList.size() - 1)))
+        if (QuestionNo == (QuestionList.size() - 1))
             DoneWithQuestionBtn.buttonLabel[0] = "DONE";
-        /*
+        
         //draw answer buttons
-        int Stop = 1;
-        if (AnswerAllPlayers) {
-            Stop = Client.NoOfPlayers; //use to be 4
-            SurveyBtn.ShowPlayerNo = true;
-        } else SurveyButton[0].SetOrigin(1160, 512);
+        SurveyButton.SetOrigin(1160, 512);
         
-        for (int i = 0; i < Stop; i++)
-            if (!AnswerAllPlayers | (Client.MyPlayerIndex != i)) {
-                SurveyButton[i].Update(g2, MouseX, MouseY, Button1);
-                //W("UPDATING SURVEY BUTTONS NO="+SurveyBtn.NoOfButtons);
-//                SurveyBtn.NoOfButtons = 5;
-            }
-        */
+        SurveyButton.Update(g2, MouseX, MouseY, Button1);
+        
         boolean AllQuestionsAnswered = true;
-        /*
-        for (int i = 0; i < Stop; i++)
-            if ((!AnswerAllPlayers | (Client.MyPlayerIndex != i))
-                    & (SurveyButton[i].ButtonSelected == -1))
+        
+        if (SurveyButton.ButtonSelected == -1)
                 AllQuestionsAnswered = false;
-        */
+        
         boolean GoToNextQuestion = false;
+                    
+        int DoneNo = DoneWithQuestionBtn.Update(g2, MouseX, MouseY, Button1);
+            
+        if (DoneNo == 0) {
         
-        //if (AllQuestionsAnswered & AnswerAllPlayers) {
-        if (AllQuestionsAnswered) {
-            
-            int DoneNo = DoneWithQuestionBtn.Update(g2, MouseX, MouseY, Button1);
-            
-            if (DoneNo == 0) {
-        
-                GoToNextQuestion = true;
+             GoToNextQuestion = true;
                 
-                DoneWithQuestionBtn.SelectBtn(-1);
+             DoneWithQuestionBtn.SelectBtn(-1);
                 
-            }
-            
         }
-        
+            
 //        if (AllQuestionsAnswered & (Stop == 1)) GoToNextQuestion = true;
         
         if (GoToNextQuestion) {
             
-            //for (int i = 0; i < Stop; i++)
-            //    Answers[Order[QuestionNo]] += "," + (SurveyButton[i].ButtonSelected + 1);
+            Answers[Order[QuestionNo]] += "," + (SurveyButton.ButtonSelected + 1);
             
             QuestionNo++;
             
-            int NoOfAnswers = QuestionList.size();
-/*            
-            if (AnswerAllPlayers)
-                NoOfAnswers = QuestionList.size() * Client.NoOfPlayers;
+            NoOfAnswers = QuestionList.size();
             
             if (QuestionNo == QuestionList.size()) {
-                
-                String Message = Client.MyName + ",SENDING_SURVEY_ANSWERS," +
-                    FileName + "," + SessionNo + "," + 
-                    MySurveyNo + "," + QuestionList.size() + "," + NoOfAnswers;
+                                
+                String Message = "";
                 
                 for (int i = 0; i < QuestionList.size(); i++) 
                     Message += Answers[i];
                 
-                C.TransmitToServer(Message);
+                OutputData(Message);
                 
-                W("RETURN TRUE 3");
                 return true;
             
             }
- */           
-            for (int i = 0; i < 4; i++)
-                SurveyButton[i].SelectBtn(-1);
+            
+            SurveyButton.SelectBtn(-1);
                 
         }
-        
-//        if (!Flag2) {
-//            
-//            Flag2 = true;
-//
-//            C.TransmitToServer(Client.MyName + "," + FileName + " AT END OF LOOP  NO OF BUTTONS="+SurveyBtn.NoOfButtons);
-//
-//        }
-        
+                
         return false;
                 
+    }
+    
+    public boolean OutputData(String Data) {
+ 
+        char Tab = ',';
+        
+    	try{
+
+            String PreambleStr =
+                   ControlCode.SubjNo + Tab + ControlCode.ExpCond + Tab + Parameters.ParameterFile + Tab
+                   + "" + SessionNo + Tab;
+            
+            String OutputFileName = "EXPERIMENT/DATA/" + FileName + " " + ControlCode.SubjNo + ".csv";
+
+            File file = new File(OutputFileName);
+
+            W("DELTING DATA");
+            file.delete();
+            file.createNewFile();
+
+            //true = append file
+            FileWriter fileWritter = new FileWriter(FileName,true);
+            BufferedWriter BW = new BufferedWriter(fileWritter);
+
+            String S = "DATA_FILE"+Tab+"DATA_TAG"+Tab+"PARAMETER_FILE" + Tab + "SESSION_NO";
+                 
+            for (int i = 0; i < NoOfAnswers; i++) S += "ANSWER " + (i+1);
+
+            S += "\r\n";
+
+            BW.write(S);
+
+            S = PreambleStr + Data + "\r\n";
+
+            BW.write(S);
+
+            BW.close();
+
+            W("Done");
+
+    	}catch(IOException e){
+    		e.printStackTrace();
+    	}
+        
+        //does not matter what you return, if data
+        return false;
+
     }
     
     public String GetString(int I) {
@@ -661,7 +407,7 @@ public class Survey {
     public int GetInteger(int I) {
         
         if (NotANumber(GetString(I))) {
-            ErrorCode = "LINE " + LineNo + "   '" + GetString(I)+"'   IS NOT AN INTEGER";
+            Parameters.ErrorCode = "LINE " + LineNo + "   '" + GetString(I)+"'   IS NOT AN INTEGER";
             return 0;
         }
         
@@ -672,7 +418,7 @@ public class Survey {
     public double GetFloat(int I) {
         
         if (NotAFloatingPointNumber(GetString(I))) {
-            ErrorCode = "LINE " + LineNo + "   '" + GetString(I)+"'   IS NOT A FLOATING POINT NUMBER";
+            Parameters.ErrorCode = "LINE " + LineNo + "   '" + GetString(I)+"'   IS NOT A FLOATING POINT NUMBER";
             return 0;
         }
         
@@ -689,25 +435,4 @@ public class Survey {
         
     }
     
-    public void LoadJpg(int JpgNo) {
-
-       // String FileName = ControlCode.MainDir + 
-       //     "/SURVEYS/" + JpgFolder + "/" + JpgFileName + JpgNo + ".jpg";
-
-        System.out.println("FILENAME="+FileName);
-
-        ImageIcon icon0 = new ImageIcon(FileName);
-        Image i0 = icon0.getImage();
-        // draw the Image into a BufferedImage
-        int w = i0.getWidth(null), h = i0.getHeight(null);
-        ImageWidth = (int)(JpgScaleFactor * w);
-        ImageHeight = (int)(JpgScaleFactor * h);
-        //W("w="+w+" h="+h);
-        BuffImage[0] = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Graphics2D imageGraphics = BuffImage[0].createGraphics();
-        //W("buf="+BuffImage[i]);
-        imageGraphics.drawImage(i0, 0, 0, null);
-
-    }
-
 }
