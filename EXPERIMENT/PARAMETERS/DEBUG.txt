@@ -2,7 +2,7 @@
 /
 DEBUG_MODE,TRUE,
 /
-DEBUG_TETRIS_ONLY
+/ DEBUG_TETRIS_ONLY
 / For when you want it to only run Tetris
 /
 /for TEXT_TASKs
