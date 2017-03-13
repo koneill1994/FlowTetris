@@ -185,7 +185,7 @@ public class Tetris extends Applet {
 	final Button pause_resume_butt = new TetrisButton("Pause");									
 	
         private void LogEvent(String event){
-            String drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime);
+            Double drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime);
 
             F.LogEvent(""+ CurrentTime() + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
@@ -717,31 +717,18 @@ public class Tetris extends Applet {
         }
         
         // helper function to sanitize the q and return the percent
-        String DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
-            // return NaN (or equivalent) if we dont have time window's worth of drop queue
+        Double DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
             
-            String s ="_";  // remove when no longer needed
-            
-            if(q.size()>0){
-                s = ""+(current_time-q.getFirst().x);  // remove when no longer needed
-                //if we haven't had time_window's worth of gameplay yet
-                // output nonsense
-                if((current_time-time_window)<=0){
-                    return ""+"null";
-                }
+            // if we haven't had time_window's worth of gameplay yet
+            // output null
+            if((current_time-time_window)<=0){
+                return null;
             }
             
             LinkedList<Tuple<Long,Long>> q_new = ContainWithinTimeWindow(q,current_time,time_window);
-                    
-            //DisplayDropPercentList(q_new, time_window);
-            //if(DownEndTime==LongMin){ // dont know if this was intentional or not
-            /*
-            if(DownEndTime==LongMin && DownStartTime!=LongMin){
-                q_new.add(new Tuple<Long,Long>(DownStartTime,current_time));
-            }*/
-            return ""+DropPercentageCalculate(q_new, time_window);
+            
+            return (double) DropPercentageCalculate(q_new, time_window);
         }
-        //BUG TODO: it doesn't look like old drops are being removed from the droplist
         
         void DisplayDropPercentList(LinkedList<Tuple<Long,Long>> q, long time_window){
 
@@ -830,6 +817,51 @@ public class Tetris extends Applet {
                 ControlCode.t.resume();
                 
 	}
+        
+        // when the following is complete
+        // it will be the only thing that directly calls the above
+        // replace all function calls of the above with below
+        
+        public void SwitchBasedOnCondition(String measure, float CritValue, char Comparison){
+            boolean switchTask = false;
+            //a long else if then tree for every possible measure
+            //for the correct measure, do the condition compare on it
+            // if its true set switchTask to true
+            if(measure.equals("SIZE_LAST_ROW_REMOVED")){
+                switchTask=ConditionCompare(SizeLastRowRemoved,CritValue,Comparison);
+            }
+            else if(measure.equals("SPEED_LEVEL")){
+                switchTask=ConditionCompare(speed,CritValue,Comparison);
+            }
+            else if(measure.equals("HEIGHT_VARIANCE")){
+                switchTask=ConditionCompare(computeVariance(HeightQueue,queue_history),CritValue,Comparison);
+            }
+            else if(measure.equals("DROP_DURATION_VARIANCE")){
+                switchTask=ConditionCompare(computeVariance(DropDurationQueue,queue_history),CritValue,Comparison);
+            }
+            else if(measure.equals("DROP_PERCENTAGE")){
+                switchTask=ConditionCompare(DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime),
+                    CritValue,Comparison);
+            }
+            //final else to catch any errors
+            else{
+                System.out.println("ERROR: No match for Tetris end condition");
+            }
+            if(switchTask){
+                SwitchToFocusTask();
+            }
+        }
+        
+        public Boolean ConditionCompare(double v1,double v2,char comparison){
+            if(comparison=='>'){
+                return (v1>v2);
+            }
+            else if(comparison=='<'){
+                return (v1<v2);
+            }            
+            return null;
+        }
+        
 	
         public void ComputeScoreAndDelay(int AddedScore) {
             score_label.addValue(AddedScore);
@@ -928,7 +960,7 @@ public class Tetris extends Applet {
                                 level_duration_label.setText(""+TimeInLevel);
                                 
                                 if (Parameters.MaxSecondsInLevel > 0) {
-
+                                    // THIS IS THE SPOT THAT NEEDS TO CHECK TO SWITCH THE TASK
                                     if ((speed == Parameters.MaxLevels) & (TimeInLevel >= Parameters.MaxSecondsInLevel)) {
                                         SwitchToFocusTask();
                                     }
