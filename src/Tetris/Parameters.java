@@ -129,7 +129,37 @@ public class Parameters {
                 if (Cmd.equals("SECONDS_IN_MAXIMUM_LEVEL_TO_SWITCH_TO_FOCUS_TASK")) {
                     MaxSecondsInLevel = GetInteger(2);
                 } else
-                            
+                    
+                if (Cmd.equals("SIZE_LAST_ROW_REMOVED")) {
+                    Tetris.SwitchCondition_Measure = Cmd;
+                    Tetris.SwitchCondition_Value = (double) GetInteger(2);
+                    Tetris.SwitchCondition_Comparison = GetString(3).charAt(0);
+                } else
+                    
+                if (Cmd.equals("SPEED_LEVEL")) {
+                    Tetris.SwitchCondition_Measure = Cmd;
+                    Tetris.SwitchCondition_Value = (double) GetInteger(2);
+                    Tetris.SwitchCondition_Comparison = GetString(3).charAt(0);
+                } else
+                           
+                if (Cmd.equals("HEIGHT_VARIANCE")) {
+                    Tetris.SwitchCondition_Measure = Cmd;
+                    Tetris.SwitchCondition_Value = (double) GetInteger(2);
+                    Tetris.SwitchCondition_Comparison = GetString(3).charAt(0);
+                } else
+                    
+                if (Cmd.equals("DROP_DURATION_VARIANCE")) {
+                    Tetris.SwitchCondition_Measure = Cmd;
+                    Tetris.SwitchCondition_Value = (double) GetInteger(2);
+                    Tetris.SwitchCondition_Comparison = GetString(3).charAt(0);
+                } else
+                    
+                if (Cmd.equals("DROP_PERCENTAGE")) {
+                    Tetris.SwitchCondition_Measure = Cmd;
+                    Tetris.SwitchCondition_Value = (double) GetInteger(2);
+                    Tetris.SwitchCondition_Comparison = GetString(3).charAt(0);
+                } else   
+                    
 ////////////////////////////////////////////////////////////////////////////////                    
                 
                 {

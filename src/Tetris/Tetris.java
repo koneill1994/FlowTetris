@@ -59,6 +59,10 @@ public class Tetris extends Applet {
         // tuple (start_time, end_time)
         long DropPercentageTimeWindow = 10*1000; // in ms
         
+        public static String SwitchCondition_Measure;
+        public static Double SwitchCondition_Value;
+        public static char   SwitchCondition_Comparison;        
+        
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
         private final static int INITIAL_DELAY = 1000;
