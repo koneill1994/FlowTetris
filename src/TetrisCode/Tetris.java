@@ -828,7 +828,7 @@ public class Tetris extends Applet {
         // it will be the only thing that directly calls the above
         // replace all function calls of the above with below
         
-        public void SwitchBasedOnCondition(String measure, float CritValue, char Comparison){
+        public void SwitchBasedOnCondition(String measure, double CritValue, char Comparison){
             boolean switchTask = false;
             //a long else if then tree for every possible measure
             //for the correct measure, do the condition compare on it
