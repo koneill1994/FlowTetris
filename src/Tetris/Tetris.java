@@ -36,7 +36,7 @@ public class Tetris extends Applet {
         char Tab = ',';
         
         //logging
-        int queue_history =10; // how many seconds back it remembers //TODO: add to parameter file
+        static int queue_history =10; // how many items back the queue remembers
         Queue<Integer> HeightQueue = new LinkedList<Integer>();
         Queue<Integer> RowRemovalQueue = new LinkedList<Integer>();
         int SizeLastRowRemoved = -1;
@@ -57,7 +57,7 @@ public class Tetris extends Applet {
         
         LinkedList<Tuple<Long,Long>> DownQueue = new LinkedList<Tuple<Long,Long>>();
         // tuple (start_time, end_time)
-        long DropPercentageTimeWindow = 10*1000; // in ms
+        static long DropPercentageTimeWindow = 10*1000; // in ms
         
         public static String SwitchCondition_Measure;
         public static Double SwitchCondition_Value;
@@ -68,7 +68,7 @@ public class Tetris extends Applet {
         private final static int INITIAL_DELAY = 1000;
 	public static byte ROWS = 38; //18
 	public static byte COLUMNS = 10;
-	Parameters P = new Parameters("PARAMETERS");
+	Parameters P = new Parameters("PARAMETERS");  // creating this will set the values to that in paramters (i think) so set defaults before this)
         private final static int EMPTY = -1;
 	//private final static int DELETED_ROWS_PER_LEVEL = 5;
 	private final static Color PIECE_COLORS[] = {
@@ -965,9 +965,12 @@ public class Tetris extends Applet {
                                 
                                 if (Parameters.MaxSecondsInLevel > 0) {
                                     // THIS IS THE SPOT THAT NEEDS TO CHECK TO SWITCH THE TASK
+                                    //think about keeping this in or not vvv
                                     if ((speed == Parameters.MaxLevels) & (TimeInLevel >= Parameters.MaxSecondsInLevel)) {
                                         SwitchToFocusTask();
                                     }
+                                    
+                                SwitchBasedOnCondition(SwitchCondition_Measure, SwitchCondition_Value, SwitchCondition_Comparison);                                    
 
                                 }
                                 

@@ -130,6 +130,15 @@ public class Parameters {
                     MaxSecondsInLevel = GetInteger(2);
                 } else
                 
+                //make sure to input the value in ms
+                if (Cmd.equals("DROP_PERCENTAGE_TIME_WINDOW")) {
+                    Tetris.DropPercentageTimeWindow = GetInteger(2);
+                } else
+                    
+                if (Cmd.equals("QUEUE_HISTORY_LENGTH")) {
+                    Tetris.queue_history = GetInteger(2);
+                } else
+                    
                 // for example:  (put in actual documentation later)
                     
                 // SIZE_LAST_ROW_REMOVED,8,<,
