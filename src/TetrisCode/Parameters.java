@@ -1,4 +1,4 @@
-package Tetris;
+package TetrisCode;
 
 import java.awt.*;
 import java.io.*;

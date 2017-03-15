@@ -31,8 +31,8 @@ public class Survey {
     int NoOfButtons;
     int NoOfAnswers;
     
-    public static int BEFORE_LDS = 0;
-    public static int BEFORE_TETRIS = 1;
+    public int BEFORE_LDS = 0;
+    public int BEFORE_TETRIS = 1;
     int BeforeMode;
     
     boolean RandomizeQuestions;
@@ -217,7 +217,7 @@ public class Survey {
     public boolean Update(Graphics2D g2in, int MouseX, int MouseY, boolean Button1) {
         
         g2 = g2in;
- 
+        
         SurveyBtn.NoOfButtons = NoOfButtons;
         
         DoneWithQuestionBtn.Xo = (int)(1160 - DoneWithQuestionBtn.buttonWidth/2);

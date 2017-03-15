@@ -4,10 +4,14 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
-import Tetris.Tetris;
+import TetrisCode.Tetris;
 
 public class Parameters {
 
+  public static int LDS_MODE = 0;
+  public static int TETRIS_MODE = 1;  
+  public static int Mode = Parameters.LDS_MODE;
+    
   Font BigFont = new Font("Helvetica", Font.PLAIN, 24);
   long Counter = 0;
    
@@ -309,7 +313,7 @@ public class Parameters {
 ////////////////////////////////////////////////////////////////////////////////
                                     
                 if (Cmd.equals("TAKE_SURVEY")) {
-                    SurveyArrayList.add(new SurveyList(GetString(2), GetString(3), GetInteger(4)));
+                    SurveyArrayList.add(new Survey(GetString(2), GetString(3), GetInteger(4)));
                 } else
                 
 ////////////////////////////////////////////////////////////////////////////////
@@ -477,41 +481,46 @@ public class Parameters {
           return false;
       } 
           
-      if(OnlyTetris){
+      W("SurveyArrayList.size()="+SurveyArrayList.size());
+
+      if (SurveyArrayList.size() > 0) {
+
+          Survey SurveyCode = (Survey)SurveyArrayList.get(0);
+
+          boolean RunSurvey = false;
+          
+          if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_LDS) & (SurveyCode.SessionNo == FocusTask.SessionNo)) 
+              RunSurvey = true;
+          
+          if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_TETRIS) & (SurveyCode.SessionNo == TetrisCode.Tetris.SessionNo))
+              RunSurvey = true;
+          
+          if (RunSurvey) {
+          
+              ControlCode.Frame.setSize(1680, 1024);
+ 
+              if (SurveyCode.Update(g2, MouseX, MouseY, Button1)) {
+
+                  W("SURVEY DONE");
+
+                  SurveyArrayList.remove(0);
+
+                  W("2 SurveyArrayList.size()="+SurveyArrayList.size());
+
+                  if (Mode == TETRIS_MODE) SwitchToTetris();
+    //              return;
+
+              }
+          
+          } else if (Mode == TETRIS_MODE) SwitchToTetris();
+
+      } else if (Mode == TETRIS_MODE) SwitchToTetris();
+
+
+      if(OnlyTetris) {
         SwitchToTetris();
       }
       
-          //W("SurveyList.size()="+SurveyList.size());
-/*
-      if (SurveyList.size() > 0) {
-
-          SurveyCode = (Survey)SurveyList.get(0);
-
-          if (SurveyCode.Update(g2, MouseX, MouseY, Button1)) {
-
-        //                    TakingASurvey = false;
-
-              W("SURVEY DONE");
-
-              if (SurveyCode.SendReady) {
-
-                  TakingASurvey = false;
-
-                 // C.TransmitToServer(Client.MyName + ",SURVEY_DONE");
-
-              }
-
-              SurveyList.remove(0);
-
-              W("2 SurveyList.size()="+SurveyList.size());
-
-              return;
-
-          }
-
-      }
-*/
-
       // ^^ set this to true when you want to test just tetris
       
 //W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
@@ -579,7 +588,8 @@ public class Parameters {
                       
                       B.RepetitionNo = 1;
                       B.RandomizeTrials = true;
-                      SwitchToTetris();
+                      //SwitchToTetris();
+                      Mode = TETRIS_MODE;
                       TaskCount -= 1;
                       
                   }
@@ -624,7 +634,7 @@ public class Parameters {
         //Tetris.StartTime = System.currentTimeMillis();
         // I have a feeling this is subverting the original intent of these variables
         // but it solves a current issue
-        Tetris.StartTime=System.nanoTime();
+        Tetris.StartTime = System.nanoTime();
         Tetris.StartTimeInLevel = System.nanoTime();
         Tetris.timer.setPaused(false);
         Tetris.frame.setVisible(true);

@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
-import Tetris.Tetris;
+import TetrisCode.Tetris;
 
 public class ControlCode extends JComponent
         implements MouseMotionListener, Runnable, 

@@ -1,4 +1,4 @@
-package Tetris;
+package TetrisCode;
 
 import java.io.BufferedWriter;
 import java.io.File;

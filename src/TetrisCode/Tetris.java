@@ -1,4 +1,4 @@
-package Tetris;
+package TetrisCode;
 
 /*
 Tetris Applet 
@@ -30,7 +30,7 @@ public class Tetris extends Applet {
 	int totalBlocks;
         int totalTrappedSpaces;
         int accumulationHeight;
-        int SessionNo = 1;
+        public static int SessionNo = 1;
         Data D = new Data();
         FineData F = new FineData();
         char Tab = ',';
@@ -443,6 +443,7 @@ public class Tetris extends Applet {
 		}
 		public void paint(Graphics g) {
 			g = this.startPaint(g); // returned g paints into offscreen image
+                      
 			int width = this.getSize().width;
 			int height = this.getSize().height;
 			g.clearRect(0, 0, width, height);
@@ -815,6 +816,7 @@ public class Tetris extends Applet {
         public void SwitchToFocusTask() {
             
                 SessionNo++;
+                LDS.Parameters.Mode = LDS.Parameters.LDS_MODE;
                 pauseGame();
                 frame.setVisible(false);
                 ControlCode.Frame.setVisible(true);

@@ -3,7 +3,7 @@ package LDS;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-import Tetris.Tetris;
+import TetrisCode.Tetris;
 
 public class FocusTask {
     
