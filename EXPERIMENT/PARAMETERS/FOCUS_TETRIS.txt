@@ -1,5 +1,13 @@
 / FOCUS_TETRIS.txt PARAMETER FILE
 /
+/    survey
+/  focus task
+/    survey
+/  tetris
+/    survey
+/  focus task
+/    survey
+/
 DEBUG_MODE,FALSE,
 /
 /for TEXT_TASKs
