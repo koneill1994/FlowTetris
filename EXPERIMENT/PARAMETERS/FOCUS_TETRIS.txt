@@ -1,6 +1,7 @@
 / FOCUS_TETRIS.txt PARAMETER FILE
 /
 /    survey
+/  focus task tutorial
 /  focus task
 /    survey
 /  tetris
@@ -68,8 +69,8 @@ END_TASK,
 /
 / could be BEFORE_LDS or BEFORE_TETRIS, then session number
 /
-TAKE_SURVEY,FLOW_SCALE,BEFORE_LDS,1,
-TAKE_SURVEY,TRAIT_TRUST_PRE,BEFORE_TETRIS,1,
+/TAKE_SURVEY,FLOW_SCALE,BEFORE_LDS,1,
+/TAKE_SURVEY,TRAIT_TRUST_PRE,BEFORE_TETRIS,1,
 /
 /
 STOP,
