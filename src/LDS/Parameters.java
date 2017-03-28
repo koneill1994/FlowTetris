@@ -87,6 +87,15 @@ public class Parameters {
                 if (Cmd.equals("DEBUG_MODE")) {
                     if (GetString(2).equals("TRUE")) DebugMode = true;
                 } else
+                    
+                //this maybe does not do what i thought it does, so maybe remove it
+                    //is mode for the current task being done, or is it for the
+                    // program running tetris at all or only lds?
+                    
+                if (Cmd.equals("MODE")){
+                    if      (GetString(2).equals("TETRIS")) Mode = Parameters.TETRIS_MODE;
+                    else if (GetString(2).equals("LDS"))    Mode = Parameters.LDS_MODE;
+                } else   
 
 //------------------------------------------------------------------------------                
                
@@ -221,7 +230,7 @@ public class Parameters {
 //------------------------------------------------------------------------------               
                 if (Cmd.equals("DEBUG_TETRIS_ONLY")){
                     OnlyTetris=true;
-                } else                    
+                } else
                     
 //------------------------------------------------------------------------------
                     
@@ -481,6 +490,8 @@ public class Parameters {
           return false;
       } 
           
+      System.out.println(Mode);
+      
       W("SurveyArrayList.size()="+SurveyArrayList.size());
 
       if (SurveyArrayList.size() > 0) {
