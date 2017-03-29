@@ -9,7 +9,7 @@
 /  focus task
 /    survey
 /
-DEBUG_MODE,FALSE,
+DEBUG_MODE,TRUE,
 /
 /for TEXT_TASKs
 TEXT_BACKGROUND_COLOR_RGB,0,0,0,  

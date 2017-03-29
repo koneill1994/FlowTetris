@@ -88,7 +88,7 @@ TEXT_ON_LINE,7,If the circle is green the 2nd target letter will be upside down.
 TEXT_ON_LINE,8,If the second target letter is to the left of the first letter in the alphabet then press the left mouse button.
 TEXT_ON_LINE,9,If the second target letter is to the right of the first letter in the alphabet then press the right mouse button.
 TEXT_ON_LINE,10,If there is no 2nd target letter then press the middle mouse button.
-END_TASK,
+END_TASK,                                 
 /--------------------------------------------------------------------
 /
 BEGIN_FOCUS_TASK,FOCUS1,
