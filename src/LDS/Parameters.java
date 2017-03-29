@@ -10,7 +10,7 @@ public class Parameters {
 
   public static int LDS_MODE = 0;
   public static int TETRIS_MODE = 1;  
-  public static int Mode = Parameters.LDS_MODE;
+  public static int Mode = LDS_MODE;
     
   Font BigFont = new Font("Helvetica", Font.PLAIN, 24);
   long Counter = 0;
@@ -91,13 +91,7 @@ public class Parameters {
                 //this maybe does not do what i thought it does, so maybe remove it
                     //is mode for the current task being done, or is it for the
                     // program running tetris at all or only lds?
-                    
-                if (Cmd.equals("MODE")){
-                    if      (GetString(2).equals("TETRIS")) Mode = Parameters.TETRIS_MODE;
-                    else if (GetString(2).equals("LDS"))    Mode = Parameters.LDS_MODE;
-                } else   
-
-//------------------------------------------------------------------------------                
+                    //------------------------------------------------------------------------------                
                
                 if (Cmd.equals("BEGIN_TEXT_TASK")) {
                     if (InsideTask) {
@@ -490,7 +484,7 @@ public class Parameters {
           return false;
       } 
           
-      System.out.println(Mode);
+      System.out.println("Mode="+Mode);
       
       W("SurveyArrayList.size()="+SurveyArrayList.size());
 
@@ -538,6 +532,8 @@ public class Parameters {
 
       if (!ExperimentDone) {
   
+          if (Mode == TETRIS_MODE) return false;
+          
           B = (Task)TaskList.get(TaskCount);
 
           if (B.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
@@ -549,7 +545,9 @@ public class Parameters {
               
               B.TotalAnswered = B.TotalCorrect = 0;
               
-              if (FocusTask.IsTetrisTask) {
+              W("IsTetrisTask="+FocusTask.IsTetrisTask);
+              
+              if (!FocusTask.IsTetrisTask) {
               
                   if (B.TrialsToCriterion) {
 
@@ -636,6 +634,8 @@ public class Parameters {
     }  
     
     public void SwitchToTetris() {
+        
+        //System.exit(100);
         
         FocusTask.SessionNo++;
         

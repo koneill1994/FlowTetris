@@ -10,7 +10,6 @@
 /    survey
 /
 DEBUG_MODE,FALSE,
-MODE,TETRIS,
 /
 /for TEXT_TASKs
 TEXT_BACKGROUND_COLOR_RGB,0,0,0,  
@@ -30,7 +29,15 @@ SYMBOL_DISPLAY_TIME,6,
 /setup for tetris
 HOW_MUCH_TO_DECREASE_THE_DELAY,1,
 THRESHHOLD_IN_ACCURACY_TO_DECREASE_THE_DELAY,50,
-THRESHHOLD_FOR_SWITCHING_TO_TETRIS,25,
+THRESHHOLD_FOR_SWITCHING_TO_TETRIS,75,
+/
+/--------------------------------------------------------------------
+/
+/ could be BEFORE_LDS or BEFORE_TETRIS, then session number
+/
+TAKE_SURVEY,FLOW_SCALE,BEFORE_LDS,1,
+/TAKE_SURVEY,TRAIT_TRUST_PRE,BEFORE_TETRIS,1,
+/
 /
 /
 /--------------------------------------------------------------------
@@ -65,14 +72,6 @@ SHOW_ACCURACY,TRUE,
 /     CRITERION_TO_TRIALS,3,
 /
 END_TASK,
-/
-/--------------------------------------------------------------------
-/
-/ could be BEFORE_LDS or BEFORE_TETRIS, then session number
-/
-/TAKE_SURVEY,FLOW_SCALE,BEFORE_LDS,1,
-/TAKE_SURVEY,TRAIT_TRUST_PRE,BEFORE_TETRIS,1,
-/
 /
 /--------------------------------------------------------------------
 BEGIN_TEXT_TASK,

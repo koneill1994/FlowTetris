@@ -1,4 +1,3 @@
 TimeStamp,EventLabel,SizeLastRowRemoved,SizeLastRowRemovedVariance,SpeedLevel,AccumulationHeight,HeightVariance,LastDropDuration,DropDurationVariance,DropPercentage,
-181,row_removed,-1,NaN,0,0,NaN,null,NaN,null
-181,spawn_new_piece,-1,NaN,0,0,NaN,null,NaN,null
-0,game_paused,-1,NaN,0,0,NaN,null,NaN,null
+97,row_removed,-1,NaN,0,0,NaN,null,NaN,null
+97,spawn_new_piece,-1,NaN,0,0,NaN,null,NaN,null
