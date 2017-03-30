@@ -1,0 +1,5 @@
+git won't track empty folders
+and FlowTetris won't dump data 
+into folders that don't exist
+
+so this is the easiest way to solve it

@@ -1,4 +1,7 @@
 DATA/*
 EXPERIMENT/DATA/*
-#*
-#!.gitignore
+
+# placeholders so that git tracks "empty" folders
+!DATA/.placeholder
+EXPERIMENT/DATA/.placeholder
+
