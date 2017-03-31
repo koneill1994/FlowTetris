@@ -74,7 +74,7 @@ public class Utilities {
     // !!!!!!!!!!!!!!!!
     //NB if you ever get an exception that leads you here
     // and the reason is because the buffered image is given w and h of -1
-    //its because its running from (probably) the dist directory instead of ..
+    //its because its running from (probably) the dist directory instead of /..
     //put the jar file into the main directory and see if that fixes it
     
     public void DrawImage(Graphics2D g2, int X, int Y, int ImageNo, int ImageType) {
