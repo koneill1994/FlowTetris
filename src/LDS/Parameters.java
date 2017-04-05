@@ -285,6 +285,7 @@ public class Parameters {
                     B.TrialsToCriterion = true;
                     B.CriterionPercent = GetInteger(2);
                     B.TasksToSkipBackwards = GetInteger(3);
+                    W("CriterionPercent == "+B.CriterionPercent);
                     if (B.TaskCounter <= B.TasksToSkipBackwards)
                         ErrorCode = "LINE " + LineNo + " SKIPPING BACK BEFORE BEGINING";
                 } else
@@ -486,7 +487,7 @@ public class Parameters {
           
       System.out.println("Mode="+Mode);
       
-      W("SurveyArrayList.size()="+SurveyArrayList.size());
+     // W("SurveyArrayList.size()="+SurveyArrayList.size());
 
       if (SurveyArrayList.size() > 0) {
 
@@ -494,10 +495,16 @@ public class Parameters {
 
           boolean RunSurvey = false;
           
-          if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_LDS) & (SurveyCode.SessionNo == FocusTask.SessionNo)) 
+          W("BEFORE MODE:"+SurveyCode.BeforeMode);
+          W("FocusTask.SessionNo: "+FocusTask.SessionNo);
+          W("TetrisCode.Tetris.SessionNo: "+TetrisCode.Tetris.SessionNo);
+          
+          if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_LDS) & 
+                  ((SurveyCode.SessionNo - 0)== FocusTask.SessionNo)) 
               RunSurvey = true;
           
-          if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_TETRIS) & (SurveyCode.SessionNo == TetrisCode.Tetris.SessionNo))
+          if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_TETRIS) & 
+                  ((SurveyCode.SessionNo - 0) == TetrisCode.Tetris.SessionNo))
               RunSurvey = true;
           
           if (RunSurvey) {
@@ -516,6 +523,8 @@ public class Parameters {
     //              return;
 
               }
+              
+              return false; //return if running survey, do not run experiment
           
           } else if (Mode == TETRIS_MODE) SwitchToTetris();
 
@@ -545,7 +554,9 @@ public class Parameters {
               
               B.TotalAnswered = B.TotalCorrect = 0;
               
-              W("IsTetrisTask="+FocusTask.IsTetrisTask);
+              //W("IsTetrisTask="+FocusTask.IsTetrisTask);
+              W("CRITERION_PERCENT == "+B.CriterionPercent+"  Filename: "+B.FileName);
+              //criterionPercent is somehow being set to 0 before it gets here
               
               if (!FocusTask.IsTetrisTask) {
               

@@ -68,8 +68,8 @@ SET_NO_OF_TRIALS,2,
 SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
 /
 SHOW_ACCURACY,TRUE,
-/     CRITERION_TO_PERCENT,75,1,
-/     CRITERION_TO_TRIALS,3,
+CRITERION_TO_PERCENT,75,1,
+/CRITERION_TO_TRIALS,3,
 /
 END_TASK,
 /
@@ -94,7 +94,7 @@ TEXT_ON_LINE,19,If there is no 2nd target letter, then press the middle mouse bu
 END_TASK,
 /--------------------------------------------------------------------
 /
-BEGIN_FOCUS_TASK,FOCUS_TASK,
+BEGIN_FOCUS_TASK,FOCUS_TASK2,
 /
 SET_NO_OF_BLOCKS,2,
 SET_NO_OF_TRIALS,2,

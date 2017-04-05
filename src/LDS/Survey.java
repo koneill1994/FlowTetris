@@ -7,6 +7,10 @@ import java.util.*;
 
 public class Survey {
     
+    long OldTime = 0;
+    
+    static int SurveyOutputNo = 0;
+    
     SurveyBtn SurveyButton = new SurveyBtn(420-50, 206); 
     
     DoneBtn DoneWithQuestionBtn = new DoneBtn(0, 0);
@@ -318,13 +322,24 @@ public class Survey {
                    ControlCode.SubjNo + Tab + ControlCode.ExpCond + Tab + Parameters.ParameterFile + Tab
                    + "" + SessionNo + Tab;
             
-            String OutputFileName = "EXPERIMENT/DATA/" + FileName + " " + ControlCode.SubjNo + ".csv";
+            String OutputFileName = "EXPERIMENT/DATA/" + FileName + " " + 
+                    ControlCode.SubjNo + " " + (++SurveyOutputNo) + ".csv";
 
             File file = new File(OutputFileName);
 
             W("DELTING DATA");
             file.delete();
-            file.createNewFile();
+            //file.createNewFile();
+//        try {
+//            FileWriter writer = new FileWriter("MyFile.txt", true);
+//            writer.write("Hello World");
+//            writer.write("\r\n");   // write new line
+//            writer.write("Good Bye!");
+//            writer.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+ 
 
             //true = append file
             FileWriter fileWritter = new FileWriter(FileName,true);
@@ -337,14 +352,18 @@ public class Survey {
             S += "\r\n";
 
             BW.write(S);
+            W("S1= "+S);
 
             S = PreambleStr + Data + "\r\n";
 
             BW.write(S);
+            W("S2=" +S);
 
             BW.close();
 
             W("Done");
+            
+            System.exit(200);
 
     	}catch(IOException e){
     		e.printStackTrace();
