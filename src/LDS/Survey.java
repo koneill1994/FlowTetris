@@ -245,7 +245,7 @@ public class Survey {
         
         g2.fillRect(0, 0, 1920, 1080);
               
-        int MessageX = 840;
+        int MessageX = 550;
         
         //draw instructions
         g2.setPaint(Color.WHITE);
@@ -271,7 +271,10 @@ public class Survey {
         
         boolean GoToNextQuestion = false;
                     
-        int DoneNo = DoneWithQuestionBtn.Update(g2, MouseX, MouseY, Button1);
+        int DoneNo = -1;
+        
+        if (SurveyButton.ButtonSelected != -1)
+            DoneNo = DoneWithQuestionBtn.Update(g2, MouseX, MouseY, Button1);
             
         if (DoneNo == 0) {
         
@@ -320,7 +323,7 @@ public class Survey {
 
             String PreambleStr =
                    ControlCode.SubjNo + Tab + ControlCode.ExpCond + Tab + Parameters.ParameterFile + Tab
-                   + "" + SessionNo + Tab;
+                   + "" + SessionNo;
             
             String OutputFileName = "EXPERIMENT/DATA/" + FileName + " " + 
                     ControlCode.SubjNo + " " + (++SurveyOutputNo) + ".csv";
@@ -344,12 +347,12 @@ public class Survey {
  
 
             //true = append file
-            FileWriter fileWritter = new FileWriter(FileName,true);
+            FileWriter fileWritter = new FileWriter(OutputFileName,true);
             BufferedWriter BW = new BufferedWriter(fileWritter);
 
             String S = "DATA_FILE"+Tab+"DATA_TAG"+Tab+"PARAMETER_FILE" + Tab + "SESSION_NO"+Tab;
                  
-            for (int i = 0; i < NoOfAnswers; i++) S += "ANSWER_" + (i+1)+Tab;
+            for (int i = 0; i < NoOfAnswers; i++) S += "ANS_" + (i+1)+Tab;
 
             S += "\r\n";
 

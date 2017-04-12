@@ -8,6 +8,8 @@ import TetrisCode.Tetris;
 
 public class Parameters {
 
+  long OldTime;
+    
   public static int LDS_MODE = 0;
   public static int TETRIS_MODE = 1;  
   public static int Mode = LDS_MODE;
@@ -487,6 +489,10 @@ public class Parameters {
           
       System.out.println("Mode="+Mode);
       
+      long Lag = System.nanoTime() - OldTime;
+      W("TIME="+(Lag / 1000000.0));
+      OldTime = System.nanoTime();
+      
      // W("SurveyArrayList.size()="+SurveyArrayList.size());
 
       if (SurveyArrayList.size() > 0) {
@@ -500,16 +506,18 @@ public class Parameters {
           W("TetrisCode.Tetris.SessionNo: "+TetrisCode.Tetris.SessionNo);
           
           if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_LDS) & 
+                  (Mode == LDS_MODE) &
                   ((SurveyCode.SessionNo - 0)== FocusTask.SessionNo)) 
               RunSurvey = true;
           
           if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_TETRIS) & 
+                  (Mode == TETRIS_MODE) &
                   ((SurveyCode.SessionNo - 0) == TetrisCode.Tetris.SessionNo))
               RunSurvey = true;
           
           if (RunSurvey) {
           
-              ControlCode.Frame.setSize(1680, 1024);
+              //ControlCode.Frame.setSize(1680, 1024);
  
               if (SurveyCode.Update(g2, MouseX, MouseY, Button1)) {
 
