@@ -324,12 +324,14 @@ public class Survey {
             
             String OutputFileName = "EXPERIMENT/DATA/" + FileName + " " + 
                     ControlCode.SubjNo + " " + (++SurveyOutputNo) + ".csv";
-
+            
+            W("Writing to file: " + OutputFileName);
+            
             File file = new File(OutputFileName);
 
-            W("DELTING DATA");
+            W("DELETING DATA");
             file.delete();
-            //file.createNewFile();
+            file.createNewFile();
 //        try {
 //            FileWriter writer = new FileWriter("MyFile.txt", true);
 //            writer.write("Hello World");
@@ -345,9 +347,9 @@ public class Survey {
             FileWriter fileWritter = new FileWriter(FileName,true);
             BufferedWriter BW = new BufferedWriter(fileWritter);
 
-            String S = "DATA_FILE"+Tab+"DATA_TAG"+Tab+"PARAMETER_FILE" + Tab + "SESSION_NO";
+            String S = "DATA_FILE"+Tab+"DATA_TAG"+Tab+"PARAMETER_FILE" + Tab + "SESSION_NO"+Tab;
                  
-            for (int i = 0; i < NoOfAnswers; i++) S += "ANSWER " + (i+1);
+            for (int i = 0; i < NoOfAnswers; i++) S += "ANSWER_" + (i+1)+Tab;
 
             S += "\r\n";
 
@@ -359,8 +361,9 @@ public class Survey {
             BW.write(S);
             W("S2=" +S);
 
+            BW.flush();
             BW.close();
-
+            
             W("Done");
             
             System.exit(200);
