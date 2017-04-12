@@ -364,13 +364,10 @@ public class Survey {
             BW.write(S);
             W("S2=" +S);
 
-            BW.flush();
             BW.close();
             
             W("Done");
             
-            System.exit(200);
-
     	}catch(IOException e){
     		e.printStackTrace();
     	}
