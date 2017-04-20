@@ -321,6 +321,12 @@ public class Parameters {
                 if (Cmd.equals("TAKE_SURVEY")) {
                     SurveyArrayList.add(new Survey(GetString(2), GetString(3), GetInteger(4)));
                 } else
+                    
+                if (Cmd.equals("RANDOMIZE_QUESTIONS")) {
+                    if(SurveyArrayList.size()>0){
+                        //SurveyArrayList.get(SurveyArrayList.size()).SetRandomization(true);
+                    }
+                } else
                 
 ////////////////////////////////////////////////////////////////////////////////
                     

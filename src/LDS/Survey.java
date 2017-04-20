@@ -39,7 +39,7 @@ public class Survey {
     public int BEFORE_TETRIS = 1;
     int BeforeMode;
     
-    boolean RandomizeQuestions;
+    public boolean RandomizeQuestions=false;
     
     public Survey(String FileNameIn, String BeforeLDSorTETRIS, int SessionNoIn) {
         
@@ -62,6 +62,10 @@ public class Survey {
     
     public void W(String S) {
         System.out.println(S);
+    }
+    
+    public void SetRandomization(Boolean r){
+        this.RandomizeQuestions = r;
     }
     
     public void RandomizeTheQuestions() {
@@ -335,17 +339,7 @@ public class Survey {
             W("DELETING DATA");
             file.delete();
             file.createNewFile();
-//        try {
-//            FileWriter writer = new FileWriter("MyFile.txt", true);
-//            writer.write("Hello World");
-//            writer.write("\r\n");   // write new line
-//            writer.write("Good Bye!");
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
- 
-
+            
             //true = append file
             FileWriter fileWritter = new FileWriter(OutputFileName,true);
             BufferedWriter BW = new BufferedWriter(fileWritter);
