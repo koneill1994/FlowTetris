@@ -550,14 +550,20 @@ public class Parameters {
       }
       
       // ^^ set this to true when you want to test just tetris
-      
-//W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
 
+     // W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
+
+        W("EXPERIMENT DONE"+ExperimentDone);
+        W("TASK COUNT"+TaskCount);
+     
+     
       if (!ExperimentDone) {
   
           if (Mode == TETRIS_MODE) return false;
           
-          B = (Task)TaskList.get(TaskCount);
+          
+          
+          B = (Task)TaskList.get(TaskCount); // I think this is the line causing the error
 
           if (B.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
               
@@ -571,7 +577,7 @@ public class Parameters {
               //W("IsTetrisTask="+FocusTask.IsTetrisTask);
               W("CRITERION_PERCENT == "+B.CriterionPercent+"  Filename: "+B.FileName);
               //criterionPercent is somehow being set to 0 before it gets here
-              
+                            
               if (!FocusTask.IsTetrisTask) {
               
                   if (B.TrialsToCriterion) {
