@@ -634,8 +634,8 @@ public class Parameters {
                       B.RepetitionNo = 1;
                       B.RandomizeTrials = true;
                       // SwitchToTetris();
-                      Mode = TETRIS_MODE;
-                      //TaskCount -= 1;
+                      if(TaskCount < TaskList.size()) Mode = TETRIS_MODE;
+                      TaskCount += 1;
                       
                   }
                   
