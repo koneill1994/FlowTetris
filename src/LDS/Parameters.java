@@ -493,11 +493,15 @@ public class Parameters {
           return false;
       } 
           
-      System.out.println("Mode="+Mode);
-      
+      System.out.println("parameters Mode="+Mode);
+      System.out.println("parameters");
       long Lag = System.nanoTime() - OldTime;
       W("TIME="+(Lag / 1000000.0));
       OldTime = System.nanoTime();
+      
+      W("EXPERIMENT DONE="+ExperimentDone);
+      W("TASK COUNT="+TaskCount);
+      W("Rep no"+B.RepetitionNo);
       
      // W("SurveyArrayList.size()="+SurveyArrayList.size());
 
@@ -534,7 +538,7 @@ public class Parameters {
                   W("2 SurveyArrayList.size()="+SurveyArrayList.size());
 
                   if (Mode == TETRIS_MODE) SwitchToTetris();
-    //              return;
+                  //return;
 
               }
               
@@ -553,8 +557,7 @@ public class Parameters {
 
      // W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
 
-        W("EXPERIMENT DONE"+ExperimentDone);
-        W("TASK COUNT"+TaskCount);
+
      
      
       if (!ExperimentDone) {
@@ -605,6 +608,8 @@ public class Parameters {
                   } else TaskCount++;
                   
               } else { //IsTetrisTask
+                  //this block runs when the program includes Tetris (in the param file)
+                  // it should always run this block and not the other one
                   
                   if (B.IsTextBlock) {
                       TaskCount++;
@@ -628,9 +633,9 @@ public class Parameters {
                       
                       B.RepetitionNo = 1;
                       B.RandomizeTrials = true;
-                      //SwitchToTetris();
+                      // SwitchToTetris();
                       Mode = TETRIS_MODE;
-                      TaskCount -= 1;
+                      //TaskCount -= 1;
                       
                   }
                   
