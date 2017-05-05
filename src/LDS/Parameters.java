@@ -566,8 +566,8 @@ public class Parameters {
           
           
           
-          B = (Task)TaskList.get(TaskCount); // I think this is the line causing the error
-
+          B = (Task)TaskList.get(TaskCount); 
+          
           if (B.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
               
               B.RepetitionNo++;
@@ -611,11 +611,15 @@ public class Parameters {
                   //this block runs when the program includes Tetris (in the param file)
                   // it should always run this block and not the other one
                   
+                  // THERE SHOULD BE NO CONDITIONAL STOP
+                  // both pre- and post-Tetris conditions should have the same number of trials
+                  //they should simply stop when the required number is reached
+                  
                   if (B.IsTextBlock) {
                       TaskCount++;
                       return false;
                   }
-                                        
+                     /*                   
                   if (B.PercentCorrect >= FocusTask.ThreshHoldInAccuracyToDecreaseTheDelay) {
 
                       if (Task.SymbolDisplayTime > 0) {
@@ -638,6 +642,8 @@ public class Parameters {
                       TaskCount += 1;
                       
                   }
+
+                */
                   
               }
           
