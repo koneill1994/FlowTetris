@@ -621,7 +621,7 @@ public class Parameters {
                       return false;
                   }
                   
-                  if(B.TrialsToCriterion && B.TrialsLimited){
+                  if(B.TrialsLimited){
                       if (B.RepetitionNo > B.CriterionToTrials) {
                           if(TaskCount < TaskList.size()) Mode = TETRIS_MODE;
                           TaskCount++;
