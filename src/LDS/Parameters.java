@@ -493,15 +493,14 @@ public class Parameters {
           return false;
       } 
           
-      System.out.println("parameters Mode="+Mode);
-      System.out.println("parameters");
+      System.out.println("Mode = "+Mode);
       long Lag = System.nanoTime() - OldTime;
       W("TIME="+(Lag / 1000000.0));
       OldTime = System.nanoTime();
       
-      W("EXPERIMENT DONE="+ExperimentDone);
-      W("TASK COUNT="+TaskCount);
-      W("Rep no"+B.RepetitionNo);
+      //W("EXPERIMENT DONE="+ExperimentDone);
+      W("TASK COUNT = "+TaskCount);
+      W("Rep no "+B.RepetitionNo);
       
      // W("SurveyArrayList.size()="+SurveyArrayList.size());
 
@@ -615,10 +614,21 @@ public class Parameters {
                   // both pre- and post-Tetris conditions should have the same number of trials
                   //they should simply stop when the required number is reached
                   
+                  //currently twice as many blocks as should be running - pls fix
+                  
                   if (B.IsTextBlock) {
                       TaskCount++;
                       return false;
                   }
+                  
+                  if(B.TrialsToCriterion && B.TrialsLimited){
+                      if (B.RepetitionNo > B.CriterionToTrials) {
+                          if(TaskCount < TaskList.size()) Mode = TETRIS_MODE;
+                          TaskCount++;
+                          B.RepetitionNo=1;
+                      }
+                  }
+                  
                      /*                   
                   if (B.PercentCorrect >= FocusTask.ThreshHoldInAccuracyToDecreaseTheDelay) {
 
