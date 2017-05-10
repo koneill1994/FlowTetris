@@ -34,6 +34,7 @@ public class Tetris extends Applet {
         Data D = new Data();
         FineData F = new FineData();
         char Tab = ',';
+        boolean isAdaptive = true;
         
         //logging
         static int queue_history =10; // how many items back the queue remembers
@@ -568,7 +569,7 @@ public class Tetris extends Applet {
 	private void installNewPiece() {
 		next_piece_canvas.clear();
 		cur_piece = next_piece;
-                RemoveRowsIfStackedTooHigh();
+                if(isAdaptive) RemoveRowsIfStackedTooHigh();
 		cur_piece.setPosition(3, -4); //-4 to start above top of grid
 		if (timer != null) ComputeScoreAndDelay(-4 * Parameters.PointsSubtractedPerNewBlock);
                 if(cur_piece.canPaste()) {
@@ -579,10 +580,10 @@ public class Tetris extends Applet {
 			next_piece.setPosition(0, 0);
 			next_piece.paste(next_piece_grid);
 			next_piece_canvas.repaint();
+                        LogEvent("spawn_new_piece");
 		}
 		else
 			gameOver();
-                LogEvent("spawn_new_piece");
 	}
 	
 	private void gameOver() {
@@ -592,6 +593,8 @@ public class Tetris extends Applet {
 //		int score = Integer.parseInt(score_label.getText());
 		sounds.playGameOverSound();
                 LogEvent("game_over");
+                // add a way here to show the player that they got a game over
+                startGame();
 	}
 	
 	private boolean rowIsFull(int row) {

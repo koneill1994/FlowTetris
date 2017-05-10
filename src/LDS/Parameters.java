@@ -614,8 +614,6 @@ public class Parameters {
                   // both pre- and post-Tetris conditions should have the same number of trials
                   //they should simply stop when the required number is reached
                   
-                  //currently twice as many blocks as should be running - pls fix
-                  
                   if (B.IsTextBlock) {
                       TaskCount++;
                       return false;
