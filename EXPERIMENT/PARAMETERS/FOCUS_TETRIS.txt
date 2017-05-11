@@ -9,6 +9,8 @@
 /  focus task
 /    survey
 /
+DEBUG_TETRIS_ONLY,
+/
 DEBUG_MODE,TRUE,
 /
 /for TEXT_TASKs

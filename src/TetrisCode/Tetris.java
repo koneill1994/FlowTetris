@@ -34,7 +34,7 @@ public class Tetris extends Applet {
         Data D = new Data();
         FineData F = new FineData();
         char Tab = ',';
-        boolean isAdaptive = true;
+        static boolean isAdaptive = true;
         
         //logging
         static int queue_history =10; // how many items back the queue remembers

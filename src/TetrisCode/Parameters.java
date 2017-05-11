@@ -85,6 +85,11 @@ public class Parameters {
                     if (GetString(2).equals("TRUE")) DebugMode = true;
                 } else
 
+                if (Cmd.equals("ADAPTIVE_TETRIS")) {
+                    if (GetString(2).equals("FALSE")) Tetris.isAdaptive = false;
+                    else if (GetString(2).equals("TRUE")) Tetris.isAdaptive = true;
+                } else
+                    
 //------------------------------------------------------------------------------                
                
                 if (Cmd.equals("NUMBER_OF_COLUMNS")) {

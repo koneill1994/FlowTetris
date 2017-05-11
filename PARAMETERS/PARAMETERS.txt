@@ -1,8 +1,14 @@
 /this is file PARAMETERS.txt
 /
-DEBUG_MODE,FALSE,
+DEBUG_MODE,TRUE,
 /
 /
+/ if TRUE (or anything but false)
+/ Tetris will be in adaptive mode
+/    (rows will be removed when it gets too high, so you can't lost)
+/ if set to FALSE it will be in classic mode
+/
+ADAPTIVE_TETRIS,FALSE,
 /
 NUMBER_OF_COLUMNS,10,
 /
