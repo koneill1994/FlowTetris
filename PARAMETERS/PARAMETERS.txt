@@ -8,7 +8,7 @@ DEBUG_MODE,TRUE,
 /    (rows will be removed when it gets too high, so you can't lost)
 / if set to FALSE it will be in classic mode
 /
-ADAPTIVE_TETRIS,FALSE,
+ADAPTIVE_TETRIS,TRUE,
 /
 NUMBER_OF_COLUMNS,10,
 /
@@ -64,7 +64,7 @@ SECONDS_IN_MAXIMUM_LEVEL_TO_SWITCH_TO_FOCUS_TASK,60,
 / stop_condition,value,comparison
 / "when the size of the last row removed is greater than 1, switch tasks"
 /
-SPEED_LEVEL,1,>,
+SPEED_LEVEL,6,>,
 /
 /   alternative measures:
 /  	SPEED_LEVEL, HEIGHT_VARIANCE, DROP_DURATION_VARIANCE, DROP_PERCENTAGE
