@@ -55,7 +55,7 @@ public class Parameters {
 
   Random R = new Random();
   
-  public static ArrayList SurveyArrayList = new ArrayList();
+  public static ArrayList<Survey> SurveyArrayList = new ArrayList<Survey>();
   
   public Parameters(JFrame FrameIn, String ParameterFileName) {
         
@@ -317,17 +317,18 @@ public class Parameters {
                 } else
 
 ////////////////////////////////////////////////////////////////////////////////
-                                    
-                if (Cmd.equals("TAKE_SURVEY")) {
-                    SurveyArrayList.add(new Survey(GetString(2), GetString(3), GetInteger(4)));
-                } else
+                                 
+              // NB: THE SET "RANDOMIZATION CODE" BELOW DOES NOT WORK
+                    // don't ask me why, I can't fathom it
+                    // i just set randomization to default to true
+                    // if you want it to not be randomized, fix this code
                     
-                if (Cmd.equals("RANDOMIZE_QUESTIONS")) {
-                    if(SurveyArrayList.size()>0){
-                        //SurveyArrayList.get(SurveyArrayList.size()).SetRandomization(true);
-                    }
+                if (Cmd.equals("TAKE_SURVEY")) {
+                    Survey tmp = new Survey(GetString(2), GetString(3), GetInteger(4));
+                    if(GetString(5).equals("FALSE")) tmp.SetRandomization(false);
+                    SurveyArrayList.add(tmp);
                 } else
-                
+                                    
 ////////////////////////////////////////////////////////////////////////////////
                     
                 if (Cmd.charAt(0) == '/') {

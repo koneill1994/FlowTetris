@@ -39,7 +39,7 @@ public class Survey {
     public int BEFORE_TETRIS = 1;
     int BeforeMode;
     
-    public boolean RandomizeQuestions=false;
+    public boolean RandomizeQuestions=true;
     
     public Survey(String FileNameIn, String BeforeLDSorTETRIS, int SessionNoIn) {
         
@@ -64,12 +64,12 @@ public class Survey {
         System.out.println(S);
     }
     
-    public void SetRandomization(Boolean r){
+    public void SetRandomization(boolean r){
         this.RandomizeQuestions = r;
     }
     
     public void RandomizeTheQuestions() {
-
+        //W("RANDOMIZING == "+RandomizeQuestions);
         int N = QuestionList.size();
         
         for (int n = 0; n < 1000; n++) {
@@ -90,7 +90,11 @@ public class Survey {
                 Order[Target1] = Order[Target2];
                 Order[Target2] = Temp;
             }
-        
+        /*
+        for(int k=0; k<QuestionList.size(); k++){
+            W("Randomizing order "+Order[k]);
+        }
+        */
     }
     
     public void ReadSurvey() {
@@ -223,7 +227,11 @@ public class Survey {
     }
 
     public boolean Update(Graphics2D g2in, int MouseX, int MouseY, boolean Button1) {
-        
+        /*
+        for(int k=0; k<QuestionList.size(); k++){
+            W("Random order "+Order[k]);
+        }
+        */
         g2 = g2in;
         
         SurveyBtn.NoOfButtons = NoOfButtons;
