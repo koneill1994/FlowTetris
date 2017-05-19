@@ -47,6 +47,8 @@ public class Tetris extends Applet {
         long DownStartTime = LongMin;
         long DownEndTime = LongMin;
 
+        ArrayList<ArrayList<Long>> TimeInLevelList = CreateTimeInLevelList();
+                
         private class Tuple<X,Y>{
             public final X x;
             public final Y y;
@@ -204,7 +206,13 @@ public class Tetris extends Applet {
             return (TotalRunTime + System.nanoTime() - StartTime)/1000000;
         }
         
-        
+        public ArrayList<ArrayList<Long>> CreateTimeInLevelList(){
+            ArrayList<ArrayList<Long>> TILList = new ArrayList<ArrayList<Long>>();
+            for(int i=0; i<Parameters.MaxLevels; i++){
+                TILList.add(new ArrayList<Long>());
+            }
+            return TILList;
+        }
         
 	//
 	// INNER CLASSES
@@ -836,6 +844,11 @@ public class Tetris extends Applet {
             //a long else if then tree for every possible measure
             //for the correct measure, do the condition compare on it
             // if its true set switchTask to true
+            //
+            //System.nanoTime()-StartTime)/1000000
+            
+            
+            
             if(measure.equals("SIZE_LAST_ROW_REMOVED")){
                 switchTask=ConditionCompare(SizeLastRowRemoved,CritValue,Comparison);
             }
@@ -871,7 +884,15 @@ public class Tetris extends Applet {
             return null;
         }
         
-	
+	public void DisplayTimeInLevelList(ArrayList<ArrayList<Long>> TimeInLevelList){
+            for(int i=0; i<TimeInLevelList.size(); i++){
+                System.out.println("Level "+i);
+                for(int j=0; j<TimeInLevelList.get(i).size(); j++){
+                    System.out.println("  "+TimeInLevelList.get(i).get(j));
+                }
+            }
+        }
+        
         public void ComputeScoreAndDelay(int AddedScore) {
             score_label.addValue(AddedScore);
             score = Integer.parseInt(score_label.getText());
@@ -888,7 +909,12 @@ public class Tetris extends Applet {
             if (speed < 0) speed = 0;
             if (speed > Parameters.MaxLevels) speed = Parameters.MaxLevels;
             
-            if (old_speed != speed) StartTimeInLevel = System.nanoTime();
+            if (old_speed != speed){
+                StartTimeInLevel = System.nanoTime();
+                TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000;
+                TimeInLevelList.get((int)speed).add(TimeInLevel);
+                DisplayTimeInLevelList(TimeInLevelList);
+            }
             
 //            TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000;
 //            
@@ -941,6 +967,8 @@ public class Tetris extends Applet {
             game_grid.repaint();
             LogEvent("row_removed");
         }
+        
+
         
 	public void start() {
 		timer = new Timer(INITIAL_DELAY, new ActionListener() {
