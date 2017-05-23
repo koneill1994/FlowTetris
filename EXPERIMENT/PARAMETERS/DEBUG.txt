@@ -1,9 +1,17 @@
-/ DEBUG.txt PARAMETER FILE
+/ FOCUS_TETRIS.txt PARAMETER FILE
+/
+/    survey
+/  focus task tutorial
+/  focus task
+/    survey
+/  tetris
+/    survey
+/  focus task
+/    survey
+/
+DEBUG_TETRIS_ONLY,
 /
 DEBUG_MODE,TRUE,
-/
-/ DEBUG_TETRIS_ONLY
-/ For when you want it to only run Tetris
 /
 /for TEXT_TASKs
 TEXT_BACKGROUND_COLOR_RGB,0,0,0,  
@@ -20,9 +28,31 @@ SECOND_LETTERS,ABCDEFGHJKLNPQRTUVXYZ,
 LETTER_INDEX,6,19,
 SYMBOL_DISPLAY_TIME,6,
 /
+/setup for tetris
+HOW_MUCH_TO_DECREASE_THE_DELAY,1,
+THRESHHOLD_IN_ACCURACY_TO_DECREASE_THE_DELAY,50,
+THRESHHOLD_FOR_SWITCHING_TO_TETRIS,75,
+/
+/--------------------------------------------------------------------
+/
+/ could be BEFORE_LDS or BEFORE_TETRIS, then session number
+/
+/
+/
+/
+/TAKE_SURVEY,FLOW_SCALE_FULL,BEFORE_LDS,1,
+/TAKE_SURVEY,FLOW_SCALE_FULL,BEFORE_TETRIS,1,
+/TAKE_SURVEY,FLOW_SCALE,BEFORE_LDS,2,
+/TAKE_SURVEY,TETRIS_TEST,BEFORE_TETRIS,2,
+/TAKE_SURVEY,FLOW_SCALE,BEFORE_LDS,3,
+/TAKE_SURVEY,TETRIS_TEST,BEFORE_TETRIS,3,
+/
+/
+/TAKE_SURVEY,DEBUG_TEST,BEFORE_TETRIS,3,
+/
 /--------------------------------------------------------------------
 BEGIN_TEXT_TASK,
-TEXT_ON_LINE,0,                                            TUTORIAL 1
+TEXT_ON_LINE,0,                                            TASK 1
 TEXT_ON_LINE,2,Press the NEXT button to start the trial.
 TEXT_ON_LINE,3,Choose an image by moving the mouse cursor inside of it.
 TEXT_ON_LINE,4,A green or yellow circle will appear in the selected image.
@@ -41,63 +71,15 @@ TEXT_ON_LINE,19,If there is no 2nd target letter, then press the middle mouse bu
 END_TASK,
 /--------------------------------------------------------------------
 /
-BEGIN_FOCUS_TASK,FOCUS_DEMO,
+BEGIN_FOCUS_TASK,FOCUS_TASK,
 /
 SET_NO_OF_BLOCKS,2,
-SET_NO_OF_TRIALS,4,
+SET_NO_OF_TRIALS,2,
 SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
 /
 SHOW_ACCURACY,TRUE,
-CRITERION_TO_PERCENT,75,1,
-CRITERION_TO_TRIALS,3,
-/
-END_TASK,
-/
-/--------------------------------------------------------------------
-BEGIN_TEXT_TASK,
-TEXT_ON_LINE,0,                                            TUTORIAL 2
-TEXT_ON_LINE,2,Press the NEXT button to start the trial.
-TEXT_ON_LINE,3,Choose an image by moving the mouse cursor inside of it.
-TEXT_ON_LINE,4,A green or yellow number will appear in the selected image.
-TEXT_ON_LINE,5,If the number is green, then press the left mouse button if the number is odd and the right button if the number is even.
-TEXT_ON_LINE,6,If the number is yellow, then press the left mouse button if the number is less than 5 and the right button if the number is greater than 5.
-END_TASK,
-/--------------------------------------------------------------------
-/
-BEGIN_SWITCHING_TASK,SWITCHING_DEMO,
-/
-SET_NO_OF_BLOCKS,3,
-SET_NO_OF_TRIALS,4,
-SET_RANDOM_PROBABILITY_OF_SWITCHING,10,90,
-/
-SHOW_ACCURACY,TRUE,
-CRITERION_TO_PERCENT,75,1,
-CRITERION_TO_TRIALS,3,
-/
-END_TASK,
-/
-/--------------------------------------------------------------------
-BEGIN_TEXT_TASK,
-TEXT_ON_LINE,0,                                            TASK 1
-TEXT_ON_LINE,2,Press the NEXT button to start the trial.
-TEXT_ON_LINE,3,Choose an image by moving the mouse cursor inside of it.
-TEXT_ON_LINE,4,A green or yellow circle will appear in the selected image.
-TEXT_ON_LINE,5,A stream of 20 digits will appear in the circle which might contain one or two target letters.
-TEXT_ON_LINE,6,If the circle is yellow the 2nd target will be right side up.
-TEXT_ON_LINE,7,If the circle is green the 2nd target letter will be upside down.
-TEXT_ON_LINE,8,If the second target letter is to the left of the first letter in the alphabet then press the left mouse button.
-TEXT_ON_LINE,9,If the second target letter is to the right of the first letter in the alphabet then press the right mouse button.
-TEXT_ON_LINE,10,If there is no 2nd target letter then press the middle mouse button.
-END_TASK,                                 
-/--------------------------------------------------------------------
-/
-BEGIN_FOCUS_TASK,FOCUS1,
-/
-SET_NO_OF_BLOCKS,3,
-SET_NO_OF_TRIALS,4,
-/SET_PROBABILITY_OF_HIGH_FOCUS,10,90,
-/
-SHOW_ACCURACY,TRUE,
+/CRITERION_TO_PERCENT,75,1,
+CRITERION_TO_TRIALS,1,
 /
 END_TASK,
 /
@@ -106,26 +88,37 @@ BEGIN_TEXT_TASK,
 TEXT_ON_LINE,0,                                            TASK 2
 TEXT_ON_LINE,2,Press the NEXT button to start the trial.
 TEXT_ON_LINE,3,Choose an image by moving the mouse cursor inside of it.
-TEXT_ON_LINE,4,A green or yellow number will appear in the selected image.
-TEXT_ON_LINE,5,If the number is green then press the left mouse button if the number is odd and the right button if the number is even.
-TEXT_ON_LINE,6,If the number is yellow then press the left mouse button if the number is less than 5 and the right button if the number is greater than 5.
+TEXT_ON_LINE,4,A green or yellow circle will appear in the selected image.
+TEXT_ON_LINE,5,A stream of 20 digits will appear in the circle which might contain one or two target letters.
+TEXT_ON_LINE,6,If the circle is yellow, the 2nd target will be right side up.
+TEXT_ON_LINE,7,If the circle is green, the 2nd target letter will be upside down.
+TEXT_ON_LINE,8,If the 2nd target letter is to the left of the first letter in the alphabet, then press the left mouse button.
+TEXT_ON_LINE,9,If the 2nd target letter is to the right of the first letter in the alphabet, then press the right mouse button.
+TEXT_ON_LINE,10,If there is no 2nd target letter, then press the middle mouse button.
+TEXT_ON_LINE,12,Another way to explain this task:
+TEXT_ON_LINE,14,A letter is said to be higher than another letter if it appears after the other letter in the alphabet.
+TEXT_ON_LINE,15,Forexample, Dis higher than B.
+TEXT_ON_LINE,17,If the 1st target letter is higher than the 2nd target letter, then press the left mouse button.
+TEXT_ON_LINE,18,If the 2nd target letter is higher than the 1st target letter, then press the right mouse button.
+TEXT_ON_LINE,19,If there is no 2nd target letter, then press the middle mouse button.
 END_TASK,
 /--------------------------------------------------------------------
 /
-BEGIN_SWITCHING_TASK,SWITCHING1,
+BEGIN_FOCUS_TASK,FOCUS_TASK2,
 /
-SET_NO_OF_BLOCKS,3,
-SET_NO_OF_TRIALS,4,
-/SET_PROBABILITY_OF_SWITCHING,10,90,
+SET_NO_OF_BLOCKS,2,
+SET_NO_OF_TRIALS,2,
+SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
 /
 SHOW_ACCURACY,TRUE,
+/CRITERION_TO_PERCENT,75,1,
+CRITERION_TO_TRIALS,1,
 /
 END_TASK,
 /
-/--------------------------------------------------------------------
+/
+/
 /
 STOP,
 /
-
-
-
+/

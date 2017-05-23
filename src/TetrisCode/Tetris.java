@@ -208,7 +208,7 @@ public class Tetris extends Applet {
         
         public ArrayList<ArrayList<Long>> CreateTimeInLevelList(){
             ArrayList<ArrayList<Long>> TILList = new ArrayList<ArrayList<Long>>();
-            for(int i=0; i<Parameters.MaxLevels; i++){
+            for(int i=0; i<=Parameters.MaxLevels; i++){
                 TILList.add(new ArrayList<Long>());
             }
             return TILList;
@@ -695,7 +695,7 @@ public class Tetris extends Applet {
                     output.add(new Tuple<Long,Long>(e.x,e.y));
                 }
             }
-            DisplayDropPercentList(output, time_window);
+//            DisplayDropPercentList(output, time_window);
             return output;
         }
         
@@ -727,8 +727,8 @@ public class Tetris extends Applet {
             for(Tuple<Long,Long> e: q){
                 sum+=(e.y-e.x); //duration of a drop event                
             }
-            System.out.println(sum);
-            System.out.println(time_window);
+            //System.out.println(sum);
+            //System.out.println(time_window);
             return sum/time_window; //divide by time span to get drop percentage (between 0 and 1)
         }
         
@@ -910,10 +910,10 @@ public class Tetris extends Applet {
             if (speed > Parameters.MaxLevels) speed = Parameters.MaxLevels;
             
             if (old_speed != speed){
-                StartTimeInLevel = System.nanoTime();
                 TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000;
-                TimeInLevelList.get((int)speed).add(TimeInLevel);
+                TimeInLevelList.get((int)old_speed).add(TimeInLevel);
                 DisplayTimeInLevelList(TimeInLevelList);
+                StartTimeInLevel = System.nanoTime();
             }
             
 //            TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000;
