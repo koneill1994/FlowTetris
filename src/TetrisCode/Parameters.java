@@ -178,7 +178,13 @@ public class Parameters {
                     Tetris.SwitchCondition_Measure = Cmd;
                     Tetris.SwitchCondition_Value = (double) GetInteger(2);
                     Tetris.SwitchCondition_Comparison = GetString(3).charAt(0);
-                } else   
+                } else  
+                    
+               if (Cmd.equals("TIME_IN_LEVEL")){
+                   Tetris.SwitchCondition_Measure = Cmd;
+                   //ignore the other usual parameters
+                   // because this measure looks for a csv database to check against
+               }
                     
 ////////////////////////////////////////////////////////////////////////////////                    
                 

@@ -20,6 +20,8 @@ public class TimeInLevelData {
     
     ArrayList<TimeInLevelSubject> TimeInLevelTable;
     
+    ArrayList<Long> critpoints;
+    
     private static String FileName = "DATA/" + "TimeInLevelData" + ".csv";
     
     private Long CritPoint_sd_coeff=(long)5;
@@ -38,7 +40,17 @@ public class TimeInLevelData {
     }
     
     public TimeInLevelData(){
-        //empty constructor i guess
+        
+        File TILfile = new File(FileName);
+        
+        if(!TILfile.exists()){
+            CreateNewFile(FileName);
+        }
+        
+        TimeInLevelTable = ReadFile(FileName); // if we had to create it it should still be empty
+        
+        critpoints = GenerateLevelsCriterion(TimeInLevelTable);
+        
     }
     
     //randy's useful print-to-console shortcut function
@@ -107,8 +119,8 @@ public class TimeInLevelData {
         return LevelsCriterion;
     }
     
-    // if(File(Filename).exists());
-    public void CreateNewFile(){
+    // if(!File(Filename).exists());
+    public void CreateNewFile(String FileName){
         try{
             FileWriter fileWriter = new FileWriter(FileName,true);
             BufferedWriter BW = new BufferedWriter(fileWriter);
@@ -129,6 +141,12 @@ public class TimeInLevelData {
         catch(IOException e){
             e.printStackTrace();
         }
+    }
+    
+    //a function to access member functions from external locations
+    // just to keep things squeaky clean
+    public void AddSubjectData(Long Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
+        AddLineToFile(FileName, Subject_Number, LevelsAvg, LevelsCriterion);
     }
     
     public void AddLineToFile(String FileName, Long Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
@@ -158,7 +176,7 @@ public class TimeInLevelData {
     }
     
     
-    public void InterpretLine(String CurrentLine){
+    public TimeInLevelSubject InterpretLine(String CurrentLine){
         String[] items = CurrentLine.split(Tab);
         if(items.length!= (1 + 2 * Parameters.MaxLevels)){
             //throw an error if its not the correct number
@@ -178,28 +196,36 @@ public class TimeInLevelData {
             LevelsCriterion.add(Long.valueOf(val));
         }
         
-        TimeInLevelTable.add(new TimeInLevelSubject(Long.valueOf(items[0]),LevelsAvg,LevelsCriterion));
+        return new TimeInLevelSubject(Long.valueOf(items[0]),LevelsAvg,LevelsCriterion);
         
     }
     
     
-    public void ReadFile(String FileName){
+    public ArrayList<TimeInLevelSubject> ReadFile(String FileName){
         try{
+            
+            ArrayList<TimeInLevelSubject> table = new ArrayList<TimeInLevelSubject>();
+                    
             FileReader fr=new FileReader(FileName);
             BufferedReader br = new BufferedReader(fr);
             
             String CurrentLine;
             
+            boolean firstline=true;
+            
             while((CurrentLine = br.readLine()) != null){
-                //do line per line stuff here
-                InterpretLine(CurrentLine);
+                //skip the first line because its the header
+                if(!firstline) table.add(InterpretLine(CurrentLine));
+                else firstline = false;
             }
             
-            
+            return table;
         }
         catch(IOException e){
             e.printStackTrace();
         }
+        
+        return null;
         
     }
     

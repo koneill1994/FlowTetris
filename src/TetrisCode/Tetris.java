@@ -36,6 +36,8 @@ public class Tetris extends Applet {
         char Tab = ',';
         static boolean isAdaptive = true;
         
+        TimeInLevelData TILData = new TimeInLevelData();
+        
         //logging
         static int queue_history =10; // how many items back the queue remembers
         Queue<Integer> HeightQueue = new LinkedList<Integer>();
@@ -865,6 +867,9 @@ public class Tetris extends Applet {
                 switchTask=ConditionCompare(DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime),
                     CritValue,Comparison);
             }
+            else if(measure.equals("TIME_IN_LEVEL")){
+                switchTask=CheckTimeInLevel();
+            }
             //final else to catch any errors
             else{
                 System.out.println("ERROR: No match for Tetris end condition");
@@ -891,6 +896,51 @@ public class Tetris extends Applet {
                     System.out.println("  "+TimeInLevelList.get(i).get(j));
                 }
             }
+        }
+        
+        private Long Mean(ArrayList<Long> l){
+            Long sum = (long) 0;
+            for(Long val: l){
+                sum+=val;
+            }
+            return (long)Math.floor(sum/l.size());
+        }
+        
+        //remember to add a way to not include the outlier
+        // it should probably be fine
+        // times are added to the data structure every level transition
+        // time in level is checked every frame
+        // since level transitions reset the time to zero
+        // the only real unknown edge case is when someone transitions exactly on the crit point        
+        
+        public void AddDataToTILData(){
+            //first, get the average for each level and add them to an arraylist
+            ArrayList<Long> LeveltimeAvg = new ArrayList<Long>();
+            
+            for(ArrayList<Long> tl : TimeInLevelList){ // tl for time list
+                LeveltimeAvg.add(Mean(tl));
+            }
+                   
+            Long SubjId = (long)1; //apparently we have no way to keep track of this from the tetris side yet
+            
+            //then write a new line using the subject's id, avg's, and crit_points
+            TILData.AddSubjectData(SubjId,LeveltimeAvg,TILData.critpoints);
+            
+        }
+        
+        
+        public boolean CheckTimeInLevel(){
+            // check time spent in level
+            // (System.nanoTime() - StartTimeInLevel)/1000000000;
+            // against critical point in the level
+            // from TimeInLevelData
+            
+            Long comparetime = ((System.nanoTime() - StartTimeInLevel)/1000000000);
+            
+            return (comparetime>TILData.critpoints.get((int)speed));
+            // stop tetris because this subject is an outlier for this level
+            
+            
         }
         
         public void ComputeScoreAndDelay(int AddedScore) {
