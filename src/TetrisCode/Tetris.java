@@ -35,9 +35,7 @@ public class Tetris extends Applet {
         FineData F = new FineData();
         char Tab = ',';
         static boolean isAdaptive = true;
-        
-        TimeInLevelData TILData = new TimeInLevelData();
-        
+                        
         //logging
         static int queue_history =10; // how many items back the queue remembers
         Queue<Integer> HeightQueue = new LinkedList<Integer>();
@@ -74,6 +72,8 @@ public class Tetris extends Applet {
 	public static byte ROWS = 38; //18
 	public static byte COLUMNS = 10;
 	Parameters P = new Parameters("PARAMETERS");  // creating this will set the values to that in paramters (i think) so set defaults before this)
+        TimeInLevelData TILData = new TimeInLevelData(); //uses parameters, so make sure it comes afterwards
+        
         private final static int EMPTY = -1;
 	//private final static int DELETED_ROWS_PER_LEVEL = 5;
 	private final static Color PIECE_COLORS[] = {
@@ -946,8 +946,7 @@ public class Tetris extends Applet {
         
         public void ComputeScoreAndDelay(int AddedScore) {
             score_label.addValue(AddedScore);
-            //score = Integer.parseInt(score_label.getText());      // this looks like a fairly roundabout way to set the score; not sure why its done this way
-            score = AddedScore;
+            score = Integer.parseInt(score_label.getText());
             int high_score = high_score_label.getText().length() > 0 ?
 		Integer.parseInt(high_score_label.getText()) : 0;
             if(score > high_score)

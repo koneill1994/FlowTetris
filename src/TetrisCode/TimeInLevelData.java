@@ -125,6 +125,7 @@ public class TimeInLevelData {
         try{
             FileWriter fileWriter = new FileWriter(FileName,true);
             BufferedWriter BW = new BufferedWriter(fileWriter);
+            W("TILData: Parameters.MaxLevels == "+Parameters.MaxLevels);
             
             String Header = "Subject"+Tab;
             for(int i=0; i<=Parameters.MaxLevels; i++){
@@ -137,7 +138,7 @@ public class TimeInLevelData {
             Header+="\r\n";
             
             BW.write(Header);
-            
+            BW.close();
         }
         catch(IOException e){
             e.printStackTrace();
@@ -168,7 +169,7 @@ public class TimeInLevelData {
             Line+="\r\n";
             
             BW.write(Line);
-            
+            BW.close();
         }
         catch(IOException e){
             e.printStackTrace();
