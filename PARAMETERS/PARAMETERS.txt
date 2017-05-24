@@ -1,4 +1,4 @@
-/this is file PARAMETERS.txt
+/this is file PARAMETERS.txt !
 /
 DEBUG_MODE,TRUE,
 /
@@ -84,4 +84,3 @@ QUEUE_HISTORY_LENGTH,10,
 /
 STOP,
 //
-

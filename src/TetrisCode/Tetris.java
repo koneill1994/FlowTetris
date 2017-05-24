@@ -494,6 +494,7 @@ public class Tetris extends Applet {
                         if (GameStarted) { 
                             //only end program if LDS is not used
                             if ((Parameters.MaxSecondsInLevel == 0) & (RunTime / 1000000000) >= (Parameters.TimeLimitInSeconds)) {
+                                System.out.println("MaxSecondsInLevel: "+Parameters.MaxSecondsInLevel);
                                 System.out.println("TimeLimit="+(Parameters.TimeLimitInSeconds)); // * 1000000000));
                                 System.out.println("RunTime="+RunTime);
                                 System.exit(100);
@@ -945,7 +946,8 @@ public class Tetris extends Applet {
         
         public void ComputeScoreAndDelay(int AddedScore) {
             score_label.addValue(AddedScore);
-            score = Integer.parseInt(score_label.getText());
+            //score = Integer.parseInt(score_label.getText());      // this looks like a fairly roundabout way to set the score; not sure why its done this way
+            score = AddedScore;
             int high_score = high_score_label.getText().length() > 0 ?
 		Integer.parseInt(high_score_label.getText()) : 0;
             if(score > high_score)

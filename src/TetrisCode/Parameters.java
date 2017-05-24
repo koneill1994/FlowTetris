@@ -55,12 +55,17 @@ public class Parameters {
         ParameterFile = ParameterFileName;
         
         try {
-            
+            System.out.println("Opening parameter file: "+"PARAMETERS/" + ParameterFileName+".txt");
             FileInputStream fstream = new FileInputStream(
                     "PARAMETERS/" + ParameterFileName+".txt");
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String S;
+            
+            W("reading tetris parameter file");
+            
+            
+            
             
             //Read File Line By Line
             while ((S = br.readLine()) != null)   {
@@ -74,7 +79,6 @@ public class Parameters {
                 Cmd = GetString(1);
 
                 if (Cmd.charAt(0) == '/') {
-                    
                 } else
                     
                 if (Cmd.equals("STOP")) {
@@ -184,7 +188,7 @@ public class Parameters {
                    Tetris.SwitchCondition_Measure = Cmd;
                    //ignore the other usual parameters
                    // because this measure looks for a csv database to check against
-               }
+               } else
                     
 ////////////////////////////////////////////////////////////////////////////////                    
                 
@@ -209,6 +213,12 @@ public class Parameters {
     
     public void W(String S) {
         System.out.println(S);
+    }
+    
+    public String W_return(String S) {
+        if(S.equals(null)) System.out.println("NULL");
+        System.out.println(S);
+        return S;
     }
 
     public boolean ValidFileName(String FileName) {

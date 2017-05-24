@@ -59,6 +59,7 @@ public class TimeInLevelData {
     }
     
     public double Mean(ArrayList<Long> l){
+        if(l.size()<=0) return 0;
         Long sum = Long.valueOf(0);
         for(Long val: l){
             sum+=val;
