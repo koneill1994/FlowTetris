@@ -828,7 +828,7 @@ public class Tetris extends Applet {
         }
         
         public void SwitchToFocusTask() {
-            
+                AddDataToTILData();
                 SessionNo++;
                 LDS.Parameters.Mode = LDS.Parameters.LDS_MODE;
                 pauseGame();
