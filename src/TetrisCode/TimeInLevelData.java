@@ -25,7 +25,7 @@ public class TimeInLevelData {
     private static String FileName = "DATA/" + "TimeInLevelData" + ".csv";
     
     private Long CritPoint_sd_coeff=(long)5;
-    private Long CritPoint_constant=(long)0;
+    private Long CritPoint_constant=(long)10;
     
     
     public class TimeInLevelSubject{
@@ -97,7 +97,7 @@ public class TimeInLevelData {
         
         // initialize an ArrayList (TILList) to hold all previous participants' average time in level values
         ArrayList<ArrayList<Long>> TILList = new ArrayList<ArrayList<Long>>();
-        for(int i=0; i<=Parameters.MaxLevels; i++){
+        for(int i=0; i<Parameters.MaxLevels; i++){
             TILList.add(new ArrayList<Long>());
         }
         
@@ -180,7 +180,7 @@ public class TimeInLevelData {
     
     public TimeInLevelSubject InterpretLine(String CurrentLine){
         String[] items = CurrentLine.split(Tab);
-        if(items.length!= (1 + 2 * Parameters.MaxLevels)){
+        if(items.length!= (1 + 2 * (Parameters.MaxLevels+1))){
             //throw an error if its not the correct number
             // (Subject + num_levels(for level time) + num_levels (for crit point) )
             throw new Error("Not the correct number of columns");
