@@ -63,8 +63,8 @@ public class Tetris extends Applet {
         static long DropPercentageTimeWindow = 10*1000; // in ms
         
         public static String SwitchCondition_Measure;
-        public static Double SwitchCondition_Value;
-        public static char   SwitchCondition_Comparison;        
+        public static Double SwitchCondition_Value = 0D;
+        public static char   SwitchCondition_Comparison = 'a';        
         
         boolean OutputTheDataWhenFirstFast;
         public static Frame frame;
@@ -900,6 +900,7 @@ public class Tetris extends Applet {
         }
         
         private Long Mean(ArrayList<Long> l){
+            if(l.size()==0) return (long) 0;
             Long sum = (long) 0;
             for(Long val: l){
                 sum+=val;

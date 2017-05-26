@@ -62,6 +62,7 @@ public class TimeInLevelData {
         if(l.size()<=0) return 0;
         Long sum = Long.valueOf(0);
         for(Long val: l){
+            if(val==null) val=(long)0;
             sum+=val;
         }
         return sum/l.size();
@@ -82,6 +83,7 @@ public class TimeInLevelData {
         ArrayList<Double> sd_list = new ArrayList<Double>();
         
         for(Long val: l){
+            if(val==null) val=(long)0;
             sd_list.add(Math.pow((val-mean),2));
         }
         
@@ -97,14 +99,15 @@ public class TimeInLevelData {
         
         // initialize an ArrayList (TILList) to hold all previous participants' average time in level values
         ArrayList<ArrayList<Long>> TILList = new ArrayList<ArrayList<Long>>();
-        for(int i=0; i<Parameters.MaxLevels; i++){
+        for(int i=0; i<=Parameters.MaxLevels; i++){
             TILList.add(new ArrayList<Long>());
         }
         
         // populate TILList with all the avg level times of previous participants
         for(TimeInLevelSubject subj: TimeInLevelTable){
             for(int i=0; i<TILList.size(); i++){
-                TILList.get(i).add(subj.LevelsAvg.get(i));
+                ArrayList<Long> tmp = TILList.get(i);
+                tmp.add(subj.LevelsAvg.get(i));
             }
         }
         
@@ -189,14 +192,17 @@ public class TimeInLevelData {
         ArrayList<Long> LevelsAvg=new ArrayList<Long>();
         ArrayList<Long> LevelsCriterion=new ArrayList<Long>();
         
-        
-        for(String val : Arrays.copyOfRange(items, 1, 1+Parameters.MaxLevels)){
+        //adding first 1 to offset for subject # column, and second 1 to offset for an off-by-one error (levels starts at 0, not 1)
+        for(String val : Arrays.copyOfRange(items, 1, 1+Parameters.MaxLevels+1)){
             LevelsAvg.add(Long.valueOf(val));
         }
         
-        for(String val : Arrays.copyOfRange(items, 1+Parameters.MaxLevels, 1+(2*Parameters.MaxLevels))){
+        for(String val : Arrays.copyOfRange(items, 1+Parameters.MaxLevels+1, 1+(2*Parameters.MaxLevels)+1)){
             LevelsCriterion.add(Long.valueOf(val));
         }
+        
+        W("LevelsAvg size: "+LevelsAvg.size());
+        W("LevelsCriterion size: "+LevelsCriterion.size());
         
         return new TimeInLevelSubject(Long.valueOf(items[0]),LevelsAvg,LevelsCriterion);
         
