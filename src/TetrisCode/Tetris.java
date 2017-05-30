@@ -49,6 +49,8 @@ public class Tetris extends Applet {
 
         ArrayList<ArrayList<Long>> TimeInLevelList = CreateTimeInLevelList();
                 
+        
+        
         private class Tuple<X,Y>{
             public final X x;
             public final Y y;
@@ -192,7 +194,12 @@ public class Tetris extends Applet {
 	final Button start_newgame_butt = new TetrisButton("Start");
 	//public static final Button pause_resume_butt = new TetrisButton("Pause");									
 	final Button pause_resume_butt = new TetrisButton("Pause");									
-	
+	private String Subject_ID;
+        
+        public void SetSubjectID(String SubjNo){
+            Subject_ID = SubjNo;
+        }
+        
         private void LogEvent(String event){
             Double drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime);
 
@@ -891,6 +898,7 @@ public class Tetris extends Applet {
         }
         
 	public void DisplayTimeInLevelList(ArrayList<ArrayList<Long>> TimeInLevelList){
+            System.out.println("/");
             for(int i=0; i<TimeInLevelList.size(); i++){
                 System.out.println("Level "+i);
                 for(int j=0; j<TimeInLevelList.get(i).size(); j++){
@@ -919,14 +927,18 @@ public class Tetris extends Applet {
             //first, get the average for each level and add them to an arraylist
             ArrayList<Long> LeveltimeAvg = new ArrayList<Long>();
             
+            System.out.println("Leveltime average, size "+TimeInLevelList.size());
             for(ArrayList<Long> tl : TimeInLevelList){ // tl for time list
                 LeveltimeAvg.add(Mean(tl));
+                System.out.println(Mean(tl));
             }
-                   
-            Long SubjId = (long)1; //apparently we have no way to keep track of this from the tetris side yet
+                System.out.println("critpoints:");
+            for(Long p: TILData.critpoints){
+                System.out.println(""+p);
+            }
             
             //then write a new line using the subject's id, avg's, and crit_points
-            TILData.AddSubjectData(SubjId,LeveltimeAvg,TILData.critpoints);
+            TILData.AddSubjectData(Subject_ID,LeveltimeAvg,TILData.critpoints);
             
         }
         
@@ -946,6 +958,7 @@ public class Tetris extends Applet {
         }
         
         public void ComputeScoreAndDelay(int AddedScore) {
+            System.out.println("\nTILLIST SIZE:" + TimeInLevelList.size());
             score_label.addValue(AddedScore);
             score = Integer.parseInt(score_label.getText());
             int high_score = high_score_label.getText().length() > 0 ?

@@ -29,10 +29,10 @@ public class TimeInLevelData {
     
     
     public class TimeInLevelSubject{
-        Long Subject_Number;
+        String Subject_Number;
         ArrayList<Long> LevelsAvg;
         ArrayList<Long> LevelsCriterion;
-        public TimeInLevelSubject(Long Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
+        public TimeInLevelSubject(String Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
             this.LevelsAvg = LevelsAvg;
             this.LevelsCriterion = LevelsCriterion;   
             this.Subject_Number = Subject_Number;
@@ -150,27 +150,33 @@ public class TimeInLevelData {
     
     //a function to access member functions from external locations
     // just to keep things squeaky clean
-    public void AddSubjectData(Long Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
+    public void AddSubjectData(String Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
         AddLineToFile(FileName, Subject_Number, LevelsAvg, LevelsCriterion);
     }
     
-    public void AddLineToFile(String FileName, Long Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
+    public void AddLineToFile(String FileName, String Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
         try{
             FileWriter fileWriter = new FileWriter(FileName,true);
             BufferedWriter BW = new BufferedWriter(fileWriter);
         
+            System.out.println("WRITING SUBJECT NUMBER "+Subject_Number);
+            
+            W("LEVELS_AVERAGE");
             String Line = ""+Subject_Number+Tab;
             for(Long val : LevelsAvg){
                Line+=""+val+Tab;
+               W(""+val);
             }
+            W("LEVELS_CRITERION");
             int i = 0; // this is a messy way to do it I know
             for(Long val : LevelsCriterion){
+                W(""+val);
                 Line+=""+val;
                 if(i<=LevelsCriterion.size())Line+=Tab;
                 i++;
             }
             Line+="\r\n";
-            
+            W(Line);
             BW.write(Line);
             BW.close();
         }
@@ -204,7 +210,7 @@ public class TimeInLevelData {
         W("LevelsAvg size: "+LevelsAvg.size());
         W("LevelsCriterion size: "+LevelsCriterion.size());
         
-        return new TimeInLevelSubject(Long.valueOf(items[0]),LevelsAvg,LevelsCriterion);
+        return new TimeInLevelSubject(items[0],LevelsAvg,LevelsCriterion);
         
     }
     

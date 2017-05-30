@@ -148,7 +148,7 @@ public class ControlCode extends JComponent
 //        KeyPressTime = CT.currentTimeMillis() - KeyPressStartTime;
         
         int key = e.getKeyCode();
-        System.out.println("KeyChar="+(char)key+" INT="+(int)key);
+      //  System.out.println("KeyChar="+(char)key+" INT="+(int)key);  // was getting annoying
 //        Block.KeyChar = (char)key;
         
         if (key == KeyEvent.VK_ESCAPE) {
@@ -161,6 +161,7 @@ public class ControlCode extends JComponent
         if (key == KeyEvent.VK_SHIFT) ShiftKeyPressed = true;
           
         if ((key == KeyEvent.VK_Q) & ControlKeyPressed) {
+              TetrisProgram.AddDataToTILData();
               System.exit(0);
         }
                                                                       
@@ -240,7 +241,7 @@ public class ControlCode extends JComponent
       if (e.getID() == KeyEvent.KEY_RELEASED) {
 
           int key = e.getKeyCode();
-          System.out.println("KeyCharReleased="+(char)key+" INT="+(int)key);
+          //System.out.println("KeyCharReleased="+(char)key+" INT="+(int)key);
           
           switch(key) {
             
@@ -654,6 +655,8 @@ public class ControlCode extends JComponent
                 FirstTime = false;
             
                 SubjNo = EntryStr[0];
+                TetrisProgram.SetSubjectID(SubjNo); // send the subject number off to tetris
+                
                 
                 ExpCond = EntryStr[1];
                 
