@@ -47,7 +47,6 @@ public class Tetris extends Applet {
         long DownStartTime = LongMin;
         long DownEndTime = LongMin;
 
-        ArrayList<ArrayList<Long>> TimeInLevelList = CreateTimeInLevelList();
                 
         
         
@@ -75,6 +74,8 @@ public class Tetris extends Applet {
 	public static byte COLUMNS = 10;
 	Parameters P = new Parameters("PARAMETERS");  // creating this will set the values to that in paramters (i think) so set defaults before this)
         TimeInLevelData TILData = new TimeInLevelData(); //uses parameters, so make sure it comes afterwards
+        public ArrayList<ArrayList<Long>> TimeInLevelList;
+
         
         private final static int EMPTY = -1;
 	//private final static int DELETED_ROWS_PER_LEVEL = 5;
@@ -215,9 +216,10 @@ public class Tetris extends Applet {
             return (TotalRunTime + System.nanoTime() - StartTime)/1000000;
         }
         
-        public ArrayList<ArrayList<Long>> CreateTimeInLevelList(){
+        public ArrayList<ArrayList<Long>> CreateTimeInLevelList(int levelmax){
             ArrayList<ArrayList<Long>> TILList = new ArrayList<ArrayList<Long>>();
-            for(int i=0; i<=Parameters.MaxLevels; i++){
+            for(int i=0; i<=levelmax; i++){
+                System.out.println("Adding Level "+i+" of "+levelmax +" to TILList");
                 TILList.add(new ArrayList<Long>());
             }
             return TILList;
@@ -897,6 +899,12 @@ public class Tetris extends Applet {
             return null;
         }
         
+        public ArrayList<ArrayList<Long>> ReturnTILList(){
+            System.out.println("returning list:");
+            DisplayTimeInLevelList(TimeInLevelList);
+            return TimeInLevelList;
+        }
+        
 	public void DisplayTimeInLevelList(ArrayList<ArrayList<Long>> TimeInLevelList){
             System.out.println("/");
             for(int i=0; i<TimeInLevelList.size(); i++){
@@ -924,11 +932,14 @@ public class Tetris extends Applet {
         // the only real unknown edge case is when someone transitions exactly on the crit point        
         
         public void AddDataToTILData(){
+            ArrayList<ArrayList<Long>> TILList = ReturnTILList();
+            System.out.println("\nAdding Data:");
+            DisplayTimeInLevelList(TILList);
             //first, get the average for each level and add them to an arraylist
             ArrayList<Long> LeveltimeAvg = new ArrayList<Long>();
             
-            System.out.println("Leveltime average, size "+TimeInLevelList.size());
-            for(ArrayList<Long> tl : TimeInLevelList){ // tl for time list
+            System.out.println("Leveltime average, size "+TILList.size());
+            for(ArrayList<Long> tl : TILList){ // tl for time list
                 LeveltimeAvg.add(Mean(tl));
                 System.out.println(Mean(tl));
             }
@@ -1142,6 +1153,8 @@ public class Tetris extends Applet {
 	public void init() {
 		sounds = new TetrisSound(); // NOTE: Must be initialized after Applet fully constructed!
 		installNewPiece();
+                
+                TimeInLevelList = CreateTimeInLevelList(P.MaxLevels);
 
 		pause_resume_butt.setEnabled(false);
 		start_newgame_butt.addActionListener(new ActionListener() {

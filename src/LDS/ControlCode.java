@@ -161,7 +161,8 @@ public class ControlCode extends JComponent
         if (key == KeyEvent.VK_SHIFT) ShiftKeyPressed = true;
           
         if ((key == KeyEvent.VK_Q) & ControlKeyPressed) {
-              TetrisProgram.AddDataToTILData();
+              // opening a blank instance of Tetris?  Causes it to fail to output proper TILData
+              TetrisProgram.AddDataToTILData(); 
               System.exit(0);
         }
                                                                       

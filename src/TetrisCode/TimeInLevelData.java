@@ -151,7 +151,8 @@ public class TimeInLevelData {
     //a function to access member functions from external locations
     // just to keep things squeaky clean
     public void AddSubjectData(String Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
-        AddLineToFile(FileName, Subject_Number, LevelsAvg, LevelsCriterion);
+        //AddLineToFile(FileName, Subject_Number, LevelsAvg, LevelsCriterion);
+        //make sure to uncommment this when you fix the bug
     }
     
     public void AddLineToFile(String FileName, String Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
