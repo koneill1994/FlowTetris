@@ -162,7 +162,7 @@ public class ControlCode extends JComponent
           
         if ((key == KeyEvent.VK_Q) & ControlKeyPressed) {
               // opening a blank instance of Tetris?  Causes it to fail to output proper TILData
-              TetrisProgram.AddDataToTILData(); 
+              //TetrisProgram.AddDataToTILData();  // i give up
               System.exit(0);
         }
                                                                       
