@@ -83,6 +83,8 @@ public class Task {
     boolean TrialsLimited;
     int CriterionToTrials;
     
+    boolean SkipTetris=false;
+    
     int TotalCorrect;
     int TotalAnswered;
     double PercentCorrect;

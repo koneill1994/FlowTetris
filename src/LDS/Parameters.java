@@ -228,6 +228,10 @@ public class Parameters {
                     OnlyTetris=true;
                 } else
                     
+               if (Cmd.equals("SKIP_TETRIS")){
+                   B.SkipTetris=true;
+               } else
+                    
 //------------------------------------------------------------------------------
                     
                 if (Cmd.equals("NO_OF_SYMBOLS")) {
@@ -622,7 +626,7 @@ public class Parameters {
                   
                   if(B.TrialsLimited){
                       if (B.RepetitionNo > B.CriterionToTrials) {
-                          if(TaskCount < TaskList.size()) Mode = TETRIS_MODE;
+                          if(TaskCount < TaskList.size() && !B.SkipTetris) Mode = TETRIS_MODE;
                           TaskCount++;
                           B.RepetitionNo=1;
                       }
