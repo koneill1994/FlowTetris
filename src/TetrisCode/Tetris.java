@@ -21,7 +21,12 @@ import LDS.ControlCode;
 import java.util.*;  // queue
 
 
-public class Tetris extends Applet {
+public class Tetris extends Applet{
+       
+    
+    private void W(String text){
+        System.out.println(text);
+    }
 	
 	//
 	// STATIC MEMBERS
@@ -1312,7 +1317,8 @@ public class Tetris extends Applet {
 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+				//System.exit(0);
+                                System.out.println("Closing window is disabled");
 			}
 		});
 
@@ -1373,4 +1379,5 @@ class DoubleBufferedCanvas extends Canvas {
 		// The application will begin drawing into the other one while this happens
 		mSystemGraphics.drawImage(mActiveOffscreenImage, 0, 0, null);
 	}
+        
 }
