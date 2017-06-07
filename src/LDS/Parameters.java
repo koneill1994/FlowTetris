@@ -541,7 +541,11 @@ public class Parameters {
 
                   W("2 SurveyArrayList.size()="+SurveyArrayList.size());
 
-                  if (Mode == TETRIS_MODE) SwitchToTetris();
+                  if (TaskCount == TaskList.size()) {
+                    ExperimentDone = true;
+                  }
+                  
+                  else if (Mode == TETRIS_MODE) SwitchToTetris();
                   //return;
 
               }
@@ -550,7 +554,7 @@ public class Parameters {
           
           } else if (Mode == TETRIS_MODE) SwitchToTetris();
 
-      } else if (Mode == TETRIS_MODE) SwitchToTetris();
+      } else if (Mode == TETRIS_MODE && !ExperimentDone) SwitchToTetris();
 
 
       if(OnlyTetris) {
