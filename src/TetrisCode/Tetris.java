@@ -201,6 +201,7 @@ public class Tetris extends Applet{
 	//public static final Button pause_resume_butt = new TetrisButton("Pause");									
 	final Button pause_resume_butt = new TetrisButton("Pause");									
 	private String Subject_ID;
+        boolean ControlKeyPressed = false;
         
         public void SetSubjectID(String SubjNo){
             Subject_ID = SubjNo;
@@ -1216,6 +1217,11 @@ public class Tetris extends Applet{
                                         timer.setFast(true);
                                         OutputTheDataWhenFirstFast = true;
 				} 
+                                if (e.getKeyCode() == KeyEvent.VK_CONTROL) ControlKeyPressed = true;
+                                if (e.getKeyCode() == KeyEvent.VK_F && ControlKeyPressed){
+                                    ControlKeyPressed = false;
+                                    SwitchToFocusTask();
+                                }
                                 
                                 
                                 LogEvent("key_press_"+ e.getKeyText(e.getKeyCode()));
@@ -1235,6 +1241,7 @@ public class Tetris extends Applet{
                                 DownEndTime = LongMin;
                                 DownQueue = removeOldFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
                             }
+                            if (e.getKeyCode() == KeyEvent.VK_CONTROL) ControlKeyPressed = false;
                             LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
                         }
                         
