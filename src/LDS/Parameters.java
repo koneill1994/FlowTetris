@@ -231,6 +231,9 @@ public class Parameters {
                if (Cmd.equals("SKIP_TETRIS")){
                    B.SkipTetris=true;
                } else
+               if (Cmd.equals("TETRIS_PARAMETER_FILE")){
+                   Tetris.NameParameters(GetString(2));
+               } else
                     
 //------------------------------------------------------------------------------
                     

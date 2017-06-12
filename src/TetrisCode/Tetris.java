@@ -77,7 +77,8 @@ public class Tetris extends Applet{
         private final static int INITIAL_DELAY = 1000;
 	public static byte ROWS = 38; //18
 	public static byte COLUMNS = 10;
-	Parameters P = new Parameters("PARAMETERS");  // creating this will set the values to that in paramters (i think) so set defaults before this)
+        static String Param_Name = "PARAMETERS";
+	static Parameters P = new Parameters(Param_Name);  // creating this will set the values to that in paramters (i think) so set defaults before this)
         TimeInLevelData TILData = new TimeInLevelData(); //uses parameters, so make sure it comes afterwards
         public ArrayList<ArrayList<Long>> TimeInLevelList;
 
@@ -205,6 +206,11 @@ public class Tetris extends Applet{
         
         public void SetSubjectID(String SubjNo){
             Subject_ID = SubjNo;
+        }
+        
+        static public void NameParameters(String Param){
+            Param_Name = Param;
+            P = new Parameters(Param_Name);
         }
         
         private void LogEvent(String event){
