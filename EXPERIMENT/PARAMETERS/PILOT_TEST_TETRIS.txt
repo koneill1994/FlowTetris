@@ -39,11 +39,22 @@ THRESHHOLD_FOR_SWITCHING_TO_TETRIS,75,
 / could be BEFORE_LDS or BEFORE_TETRIS, then session number
 /
 /
+TAKE_SURVEY,SURVEYTEST,BEFORE_LDS,1,TRUE,
+TAKE_SURVEY,SURVEYTEST,BEFORE_LDS,2,TRUE,
 /
 /
+/
+/TAKE_SURVEY,DISPOSITIONAL_FLOW_SCALE,BEFORE_LDS,1,TRUE,
+/
+/TAKE_SURVEY,DISPOSITIONAL_FLOW_SCALE,BEFORE_LDS,2,TRUE,
+/
+/
+/
+/------------------------------------------------------------
 /
 BEGIN_FOCUS_TASK,FOCUS_TASK,
 /
+SKIP_TASK,
 SET_NO_OF_BLOCKS,0,
 SET_NO_OF_TRIALS,0,
 SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
@@ -53,31 +64,13 @@ CRITERION_TO_TRIALS,1,
 /
 END_TASK,
 /
-/--------------------------------------------------------------------
-BEGIN_TEXT_TASK,
-TEXT_ON_LINE,0,                                            TASK 2
-TEXT_ON_LINE,2,Press the NEXT button to start the trial.
-TEXT_ON_LINE,3,Choose an image by moving the mouse cursor inside of it.
-TEXT_ON_LINE,4,A green or yellow circle will appear in the selected image.
-TEXT_ON_LINE,5,A stream of 20 digits will appear in the circle which might contain one or two target letters.
-TEXT_ON_LINE,6,If the circle is yellow, the 2nd target will be right side up.
-TEXT_ON_LINE,7,If the circle is green, the 2nd target letter will be upside down.
-TEXT_ON_LINE,8,If the 2nd target letter is to the left of the first letter in the alphabet, then press the left mouse button.
-TEXT_ON_LINE,9,If the 2nd target letter is to the right of the first letter in the alphabet, then press the right mouse button.
-TEXT_ON_LINE,10,If there is no 2nd target letter, then press the middle mouse button.
-TEXT_ON_LINE,12,Another way to explain this task:
-TEXT_ON_LINE,14,A letter is said to be higher than another letter if it appears after the other letter in the alphabet.
-TEXT_ON_LINE,15,Forexample, Dis higher than B.
-TEXT_ON_LINE,17,If the 1st target letter is higher than the 2nd target letter, then press the left mouse button.
-TEXT_ON_LINE,18,If the 2nd target letter is higher than the 1st target letter, then press the right mouse button.
-TEXT_ON_LINE,19,If there is no 2nd target letter, then press the middle mouse button.
-END_TASK,
-/--------------------------------------------------------------------
+/-----------------------------------------------------------
 /
 BEGIN_FOCUS_TASK,FOCUS_TASK2,
 /
-SET_NO_OF_BLOCKS,6,
-SET_NO_OF_TRIALS,20,
+/SKIP_TASK,
+SET_NO_OF_BLOCKS,0,
+SET_NO_OF_TRIALS,0,
 SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
 /
 SHOW_ACCURACY,TRUE,
@@ -85,7 +78,7 @@ CRITERION_TO_TRIALS,1,
 /
 END_TASK,
 /
-/
+/------------------------------------------------------------
 /
 /
 STOP,

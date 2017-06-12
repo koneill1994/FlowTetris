@@ -231,6 +231,9 @@ public class Parameters {
                if (Cmd.equals("SKIP_TETRIS")){
                    B.SkipTetris=true;
                } else
+               if (Cmd.equals("SKIP_TASK")){
+                   B.SkipTask=true;
+               } else
                if (Cmd.equals("TETRIS_PARAMETER_FILE")){
                    Tetris.NameParameters(GetString(2));
                } else
@@ -562,6 +565,15 @@ public class Parameters {
 
       if(OnlyTetris) {
         SwitchToTetris();
+      }
+      
+      if(B.SkipTask){
+          if((TaskCount++ == TaskList.size()-1)){
+              ExperimentDone=true;
+          }
+          else{
+            SwitchToTetris();
+          }
       }
       
       // ^^ set this to true when you want to test just tetris
