@@ -189,6 +189,11 @@ public class Parameters {
                    //ignore the other usual parameters
                    // because this measure looks for a csv database to check against
                } else
+                   
+               if (Cmd.equals("RUN_UNTIL_TIME_LIMIT")){
+                   Tetris.SwitchCondition_Measure = Cmd;
+                   Tetris.SwitchCondition_Value = (double) GetInteger(2);
+               } else
                     
 ////////////////////////////////////////////////////////////////////////////////                    
                 

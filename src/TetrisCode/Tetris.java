@@ -892,6 +892,11 @@ public class Tetris extends Applet{
             else if(measure.equals("TIME_IN_LEVEL")){
                 switchTask=CheckTimeInLevel();
             }
+            else if(measure.equals("RUN_UNTIL_TIME_LIMIT")){
+                //time limit checker
+                W("critvalue "+CritValue+" < "+((System.nanoTime() - StartTimeInLevel)/1000000000)+" time since start");
+                switchTask= ( CritValue < ((System.nanoTime() - StartTimeInLevel)/1000000000));
+            }
             //final else to catch any errors
             else{
                 System.out.println("ERROR: No match for Tetris end condition");
@@ -913,7 +918,7 @@ public class Tetris extends Applet{
         
         public ArrayList<ArrayList<Long>> ReturnTILList(){
             System.out.println("returning list:");
-            DisplayTimeInLevelList(TimeInLevelList);
+            //DisplayTimeInLevelList(TimeInLevelList);
             return TimeInLevelList;
         }
         
@@ -946,7 +951,7 @@ public class Tetris extends Applet{
         public void AddDataToTILData(){
             ArrayList<ArrayList<Long>> TILList = ReturnTILList();
             System.out.println("\nAdding Data:");
-            DisplayTimeInLevelList(TILList);
+            //DisplayTimeInLevelList(TILList);
             //first, get the average for each level and add them to an arraylist
             ArrayList<Long> LeveltimeAvg = new ArrayList<Long>();
             
@@ -1000,7 +1005,7 @@ public class Tetris extends Applet{
             if (old_speed != speed){
                 TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000;
                 TimeInLevelList.get((int)old_speed).add(TimeInLevel);
-                DisplayTimeInLevelList(TimeInLevelList);
+                //DisplayTimeInLevelList(TimeInLevelList);
                 StartTimeInLevel = System.nanoTime();
             }
             

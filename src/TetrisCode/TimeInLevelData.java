@@ -128,7 +128,7 @@ public class TimeInLevelData {
         try{
             FileWriter fileWriter = new FileWriter(FileName,true);
             BufferedWriter BW = new BufferedWriter(fileWriter);
-            W("TILData: Parameters.MaxLevels == "+Parameters.MaxLevels);
+            //W("TILData: Parameters.MaxLevels == "+Parameters.MaxLevels);
             
             String Header = "Subject"+Tab;
             for(int i=0; i<=Parameters.MaxLevels; i++){
@@ -160,24 +160,24 @@ public class TimeInLevelData {
             FileWriter fileWriter = new FileWriter(FileName,true);
             BufferedWriter BW = new BufferedWriter(fileWriter);
         
-            System.out.println("WRITING SUBJECT NUMBER "+Subject_Number);
+            //System.out.println("WRITING SUBJECT NUMBER "+Subject_Number);
             
-            W("LEVELS_AVERAGE");
+            //W("LEVELS_AVERAGE");
             String Line = ""+Subject_Number+Tab;
             for(Long val : LevelsAvg){
                Line+=""+val+Tab;
-               W(""+val);
+               //W(""+val);
             }
-            W("LEVELS_CRITERION");
+            //W("LEVELS_CRITERION");
             int i = 0; // this is a messy way to do it I know
             for(Long val : LevelsCriterion){
-                W(""+val);
+               // W(""+val);
                 Line+=""+val;
                 if(i<=LevelsCriterion.size())Line+=Tab;
                 i++;
             }
             Line+="\r\n";
-            W(Line);
+            //W(Line);
             BW.write(Line);
             BW.close();
         }
@@ -208,8 +208,8 @@ public class TimeInLevelData {
             LevelsCriterion.add(Long.valueOf(val));
         }
         
-        W("LevelsAvg size: "+LevelsAvg.size());
-        W("LevelsCriterion size: "+LevelsCriterion.size());
+        //W("LevelsAvg size: "+LevelsAvg.size());
+        //W("LevelsCriterion size: "+LevelsCriterion.size());
         
         return new TimeInLevelSubject(items[0],LevelsAvg,LevelsCriterion);
         

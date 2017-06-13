@@ -57,7 +57,7 @@ MINIMUM_DELAY_MILLISECONDS,100,
 /
 MAXIMUM_LEVEL,9,
 /
-SECONDS_IN_MAXIMUM_LEVEL_TO_SWITCH_TO_FOCUS_TASK,60,
+/SECONDS_IN_MAXIMUM_LEVEL_TO_SWITCH_TO_FOCUS_TASK,60,
 /
 / stop condition based on database of previous times spent in each level
 /
@@ -70,6 +70,10 @@ SECONDS_IN_MAXIMUM_LEVEL_TO_SWITCH_TO_FOCUS_TASK,60,
 /
 /   alternative measures:
 /  	SPEED_LEVEL, HEIGHT_VARIANCE, DROP_DURATION_VARIANCE, DROP_PERCENTAGE
+/
+/
+/
+RUN_UNTIL_TIME_LIMIT,3600,
 /
 /
 / time window, in ms, over which to average the percentage of time spent with the drop key down
