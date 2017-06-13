@@ -504,14 +504,14 @@ public class Parameters {
           return false;
       } 
           
-      System.out.println("Mode = "+Mode);
+      //System.out.println("Mode = "+Mode);
       long Lag = System.nanoTime() - OldTime;
-      W("TIME="+(Lag / 1000000.0));
+      //W("TIME="+(Lag / 1000000.0));
       OldTime = System.nanoTime();
       
       //W("EXPERIMENT DONE="+ExperimentDone);
-      W("TASK COUNT = "+TaskCount);
-      W("Rep no "+B.RepetitionNo);
+      //W("TASK COUNT = "+TaskCount);
+      //W("Rep no "+B.RepetitionNo);
       
      // W("SurveyArrayList.size()="+SurveyArrayList.size());
 
@@ -521,9 +521,9 @@ public class Parameters {
 
           boolean RunSurvey = false;
           
-          W("BEFORE MODE:"+SurveyCode.BeforeMode);
-          W("FocusTask.SessionNo: "+FocusTask.SessionNo);
-          W("TetrisCode.Tetris.SessionNo: "+TetrisCode.Tetris.SessionNo);
+          //W("BEFORE MODE:"+SurveyCode.BeforeMode);
+          //W("FocusTask.SessionNo: "+FocusTask.SessionNo);
+          //W("TetrisCode.Tetris.SessionNo: "+TetrisCode.Tetris.SessionNo);
           
           if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_LDS) & 
                   (Mode == LDS_MODE) &
@@ -545,7 +545,7 @@ public class Parameters {
 
                   SurveyArrayList.remove(0);
 
-                  W("2 SurveyArrayList.size()="+SurveyArrayList.size());
+                  //W("2 SurveyArrayList.size()="+SurveyArrayList.size());
 
                   if (TaskCount == TaskList.size()) {
                     ExperimentDone = true;
@@ -566,10 +566,16 @@ public class Parameters {
       if(OnlyTetris) {
         SwitchToTetris();
       }
-      
+      //W("Skiptask: "+B.SkipTask);
       if(B.SkipTask){
-          if((TaskCount++ == TaskList.size()-1)){
-              ExperimentDone=true;
+          if(TaskCount<TaskList.size()) TaskCount++; //just to stop it from shooting upwards when the experiment is done
+          //W("taskcount: "+TaskCount);
+          //W("tasklist size: "+TaskList.size());
+          if((TaskCount >= TaskList.size())){
+              g2.setFont(ErrorFont);
+              g2.setPaint(Color.CYAN);
+              DrawString("EXPERIMENT DONE", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
+              return false;
           }
           else{
             SwitchToTetris();
