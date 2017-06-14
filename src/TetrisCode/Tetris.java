@@ -77,7 +77,10 @@ public class Tetris extends Applet{
         private final static int INITIAL_DELAY = 1000;
 	public static byte ROWS = 38; //18
 	public static byte COLUMNS = 10;
-        static String Param_Name = "PARAMETERS";
+        
+        static String Param_Name = "PILOT_TEST_PARAMETERS";
+        
+        //THIS IS CALLED BEFORE CONTROL CODE PARAMETERS CHANGE WHAT IT SHOULD BE
 	static Parameters P = new Parameters(Param_Name);  // creating this will set the values to that in paramters (i think) so set defaults before this)
         TimeInLevelData TILData = new TimeInLevelData(); //uses parameters, so make sure it comes afterwards
         public ArrayList<ArrayList<Long>> TimeInLevelList;
@@ -894,7 +897,7 @@ public class Tetris extends Applet{
             }
             else if(measure.equals("RUN_UNTIL_TIME_LIMIT")){
                 //time limit checker
-                W("critvalue "+CritValue+" < "+((System.nanoTime() - StartTimeInLevel)/1000000000)+" time since start");
+                //W("critvalue "+CritValue+" < "+((System.nanoTime() - StartTimeInLevel)/1000000000)+" time since start");
                 switchTask= ( CritValue < ((System.nanoTime() - StartTimeInLevel)/1000000000));
             }
             //final else to catch any errors
@@ -986,14 +989,32 @@ public class Tetris extends Applet{
         }
         
         public void ComputeScoreAndDelay(int AddedScore) {
-            System.out.println("\nTILLIST SIZE:" + TimeInLevelList.size());
+            //System.out.println("\nTILLIST SIZE:" + TimeInLevelList.size());
             score_label.addValue(AddedScore);
             score = Integer.parseInt(score_label.getText());
             int high_score = high_score_label.getText().length() > 0 ?
 		Integer.parseInt(high_score_label.getText()) : 0;
             if(score > high_score)
 		high_score_label.setText("" + score);
-	    long delay = 1000 - score;
+	    
+            // speed and level code based on section 5.9 and 5.10 of Colin Fahey's Tetris article
+            //   www.colinfahey.com/tetris/tetris.html
+            
+            speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
+            
+            int minD = Parameters.MinimumDelayMilliseconds;
+            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
+            
+            long delay = (long) ((maxD-minD)*(1.0-1.0*speed/Parameters.MaxLevels)+minD);
+            
+            W("speed/Parameters.MaxLevels"+(1.0-1.0*speed/Parameters.MaxLevels));
+            
+            
+            W("delay:" +delay);
+                        
+            //old delay and level code below
+            /*
+            long delay = 1000 - score;
             
             if (delay < Parameters.MinimumDelayMilliseconds) delay = Parameters.MinimumDelayMilliseconds;
             
@@ -1001,6 +1022,7 @@ public class Tetris extends Applet{
             speed = 10 - (delay/100);
             if (speed < 0) speed = 0;
             if (speed > Parameters.MaxLevels) speed = Parameters.MaxLevels;
+            */
             
             if (old_speed != speed){
                 TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000;
@@ -1040,7 +1062,7 @@ public class Tetris extends Applet{
             SizeLastRowRemoved=biggestRow;  //this is returning a number larger than the size of a row, TOO BIG PLS FIX
             RowRemovalQueue=addToQueue(RowRemovalQueue, biggestRowAmount, queue_history);
             removeRow(biggestRow);
-            System.out.println("REMOVING ROW "+biggestRow);
+            //System.out.println("REMOVING ROW "+biggestRow);
             return biggestRowAmount;
         }
         
@@ -1170,7 +1192,7 @@ public class Tetris extends Applet{
 	public void init() {
 		sounds = new TetrisSound(); // NOTE: Must be initialized after Applet fully constructed!
 		installNewPiece();
-                
+                W("\n\n\n\nMAX LEVEL "+P.MaxLevels+"\n\n\n\n");
                 TimeInLevelList = CreateTimeInLevelList(P.MaxLevels);
 
 		pause_resume_butt.setEnabled(false);
