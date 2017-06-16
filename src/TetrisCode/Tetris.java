@@ -443,7 +443,7 @@ public class Tetris extends Applet{
                                     KeyCounter[i] = 0;
                             
                                 try { 
-					sleep(m_fast ? 30 : m_delay);  
+					sleep(m_fast ? Math.min(30,m_delay) : m_delay);  
 				} catch (Exception e) {}
 				if(m_paused) {
 					try {
