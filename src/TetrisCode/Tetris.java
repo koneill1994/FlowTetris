@@ -83,7 +83,7 @@ public class Tetris extends Applet{
         //THIS IS CALLED BEFORE CONTROL CODE PARAMETERS CHANGE WHAT IT SHOULD BE
 	static Parameters P = new Parameters(Param_Name);  // creating this will set the values to that in paramters (i think) so set defaults before this)
         TimeInLevelData TILData = new TimeInLevelData(); //uses parameters, so make sure it comes afterwards
-        public ArrayList<ArrayList<Long>> TimeInLevelList;
+        public ArrayList<ArrayList<Double>> TimeInLevelList;
 
         
         private final static int EMPTY = -1;
@@ -174,7 +174,7 @@ public class Tetris extends Applet{
 	//
 		
         public static long StartTimeInLevel;            
-        long TimeInLevel;
+        double TimeInLevel;
 	int SecondsInCurrentLevel;
         int score;
         int KeyCounter[] = new int[4];
@@ -231,11 +231,11 @@ public class Tetris extends Applet{
             return (TotalRunTime + System.nanoTime() - StartTime)/1000000;
         }
         
-        public ArrayList<ArrayList<Long>> CreateTimeInLevelList(int levelmax){
-            ArrayList<ArrayList<Long>> TILList = new ArrayList<ArrayList<Long>>();
+        public ArrayList<ArrayList<Double>> CreateTimeInLevelList(int levelmax){
+            ArrayList<ArrayList<Double>> TILList = new ArrayList<ArrayList<Double>>();
             for(int i=0; i<=levelmax; i++){
                 System.out.println("Adding Level "+i+" of "+levelmax +" to TILList");
-                TILList.add(new ArrayList<Long>());
+                TILList.add(new ArrayList<Double>());
             }
             return TILList;
         }
@@ -919,13 +919,13 @@ public class Tetris extends Applet{
             return null;
         }
         
-        public ArrayList<ArrayList<Long>> ReturnTILList(){
+        public ArrayList<ArrayList<Double>> ReturnTILList(){
             System.out.println("returning list:");
             //DisplayTimeInLevelList(TimeInLevelList);
             return TimeInLevelList;
         }
         
-	public void DisplayTimeInLevelList(ArrayList<ArrayList<Long>> TimeInLevelList){
+	public void DisplayTimeInLevelList(ArrayList<ArrayList<Double>> TimeInLevelList){
             System.out.println("/");
             for(int i=0; i<TimeInLevelList.size(); i++){
                 System.out.println("Level "+i);
@@ -935,13 +935,13 @@ public class Tetris extends Applet{
             }
         }
         
-        private Long Mean(ArrayList<Long> l){
-            if(l.size()==0) return (long) 0;
-            Long sum = (long) 0;
-            for(Long val: l){
+        private Double Mean(ArrayList<Double> l){
+            if(l.isEmpty()) return (double) 0;
+            Double sum = (double) 0;
+            for(Double val: l){
                 sum+=val;
             }
-            return (long)Math.floor(sum/l.size());
+            return (Double) (sum/l.size());
         }
         
         //remember to add a way to not include the outlier
@@ -952,14 +952,14 @@ public class Tetris extends Applet{
         // the only real unknown edge case is when someone transitions exactly on the crit point        
         
         public void AddDataToTILData(){
-            ArrayList<ArrayList<Long>> TILList = ReturnTILList();
+            ArrayList<ArrayList<Double>> TILList = ReturnTILList();
             System.out.println("\nAdding Data:");
-            //DisplayTimeInLevelList(TILList);
+            DisplayTimeInLevelList(TILList);
             //first, get the average for each level and add them to an arraylist
-            ArrayList<Long> LeveltimeAvg = new ArrayList<Long>();
+            ArrayList<Double> LeveltimeAvg = new ArrayList<Double>();
             
             System.out.println("Leveltime average, size "+TILList.size());
-            for(ArrayList<Long> tl : TILList){ // tl for time list
+            for(ArrayList<Double> tl : TILList){ // tl for time list
                 LeveltimeAvg.add(Mean(tl));
                 System.out.println(Mean(tl));
             }
@@ -1025,7 +1025,7 @@ public class Tetris extends Applet{
             */
             
             if (old_speed != speed){
-                TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000;
+                TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000.0;
                 TimeInLevelList.get((int)old_speed).add(TimeInLevel);
                 //DisplayTimeInLevelList(TimeInLevelList);
                 StartTimeInLevel = System.nanoTime();

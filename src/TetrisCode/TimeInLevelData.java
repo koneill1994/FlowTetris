@@ -150,12 +150,12 @@ public class TimeInLevelData {
     
     //a function to access member functions from external locations
     // just to keep things squeaky clean
-    public void AddSubjectData(String Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
+    public void AddSubjectData(String Subject_Number, ArrayList<Double> LevelsAvg, ArrayList<Long> LevelsCriterion){
         AddLineToFile(FileName, Subject_Number, LevelsAvg, LevelsCriterion);
         //make sure to uncommment this when you fix the bug
     }
     
-    public void AddLineToFile(String FileName, String Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
+    public void AddLineToFile(String FileName, String Subject_Number, ArrayList<Double> LevelsAvg, ArrayList<Long> LevelsCriterion){
         try{
             FileWriter fileWriter = new FileWriter(FileName,true);
             BufferedWriter BW = new BufferedWriter(fileWriter);
@@ -164,7 +164,7 @@ public class TimeInLevelData {
             
             //W("LEVELS_AVERAGE");
             String Line = ""+Subject_Number+Tab;
-            for(Long val : LevelsAvg){
+            for(Double val : LevelsAvg){
                Line+=""+val+Tab;
                //W(""+val);
             }
