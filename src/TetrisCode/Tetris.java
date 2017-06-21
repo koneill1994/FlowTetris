@@ -223,7 +223,7 @@ public class Tetris extends Applet{
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
                 +speed+Tab+accumulationHeight+Tab+computeVariance(HeightQueue,queue_history)
                 +Tab+DropDurationQueue.peek()+Tab+ computeVariance(DropDurationQueue,queue_history)
-                +Tab+drop_percent);
+                +Tab+drop_percent+Tab+ControlCode.SubjNo);
         }
         
         //returns current time from start in ms
@@ -897,8 +897,8 @@ public class Tetris extends Applet{
             }
             else if(measure.equals("RUN_UNTIL_TIME_LIMIT")){
                 //time limit checker
-                //W("critvalue "+CritValue+" < "+((System.nanoTime() - StartTimeInLevel)/1000000000)+" time since start");
-                switchTask= ( CritValue < ((System.nanoTime() - StartTimeInLevel)/1000000000));
+                W("critvalue "+CritValue+" < "+((System.nanoTime() - StartTime)/1000000000)+" time since start");
+                switchTask= ( CritValue < ((System.nanoTime() - StartTime)/1000000000));
             }
             //final else to catch any errors
             else{
@@ -1118,11 +1118,9 @@ public class Tetris extends Applet{
                                         SwitchToFocusTask();
                                     }
                                     
-                                SwitchBasedOnCondition(SwitchCondition_Measure, SwitchCondition_Value, SwitchCondition_Comparison);                                    
-
                                 }
-                                
-                                
+                                // important ^^ does not trigger if you don't set MaxSecondsInLevel
+                                SwitchBasedOnCondition(SwitchCondition_Measure, SwitchCondition_Value, SwitchCondition_Comparison); 
                                 
                                 
                                 

@@ -30,9 +30,9 @@ public class TimeInLevelData {
     
     public class TimeInLevelSubject{
         String Subject_Number;
-        ArrayList<Long> LevelsAvg;
+        ArrayList<Double> LevelsAvg;
         ArrayList<Long> LevelsCriterion;
-        public TimeInLevelSubject(String Subject_Number, ArrayList<Long> LevelsAvg, ArrayList<Long> LevelsCriterion){
+        public TimeInLevelSubject(String Subject_Number, ArrayList<Double> LevelsAvg, ArrayList<Long> LevelsCriterion){
             this.LevelsAvg = LevelsAvg;
             this.LevelsCriterion = LevelsCriterion;   
             this.Subject_Number = Subject_Number;
@@ -77,13 +77,13 @@ public class TimeInLevelData {
         return sum/l.size();
     }
     
-    public double StandardDeviation(ArrayList<Long> l){
-        double mean = Mean(l);
+    public double StandardDeviation(ArrayList<Double> l){
+        double mean = Meanfp(l);
         
         ArrayList<Double> sd_list = new ArrayList<Double>();
         
-        for(Long val: l){
-            if(val==null) val=(long)0;
+        for(Double val: l){
+            if(val==null) val= (Double) 0.0;
             sd_list.add(Math.pow((val-mean),2));
         }
         
@@ -98,23 +98,23 @@ public class TimeInLevelData {
         ArrayList<Long> LevelsCriterion = new ArrayList<Long>();
         
         // initialize an ArrayList (TILList) to hold all previous participants' average time in level values
-        ArrayList<ArrayList<Long>> TILList = new ArrayList<ArrayList<Long>>();
+        ArrayList<ArrayList<Double>> TILList = new ArrayList<ArrayList<Double>>();
         for(int i=0; i<=Parameters.MaxLevels; i++){
-            TILList.add(new ArrayList<Long>());
+            TILList.add(new ArrayList<Double>());
         }
         
         // populate TILList with all the avg level times of previous participants
         for(TimeInLevelSubject subj: TimeInLevelTable){
             for(int i=0; i<TILList.size(); i++){
-                ArrayList<Long> tmp = TILList.get(i);
+                ArrayList<Double> tmp = TILList.get(i);
                 tmp.add(subj.LevelsAvg.get(i));
             }
         }
         
         // generate the mean and standard deviation for each level
         // and them use them to generate the critical points
-        for(ArrayList<Long> l: TILList){
-            double mean = Mean(l);
+        for(ArrayList<Double> l: TILList){
+            double mean = Meanfp(l);
             double sd = StandardDeviation(l);
             Long critp = CriticalPoint(mean, sd, CritPoint_sd_coeff, CritPoint_constant);
             LevelsCriterion.add(critp);
@@ -196,12 +196,12 @@ public class TimeInLevelData {
             throw new Error("Not the correct number of columns");
         }
         
-        ArrayList<Long> LevelsAvg=new ArrayList<Long>();
+        ArrayList<Double> LevelsAvg=new ArrayList<Double>();
         ArrayList<Long> LevelsCriterion=new ArrayList<Long>();
         
         //adding first 1 to offset for subject # column, and second 1 to offset for an off-by-one error (levels starts at 0, not 1)
         for(String val : Arrays.copyOfRange(items, 1, 1+Parameters.MaxLevels+1)){
-            LevelsAvg.add(Long.valueOf(val));
+            LevelsAvg.add(Double.valueOf(val));
         }
         
         for(String val : Arrays.copyOfRange(items, 1+Parameters.MaxLevels+1, 1+(2*Parameters.MaxLevels)+1)){
