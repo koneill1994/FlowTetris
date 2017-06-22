@@ -22,7 +22,7 @@ public class TimeInLevelData {
     
     ArrayList<Long> critpoints;
     
-    private static String FileName = "DATA/" + "TimeInLevelData" + ".csv";
+    private static String FileName = "EXPERIMENT/DATA/" + "TimeInLevelData" + ".csv";
     
     private Long CritPoint_sd_coeff=(long)5;
     private Long CritPoint_constant=(long)10;

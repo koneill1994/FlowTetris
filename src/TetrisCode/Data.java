@@ -30,7 +30,7 @@ public class Data {
             String PreambleStr =
                    SubjNo + Tab + ExpCond + Tab + Parameters.ParameterFile + Tab;
 
-            String FileName = "DATA/" + "MYDATA" + ".csv";
+            String FileName = "EXPERIMENT/DATA/" + "MYDATA" + ".csv";
 
             File file = new File(FileName);
 
