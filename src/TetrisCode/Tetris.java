@@ -219,7 +219,7 @@ public class Tetris extends Applet{
         }
         
         private void LogEvent(String event){
-            Double drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime);
+            Double drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000);
 
             F.LogEvent(""+ CurrentTime() + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
@@ -762,7 +762,7 @@ public class Tetris extends Applet{
         }
         
         // helper function to sanitize the q and return the percent
-        Double DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time, long DownStartTime, long DownEndTime){
+        Double DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time){
             
             // if we haven't had time_window's worth of gameplay yet
             // output null
@@ -891,7 +891,7 @@ public class Tetris extends Applet{
                 switchTask=ConditionCompare(computeVariance(DropDurationQueue,queue_history),CritValue,Comparison);
             }
             else if(measure.equals("DROP_PERCENTAGE")){
-                switchTask=ConditionCompare(DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000, DownStartTime, DownEndTime),
+                switchTask=ConditionCompare(DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000),
                     CritValue,Comparison);
             }
             else if(measure.equals("TIME_IN_LEVEL")){
