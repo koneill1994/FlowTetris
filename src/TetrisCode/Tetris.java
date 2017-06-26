@@ -52,7 +52,8 @@ public class Tetris extends Applet{
         long DownStartTime = LongMin;
         long DownEndTime = LongMin;
 
-                
+        long LastButtonPressTime =0;
+        long LastButtonUnpressTime = 0;
         
         
         private class Tuple<X,Y>{
@@ -65,6 +66,7 @@ public class Tetris extends Applet{
         }
         
         LinkedList<Tuple<Long,Long>> DownQueue = new LinkedList<Tuple<Long,Long>>();
+        LinkedList<Tuple<Long,Long>> KeyUpQueue = new LinkedList<Tuple<Long,Long>>();
         // tuple (start_time, end_time)
         static long DropPercentageTimeWindow = 10*1000; // in ms
         
@@ -1192,7 +1194,7 @@ public class Tetris extends Applet{
 		installNewPiece();
                 W("\n\n\n\nMAX LEVEL "+P.MaxLevels+"\n\n\n\n");
                 TimeInLevelList = CreateTimeInLevelList(P.MaxLevels);
-
+                
 		pause_resume_butt.setEnabled(false);
 		start_newgame_butt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -1214,6 +1216,10 @@ public class Tetris extends Applet{
 		//create key listener for rotating, moving left, moving right
 		KeyListener key_listener = new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+                            
+                                LastButtonUnpressTime=(System.nanoTime()- StartTime)/1000000;
+                                KeyUpQueue.add(new Tuple<Long,Long>(LastButtonUnpressTime,LastButtonPressTime));
+                            
 				if(timer.isPaused()) //don't do anything if game is paused
 					return;
 				if (e.getKeyCode() == 37 || e.getKeyCode() == 39) { //left or right arrow pressed
@@ -1260,6 +1266,9 @@ public class Tetris extends Applet{
 			}
                         
                         public void keyReleased(KeyEvent e) {
+                            
+                            LastButtonUnpressTime=(System.nanoTime()- StartTime)/1000000;
+                            
                             if (e.getKeyCode() == 40) { //down arrow pressed; drop piece
                                 timer.setFast(false);
                                 // down queue stuff
