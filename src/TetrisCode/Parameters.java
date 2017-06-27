@@ -144,6 +144,10 @@ public class Parameters {
                     Tetris.DropPercentageTimeWindow = GetInteger(2);
                 } else
                     
+                if (Cmd.equals("KEY_UP_TIME_WINDOW")) {
+                    Tetris.KeyUpTimeWindow = GetInteger(2);
+                } else
+                    
                 if (Cmd.equals("QUEUE_HISTORY_LENGTH")) {
                     Tetris.queue_history = GetInteger(2);
                 } else

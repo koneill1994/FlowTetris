@@ -69,6 +69,7 @@ public class Tetris extends Applet{
         LinkedList<Tuple<Long,Long>> KeyUpQueue = new LinkedList<Tuple<Long,Long>>();
         // tuple (start_time, end_time)
         static long DropPercentageTimeWindow = 10*1000; // in ms
+        static long KeyUpTimeWindow = 10*1000; // in ms
         
         public static String SwitchCondition_Measure;
         public static Double SwitchCondition_Value = 0D;
@@ -523,7 +524,7 @@ public class Tetris extends Applet{
                                 System.out.println("MaxSecondsInLevel: "+Parameters.MaxSecondsInLevel);
                                 System.out.println("TimeLimit="+(Parameters.TimeLimitInSeconds)); // * 1000000000));
                                 System.out.println("RunTime="+RunTime);
-                                System.exit(100);
+                                System.exit(121);
                             }
                         }
                         frame.setSize(489, 841);
@@ -777,7 +778,7 @@ public class Tetris extends Applet{
         
         void DisplayDropPercentList(LinkedList<Tuple<Long,Long>> q, long time_window){
 
-            System.out.println("\nDropPercent, size "+q.size());
+            System.out.println("\nQueue List, size "+q.size());
             for(Tuple<Long,Long> e: q){
                 System.out.println("("+e.x +"," +e.y+")");
             }
@@ -992,6 +993,7 @@ public class Tetris extends Applet{
         
         public void ComputeScoreAndDelay(int AddedScore) {
             //System.out.println("\nTILLIST SIZE:" + TimeInLevelList.size());
+            //  DisplayDropPercentList(KeyUpQueue, KeyUpTimeWindow);  // causes a ConcurrentModificationException, apparently even the tetris half is multithreaded
             score_label.addValue(AddedScore);
             score = Integer.parseInt(score_label.getText());
             int high_score = high_score_label.getText().length() > 0 ?
