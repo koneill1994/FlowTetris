@@ -13,7 +13,7 @@ public class ControlCode extends JComponent
          WindowListener,
          WindowFocusListener, 
          WindowStateListener {
-  
+   
   Tetris TetrisProgram = new Tetris();
     
   int IndentX = 300;
@@ -267,7 +267,7 @@ public class ControlCode extends JComponent
   }
 
    public ControlCode(JFrame FrameIn) throws AWTException, IOException, InterruptedException {
-
+       
     EntryStr[0] = "JUNK";
     EntryStr[1] = "NONE";
     EntryStr[2] = "DEBUG_TUTORIAL";

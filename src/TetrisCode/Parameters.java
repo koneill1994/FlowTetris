@@ -152,6 +152,12 @@ public class Parameters {
                     Tetris.queue_history = GetInteger(2);
                 } else
                     
+                if (Cmd.equals("ADAPTIVE_FALL_SPEED_BOUNDS")) {
+                    Tetris.AdaptiveFallSpeedLowerBound = (Double) (GetInteger(2)/100.0);
+                    Tetris.AdaptiveFallSpeedLowerBound = (Double) (GetInteger(3)/100.0);
+                    //GetInteger(3));
+                } else
+                    
                 // for example:  (put in actual documentation later)
                     
                 // SIZE_LAST_ROW_REMOVED,8,<,

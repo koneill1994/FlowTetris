@@ -54,8 +54,13 @@ public class Tetris extends Applet{
 
         long LastButtonPressTime =0;
         long LastButtonUnpressTime = 0;
+        Double UnpressPercent=0.0;
+                
+        static Double AdaptiveFallSpeedLowerBound;
+        static Double AdaptiveFallSpeedUpperBound;
         
-        
+        static long PersistantDelay=0;
+                
         private class Tuple<X,Y>{
             public final X x;
             public final Y y;
@@ -900,7 +905,7 @@ public class Tetris extends Applet{
             }
             else if(measure.equals("RUN_UNTIL_TIME_LIMIT")){
                 //time limit checker
-                W("critvalue "+CritValue+" < "+((System.nanoTime() - StartTime)/1000000000)+" time since start");
+                //W("critvalue "+CritValue+" < "+((System.nanoTime() - StartTime)/1000000000)+" time since start");
                 switchTask= ( CritValue < ((System.nanoTime() - StartTime)/1000000000));
             }
             //final else to catch any errors
@@ -991,9 +996,17 @@ public class Tetris extends Applet{
             
         }
         
+        public long DelayFromUnpressPercent(long delay, Double percent, Double lb, Double ub){
+            long d = 0;
+            //long  
+            
+            return d;
+        }
+        
         public void ComputeScoreAndDelay(int AddedScore) {
             //System.out.println("\nTILLIST SIZE:" + TimeInLevelList.size());
             //  DisplayDropPercentList(KeyUpQueue, KeyUpTimeWindow);  // causes a ConcurrentModificationException, apparently even the tetris half is multithreaded
+            System.out.println(UnpressPercent);
             score_label.addValue(AddedScore);
             score = Integer.parseInt(score_label.getText());
             int high_score = high_score_label.getText().length() > 0 ?
@@ -1219,9 +1232,13 @@ public class Tetris extends Applet{
 		KeyListener key_listener = new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
                             
-                                LastButtonUnpressTime=(System.nanoTime()- StartTime)/1000000;
+                                LastButtonPressTime=(System.nanoTime()- StartTime)/1000000;
                                 KeyUpQueue.add(new Tuple<Long,Long>(LastButtonUnpressTime,LastButtonPressTime));
-                            
+                                if(KeyUpQueue.size()>0){
+                                  UnpressPercent=DropPercentSanitized(KeyUpQueue, KeyUpTimeWindow, (System.nanoTime()-StartTime)/1000000);
+                                  W("unpress_percent "+UnpressPercent);
+                                }
+                                
 				if(timer.isPaused()) //don't do anything if game is paused
 					return;
 				if (e.getKeyCode() == 37 || e.getKeyCode() == 39) { //left or right arrow pressed
@@ -1285,6 +1302,7 @@ public class Tetris extends Applet{
                             }
                             if (e.getKeyCode() == KeyEvent.VK_CONTROL) ControlKeyPressed = false;
                             LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
+                            
                         }
                         
 		};
@@ -1357,7 +1375,7 @@ public class Tetris extends Applet{
 
 	
 	public static void TetrisMain() { //main(String[] args) {
-
+           
 		frame = new Frame("Tetris");
 		Tetris tetris = new Tetris();
 		frame.add(tetris);
