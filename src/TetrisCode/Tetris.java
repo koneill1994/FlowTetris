@@ -740,7 +740,7 @@ public class Tetris extends Applet{
             for(Tuple<Long,Long> e: q){
                 //if it starts after the start of the window:
                 if(e.x>current_time-time_window){
-                    if(e.y==LongMin){
+                    if(e.y==LongMin || e.y==0){
                         output.add(new Tuple<Long,Long>(e.x,current_time));
                     }
                     // if it ends before the current time
@@ -762,8 +762,8 @@ public class Tetris extends Applet{
             for(Tuple<Long,Long> e: q){
                 sum+=(e.y-e.x); //duration of a drop event                
             }
-            //System.out.println(sum);
-            //System.out.println(time_window);
+            System.out.println(sum);
+            System.out.println(time_window);
             return sum/time_window; //divide by time span to get drop percentage (between 0 and 1)
         }
         
@@ -777,6 +777,11 @@ public class Tetris extends Applet{
             }
             
             LinkedList<Tuple<Long,Long>> q_new = ContainWithinTimeWindow(q,current_time,time_window);
+            
+            W("Q");
+            DisplayDropPercentList(q, time_window);
+            W("Q_NEW");
+            DisplayDropPercentList(q_new, time_window);
             
             return (double) DropPercentageCalculate(q_new, time_window);
         }
@@ -1019,6 +1024,7 @@ public class Tetris extends Applet{
             //System.out.println("\nTILLIST SIZE:" + TimeInLevelList.size());
             //  DisplayDropPercentList(KeyUpQueue, KeyUpTimeWindow);  // causes a ConcurrentModificationException, apparently even the tetris half is multithreaded
             System.out.println(UnpressPercent);
+            if(UnpressPercent != null && UnpressPercent>1.0) System.out.println("PERCENT ABOVE 1.0");
             score_label.addValue(AddedScore);
             score = Integer.parseInt(score_label.getText());
             int high_score = high_score_label.getText().length() > 0 ?
