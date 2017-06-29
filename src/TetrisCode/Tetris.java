@@ -56,10 +56,10 @@ public class Tetris extends Applet{
         long LastButtonUnpressTime = 0;
         Double UnpressPercent=0.0;
                 
-        static Double AdaptiveFallSpeedLowerBound;
-        static Double AdaptiveFallSpeedUpperBound;
+        static Double AdaptiveFallSpeedLowerBound = 0.5;
+        static Double AdaptiveFallSpeedUpperBound = 0.5;
         
-        static long PersistantDelay=0;
+        static long PersistentDelay=1000; //start at 1 second initially
                 
         private class Tuple<X,Y>{
             public final X x;
@@ -997,8 +997,20 @@ public class Tetris extends Applet{
         }
         
         public long DelayFromUnpressPercent(long delay, Double percent, Double lb, Double ub){
-            long d = 0;
-            //long  
+            if(percent==null) return delay;
+            W("lb: "+lb+", ub: "+ub);
+            long d = delay;
+            long iterate_value = 10; // 10 ms iteration value
+            if(percent>ub){  // the player is pressing less, so they need more time to think
+                d+=iterate_value;
+            }
+            else if(percent<lb){ // the player is pressing more, they need more of a challenge
+                d-=iterate_value;
+            }
+            
+            //sanitize the delay so it doesn't get too big or too small
+            if(d<Parameters.MinimumDelayMilliseconds) d=Parameters.MinimumDelayMilliseconds;
+            //if(d>1000) d=1000;
             
             return d;
         }
@@ -1018,13 +1030,16 @@ public class Tetris extends Applet{
             //   www.colinfahey.com/tetris/tetris.html
             
             speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
-            
+            /*
             int minD = Parameters.MinimumDelayMilliseconds;
             int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
             
             long delay = (long) ((maxD-minD)*(1.0-1.0*speed/Parameters.MaxLevels)+minD);
+            */
+            long delay = DelayFromUnpressPercent(PersistentDelay,UnpressPercent,AdaptiveFallSpeedLowerBound,AdaptiveFallSpeedUpperBound);
+            PersistentDelay=delay;
             
-            W("speed/Parameters.MaxLevels"+(1.0-1.0*speed/Parameters.MaxLevels));
+            //W("speed/Parameters.MaxLevels"+(1.0-1.0*speed/Parameters.MaxLevels));
             
             
             W("delay:" +delay);
