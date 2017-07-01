@@ -753,7 +753,8 @@ public class Tetris extends Applet{
                     output.add(new Tuple<Long,Long>(current_time-time_window,e.y));
                 }
             }
-            //DisplayDropPercentList(output, time_window);
+            //DisplayDropPercentList(q, time_window,"q");
+            //DisplayDropPercentList(output, time_window,"output");
             return output;
         }
         
@@ -767,6 +768,22 @@ public class Tetris extends Applet{
             return sum/time_window; //divide by time span to get drop percentage (between 0 and 1)
         }
         
+        float UnPressPercentageCalculate(LinkedList<Tuple<Long,Long>> q, long time_window){
+            float sum=0;
+            for(Tuple<Long,Long> e: q){
+                sum+=(e.y-e.x); //duration of a drop event                
+            }
+            DisplayDropPercentList(q,time_window,"calc");
+            System.out.println("Unpress sum: " +sum);
+            System.out.println("Unpress time_window: "+time_window);
+            System.out.println("Unpress queuelength: "+LengthOfQueue(q));
+            return sum/time_window; //divide by time span to get drop percentage (between 0 and 1)
+        }
+        
+        Long LengthOfQueue(LinkedList<Tuple<Long,Long>> q){
+            return q.get(q.size()-1).y-q.get(0).x;
+        }
+        
         // helper function to sanitize the q and return the percent
         Double DropPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time){
             
@@ -777,13 +794,31 @@ public class Tetris extends Applet{
             }
             
             LinkedList<Tuple<Long,Long>> q_new = ContainWithinTimeWindow(q,current_time,time_window);
-            
-            W("Q");
-            DisplayDropPercentList(q, time_window);
-            W("Q_NEW");
-            DisplayDropPercentList(q_new, time_window);
+            //W("Q");
+            //DisplayDropPercentList(q, time_window);
+            //W("Q_NEW");
+            //DisplayDropPercentList(q_new, time_window);
             
             return (double) DropPercentageCalculate(q_new, time_window);
+        }
+        
+       // different function just to make debugging easier
+        Double UnpressPercentSanitized(LinkedList<Tuple<Long,Long>> q, long time_window, long current_time){
+            
+            // if we haven't had time_window's worth of gameplay yet
+            // output null
+            if((current_time-time_window)<=0){
+                return null;
+            }
+            
+            LinkedList<Tuple<Long,Long>> q_new = ContainWithinTimeWindow(q,current_time,time_window);
+            //DisplayDropPercentList(q_new, time_window,"f");
+            //W("Q");
+            //DisplayDropPercentList(q, time_window);
+            //W("Q_NEW");
+            //DisplayDropPercentList(q_new, time_window);
+            
+            return (double) UnPressPercentageCalculate(q_new, time_window);
         }
         
         void DisplayDropPercentList(LinkedList<Tuple<Long,Long>> q, long time_window){
@@ -800,6 +835,23 @@ public class Tetris extends Applet{
             }
             System.out.println("window: "+time_window);
             System.out.println("\n");
+        }
+        
+        //overloaded method to add a tag
+        void DisplayDropPercentList(LinkedList<Tuple<Long,Long>> q, long time_window, String tag){
+
+            System.out.println(tag+"\n"+tag+" Queue List, size "+q.size());
+            for(Tuple<Long,Long> e: q){
+                System.out.println(tag+" ("+e.x +"," +e.y+")");
+            }
+            if(q.size()>0){
+                System.out.println(tag+" Length: "+ (q.getLast().y-q.getFirst().x));
+            }
+            else{
+                System.out.println(tag+" Length: 0");
+            }
+            System.out.println(tag+" window: "+time_window);
+            System.out.println(tag+" \n");
         }
         
 	private int computeAccumulationHeight() {
@@ -1256,7 +1308,9 @@ public class Tetris extends Applet{
                                 LastButtonPressTime=(System.nanoTime()- StartTime)/1000000;
                                 KeyUpQueue.add(new Tuple<Long,Long>(LastButtonUnpressTime,LastButtonPressTime));
                                 if(KeyUpQueue.size()>0){
-                                  UnpressPercent=DropPercentSanitized(KeyUpQueue, KeyUpTimeWindow, (System.nanoTime()-StartTime)/1000000);
+                                  KeyUpQueue = ContainWithinTimeWindow(KeyUpQueue, (System.nanoTime()-StartTime)/1000000,KeyUpTimeWindow);
+                                  //DisplayDropPercentList(KeyUpQueue, KeyUpTimeWindow,"outside");
+                                  UnpressPercent=UnpressPercentSanitized(KeyUpQueue, KeyUpTimeWindow, (System.nanoTime()-StartTime)/1000000);
                                   W("unpress_percent "+UnpressPercent);
                                 }
                                 
