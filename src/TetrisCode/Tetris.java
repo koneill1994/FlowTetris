@@ -55,6 +55,8 @@ public class Tetris extends Applet{
         long LastButtonPressTime =0;
         long LastButtonUnpressTime = 0;
         Double UnpressPercent=0.0;
+        
+        static String Adaptive_Delay_Mode=null;
                 
         static Double AdaptiveFallSpeedLowerBound = 0.5;
         static Double AdaptiveFallSpeedUpperBound = 0.5;
@@ -765,8 +767,8 @@ public class Tetris extends Applet{
             for(Tuple<Long,Long> e: q){
                 sum+=(e.y-e.x); //duration of a drop event                
             }
-            System.out.println(sum);
-            System.out.println(time_window);
+            //System.out.println(sum);
+            //System.out.println(time_window);
             return sum/time_window; //divide by time span to get drop percentage (between 0 and 1)
         }
         
@@ -940,7 +942,9 @@ public class Tetris extends Applet{
             // if its true set switchTask to true
             //
             //System.nanoTime()-StartTime)/1000000
-            
+            if(measure==null){
+                System.out.println("ERROR, measure has not been set");
+            }
             
             
             if(measure.equals("SIZE_LAST_ROW_REMOVED")){
@@ -1055,7 +1059,7 @@ public class Tetris extends Applet{
             
         }
         
-        public long DelayFromUnpressPercent(long delay, Double percent, Double lb, Double ub){
+        public long DelayFromUnpressPercentBounds(long delay, Double percent, Double lb, Double ub){
             if(percent==null) return delay;
             W("lb: "+lb+", ub: "+ub);
             long d = delay;
@@ -1074,6 +1078,22 @@ public class Tetris extends Applet{
             return d;
         }
         
+        public long DelayDromUnpressPercentLinear(long delay, Double percent){
+            long d = delay;
+            
+            if(percent==null) return d;
+                        
+            
+            speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
+            
+            int minD = Parameters.MinimumDelayMilliseconds;
+            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
+            
+            d = (long) ((maxD-minD)*(percent)+minD);
+            
+            return d;
+        }
+        
         public void ComputeScoreAndDelay(int AddedScore) {
             //System.out.println("\nTILLIST SIZE:" + TimeInLevelList.size());
             //  DisplayDropPercentList(KeyUpQueue, KeyUpTimeWindow);  // causes a ConcurrentModificationException, apparently even the tetris half is multithreaded
@@ -1086,18 +1106,26 @@ public class Tetris extends Applet{
             if(score > high_score)
 		high_score_label.setText("" + score);
 	    
+            long delay=1000;  // should probably make this set in parameters at some point
+            
             // speed and level code based on section 5.9 and 5.10 of Colin Fahey's Tetris article
             //   www.colinfahey.com/tetris/tetris.html
             
             speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
-            /*
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
-            
-            long delay = (long) ((maxD-minD)*(1.0-1.0*speed/Parameters.MaxLevels)+minD);
-            */
-            long delay = DelayFromUnpressPercent(PersistentDelay,UnpressPercent,AdaptiveFallSpeedLowerBound,AdaptiveFallSpeedUpperBound);
-            PersistentDelay=delay;
+            if(Adaptive_Delay_Mode==null){
+                int minD = Parameters.MinimumDelayMilliseconds;
+                int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
+                
+                delay = (long) ((maxD-minD)*(1.0-1.0*speed/Parameters.MaxLevels)+minD);
+            }
+            if(Adaptive_Delay_Mode=="BOUNDED"){
+                delay = DelayFromUnpressPercentBounds(PersistentDelay,UnpressPercent,AdaptiveFallSpeedLowerBound,AdaptiveFallSpeedUpperBound);
+                PersistentDelay=delay;
+            }
+            else if(Adaptive_Delay_Mode=="Linear"){
+                delay = DelayDromUnpressPercentLinear(PersistentDelay,UnpressPercent);
+                PersistentDelay=delay;
+            }
             
             //W("speed/Parameters.MaxLevels"+(1.0-1.0*speed/Parameters.MaxLevels));
             

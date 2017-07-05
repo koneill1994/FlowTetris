@@ -1,4 +1,4 @@
-/this is file PARAMETERS.txt !
+/this is file PILOT_TEST_PARAMETERS.txt !
 /
 DEBUG_MODE,TRUE,
 /
@@ -51,7 +51,12 @@ MINIMUM_DELAY_MILLISECONDS,10,
 /MINIMUM_DELAY_MILLISECONDS,1,
 /
 /
-ADAPTIVE_FALL_SPEED_BOUNDS,25,75, 
+/
+// Uncomment this to make the zoid-fall-speed a function of the player's keypress activity of the preceding time window
+ADAPTIVE_FALL_SPEED_LINEAR,
+/
+/ Uncomment this to make the zoid-fall-speed adjusted slowly based on whether or not the player presses keys more or less often than they did in the preceding time window
+/ADAPTIVE_FALL_SPEED_BOUNDS,25,75, 
 /
 /
 /
@@ -67,7 +72,9 @@ MAXIMUM_LEVEL,20,
 /
 / stop condition based on database of previous times spent in each level
 /
-/TIME_IN_LEVEL,
+TIME_IN_LEVEL,
+/
+/
 /
 / stop_condition,value,comparison
 / "when the size of the last row removed is greater than 1, switch tasks"

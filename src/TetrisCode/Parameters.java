@@ -153,9 +153,14 @@ public class Parameters {
                 } else
                     
                 if (Cmd.equals("ADAPTIVE_FALL_SPEED_BOUNDS")) {
+                    Tetris.Adaptive_Delay_Mode="BOUNDED";
                     Tetris.AdaptiveFallSpeedLowerBound = (Double) (GetInteger(2)/100.0);
                     Tetris.AdaptiveFallSpeedLowerBound = (Double) (GetInteger(3)/100.0);
                     //GetInteger(3));
+                } else
+                    
+                if (Cmd.equals("ADAPTIVE_FALL_SPEED_LINEAR")) {
+                    Tetris.Adaptive_Delay_Mode="LINEAR";
                 } else
                     
                 // for example:  (put in actual documentation later)
@@ -203,6 +208,7 @@ public class Parameters {
                if (Cmd.equals("RUN_UNTIL_TIME_LIMIT")){
                    Tetris.SwitchCondition_Measure = Cmd;
                    Tetris.SwitchCondition_Value = (double) GetInteger(2);
+                   W("SCM HAS BEEN SET TO "+Cmd+"SO IT SHOULD BE"+Tetris.SwitchCondition_Measure);
                } else
                     
 ////////////////////////////////////////////////////////////////////////////////                    
