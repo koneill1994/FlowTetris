@@ -93,6 +93,8 @@ public class Tetris extends Applet{
         TimeInLevelData TILData = new TimeInLevelData(); //uses parameters, so make sure it comes afterwards
         public ArrayList<ArrayList<Double>> TimeInLevelList;
 
+        long tmp_start_time=0;
+        long tmp_unpress_time=0;
         
         private final static int EMPTY = -1;
 	//private final static int DELETED_ROWS_PER_LEVEL = 5;
@@ -730,7 +732,7 @@ public class Tetris extends Applet{
                     output.add(new Tuple<Long,Long>(e.x,e.y));
                 }
             }
-//            DisplayDropPercentList(output, time_window);
+//            //DisplayDropPercentList(output, time_window);
             return output;
         }
         
@@ -773,10 +775,10 @@ public class Tetris extends Applet{
             for(Tuple<Long,Long> e: q){
                 sum+=(e.y-e.x); //duration of a drop event                
             }
-            DisplayDropPercentList(q,time_window,"calc");
-            System.out.println("Unpress sum: " +sum);
-            System.out.println("Unpress time_window: "+time_window);
-            System.out.println("Unpress queuelength: "+LengthOfQueue(q));
+            //DisplayDropPercentList(q,time_window,"calc");
+            //System.out.println("Unpress sum: " +sum);
+            //System.out.println("Unpress time_window: "+time_window);
+            //System.out.println("Unpress queuelength: "+LengthOfQueue(q));
             return sum/time_window; //divide by time span to get drop percentage (between 0 and 1)
         }
         
@@ -1242,6 +1244,7 @@ public class Tetris extends Applet{
 		pause_resume_butt.validate();
 		sounds.playSoundtrack();
                 StartTimeInLevel = System.nanoTime();
+                LogEvent("start_game");
 	}
 	
 	private void newGame() {
@@ -1256,6 +1259,7 @@ public class Tetris extends Applet{
 		StartTime = System.nanoTime();
                 GameStarted = true;
                 TotalRunTime = 0;
+                LogEvent("new_game");
 		startGame();
 	}
 	
@@ -1304,9 +1308,20 @@ public class Tetris extends Applet{
 		//create key listener for rotating, moving left, moving right
 		KeyListener key_listener = new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-                            
+                                long tmp = LastButtonPressTime;
                                 LastButtonPressTime=(System.nanoTime()- StartTime)/1000000;
-                                KeyUpQueue.add(new Tuple<Long,Long>(LastButtonUnpressTime,LastButtonPressTime));
+                                if(LastButtonPressTime!=0 && LastButtonUnpressTime!=0)
+                                    KeyUpQueue.add(new Tuple<Long,Long>(LastButtonUnpressTime,LastButtonPressTime));
+                                
+                                LastButtonUnpressTime=0;  // this is just asking for trouble
+                                LastButtonPressTime=0;    // but its for bugfixing purposes so its ok
+                                //W(""+tmp+","+LastButtonUnpressTime);
+                                
+                                
+                                if(StartTime != tmp_start_time)
+                                    W("START TIME CHANGED\n\n\n"+StartTime+","+tmp_start_time+"\n\n\n\n\n");
+                                tmp_start_time = StartTime;
+                                
                                 if(KeyUpQueue.size()>0){
                                   KeyUpQueue = ContainWithinTimeWindow(KeyUpQueue, (System.nanoTime()-StartTime)/1000000,KeyUpTimeWindow);
                                   //DisplayDropPercentList(KeyUpQueue, KeyUpTimeWindow,"outside");
@@ -1363,6 +1378,10 @@ public class Tetris extends Applet{
                             
                             LastButtonUnpressTime=(System.nanoTime()- StartTime)/1000000;
                             
+                            if(LastButtonUnpressTime == tmp_unpress_time)
+                                    W("UNPRESS IDENTICAL\n\n\n"+LastButtonUnpressTime+","+tmp_unpress_time+"\n\n\n\n\n");
+                            tmp_unpress_time = LastButtonUnpressTime;
+                            //W("Set unpress at "+LastButtonUnpressTime);
                             if (e.getKeyCode() == 40) { //down arrow pressed; drop piece
                                 timer.setFast(false);
                                 // down queue stuff
