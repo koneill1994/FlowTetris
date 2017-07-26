@@ -98,6 +98,8 @@ public class Tetris extends Applet{
         long tmp_start_time=0;
         long tmp_unpress_time=0;
         
+        int PreviousScoreSystemControl;
+        
         private final static int EMPTY = -1;
 	//private final static int DELETED_ROWS_PER_LEVEL = 5;
 	private final static Color PIECE_COLORS[] = {
@@ -1092,6 +1094,44 @@ public class Tetris extends Applet{
             d = (long) ((maxD-minD)*(percent)+minD);
             
             return d;
+        }
+        
+        public long SetDelaySystemControl(int score, long delay){
+            //PreviousScoreSystemControl
+            long output=delay;
+            if(score<PreviousScoreSystemControl){
+                //output = f(score)
+                // ^ set this to be the opposite of player control
+            }
+            
+            PreviousScoreSystemControl=score;
+            
+            return output;
+        }
+        
+        // level_delay : the normal delay that would be in place for a given level
+        // iteration_delay : the difference between level_delay's for adjacent levels (assuming the level-to-delay function is linear
+        
+        public long SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent){
+            double extreme =.1;
+            
+            long output;
+            
+            if(percent<extreme){
+                //level-- (todo)
+                output=delay;
+            }
+            else if(percent>(1.0-extreme)){
+                //level++ (todo)
+                output=delay;
+            }
+            else{
+                double usable_percent = percent-(2*extreme);
+                double usable_percent_range = 1.0-(2*extreme);
+                output = level_delay + (iteration_delay* ((long) (usable_percent - (usable_percent_range/2))));
+            }
+            
+            return output;
         }
         
         public void ComputeScoreAndDelay(int AddedScore) {
