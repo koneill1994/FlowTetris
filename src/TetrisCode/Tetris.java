@@ -1096,6 +1096,7 @@ public class Tetris extends Applet{
             return d;
         }
         
+        // will set the delay and score based on the level
         public long SetDelaySystemControl(int score, long delay){
             //PreviousScoreSystemControl
             long output=delay;
@@ -1103,6 +1104,8 @@ public class Tetris extends Applet{
                 //output = f(score)
                 // ^ set this to be the opposite of player control
             }
+            
+            speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
             
             PreviousScoreSystemControl=score;
             
@@ -1112,17 +1115,20 @@ public class Tetris extends Applet{
         // level_delay : the normal delay that would be in place for a given level
         // iteration_delay : the difference between level_delay's for adjacent levels (assuming the level-to-delay function is linear
         
+        
+        // will set the delay and score based on the keypress percentage 
+        // will change level up or down if at an extreme end
         public long SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent){
             double extreme =.1;
             
             long output;
-            
+            //make sure to validate to make sure levels doesn't go outside bounds
             if(percent<extreme){
-                //level-- (todo)
+                speed--;
                 output=delay;
             }
             else if(percent>(1.0-extreme)){
-                //level++ (todo)
+                speed++;
                 output=delay;
             }
             else{
@@ -1130,6 +1136,10 @@ public class Tetris extends Applet{
                 double usable_percent_range = 1.0-(2*extreme);
                 output = level_delay + (iteration_delay* ((long) (usable_percent - (usable_percent_range/2))));
             }
+            
+            score = (int) (100*speed);
+            // score is not computed here; it needs to be
+            //score is one of the outputs
             
             return output;
         }
@@ -1151,7 +1161,11 @@ public class Tetris extends Applet{
             // speed and level code based on section 5.9 and 5.10 of Colin Fahey's Tetris article
             //   www.colinfahey.com/tetris/tetris.html
             
-            speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
+            // speed is equivalent to level number
+            // delay is the amount of time it takes for a zoid to drop one level
+            // score is the current number of points the player has
+            
+            //speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
             if(Adaptive_Delay_Mode==null){
                 int minD = Parameters.MinimumDelayMilliseconds;
                 int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
@@ -1171,7 +1185,7 @@ public class Tetris extends Applet{
             
             
             W("delay:" +delay);
-                        
+            
             //old delay and level code below
             /*
             long delay = 1000 - score;
