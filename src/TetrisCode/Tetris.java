@@ -1101,21 +1101,25 @@ public class Tetris extends Applet{
         }
         
         // will set the delay and score based on the level
-        public long SetDelaySystemControl(int score, long delay){
+        public void SetDelaySystemControl(int score, long delay, Double percent){
+            double extreme =.1;
+               
+            double usable_percent = percent-(2*extreme);
+            double usable_percent_range = 1.0-(2*extreme);
             
             //PreviousScoreSystemControl
-            long output=delay;
+            long output = delay;
             if(score<PreviousScoreSystemControl){
                 // output = f(score)
                 // ^ set this to be the opposite of player control
-                //output = (long) score/100.0;
+                //output = (long) score/100.0; // approx?
             }
             
             speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
             
             PreviousScoreSystemControl=score;
             
-            return output;
+            PersistentDelay=output;
         }
         
         // level_delay : the normal delay that would be in place for a given level
@@ -1124,32 +1128,27 @@ public class Tetris extends Applet{
         
         // will set the delay and score based on the keypress percentage 
         // will change level up or down if at an extreme end
-        public long SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent){
+        public void SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent){
             double extreme =.1;
-            
-            long output;
-                        
+               
             double usable_percent = percent-(2*extreme);
             double usable_percent_range = 1.0-(2*extreme);
             
             //make sure to validate to make sure levels doesn't go outside bounds
             if(percent<extreme){
                 speed--;
-                output=delay;
+                PersistentDelay=delay;
             }
             else if(percent>(1.0-extreme)){
                 speed++;
-                output=delay;
+                PersistentDelay=delay;
             }
             else{
-                output = level_delay + (iteration_delay* ((long) (usable_percent - (usable_percent_range/2))));
+                PersistentDelay = level_delay + (iteration_delay* ((long) (usable_percent - (usable_percent_range/2))));
             }
             
             score = (int) (100*(speed + (usable_percent - (usable_percent_range/2))));
-            // score is not computed here; it needs to be
-            //score is one of the outputs
             
-            return output;
         }
         
         public long GetDelayFromLevel(long level){
@@ -1159,6 +1158,13 @@ public class Tetris extends Applet{
             return (long) ((maxD-minD)*(1.0-1.0*level/Parameters.MaxLevels)+minD);
         }
         
+        public long GetLevelFromDelay(long delay){
+            int minD = Parameters.MinimumDelayMilliseconds;
+            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
+            
+            return (long) (Parameters.MaxLevels * (1.0 - ((delay - minD)/(maxD-minD))));
+        }
+        
         public long GetIterationDelay(){
             int minD = Parameters.MinimumDelayMilliseconds;
             int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
@@ -1166,19 +1172,37 @@ public class Tetris extends Applet{
             return (long) ((maxD-minD)*(1.0-1.0/Parameters.MaxLevels));
         }
         
+        public void ControlSystem(){
+            if(UnpressPercent != null){
+                if(System.nanoTime() - LastDelayControlSwitchTime > 50 * 1000000){ //50 ms
+                    LastDelayControlSwitchTime = System.nanoTime();
+                    if(PlayerControl){
+                        SetDelayPlayerControl(score, PersistentDelay, GetDelayFromLevel(speed), GetIterationDelay(), UnpressPercent);
+                    }
+                    else{
+                        SetDelaySystemControl(score, PersistentDelay);
+                    }
+                    PlayerControl=!PlayerControl;
+                }
+            }
+        }     
+        
+        
+        
         public void ComputeScoreAndDelay(int AddedScore) {
-            //System.out.println("\nTILLIST SIZE:" + TimeInLevelList.size());
-            //  DisplayDropPercentList(KeyUpQueue, KeyUpTimeWindow);  // causes a ConcurrentModificationException, apparently even the tetris half is multithreaded
             System.out.println(UnpressPercent);
             if(UnpressPercent != null && UnpressPercent>1.0) System.out.println("PERCENT ABOVE 1.0");
-            score_label.addValue(AddedScore);
-            score = Integer.parseInt(score_label.getText());
+            
+            score+=AddedScore;
+            
             int high_score = high_score_label.getText().length() > 0 ?
 		Integer.parseInt(high_score_label.getText()) : 0;
             if(score > high_score)
 		high_score_label.setText("" + score);
 	    
             long delay=1000;  // should probably make this set in parameters at some point
+            
+            delay = PersistentDelay;
             
             // speed and level code based on section 5.9 and 5.10 of Colin Fahey's Tetris article
             //   www.colinfahey.com/tetris/tetris.html
@@ -1188,6 +1212,7 @@ public class Tetris extends Applet{
             // score is the current number of points the player has
             
             //speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
+            /*
             if(Adaptive_Delay_Mode==null){
                 int minD = Parameters.MinimumDelayMilliseconds;
                 int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
@@ -1202,37 +1227,9 @@ public class Tetris extends Applet{
                 delay = DelayDromUnpressPercentLinear(PersistentDelay,UnpressPercent);
                 PersistentDelay=delay;
             }
-            
+            */
             //W("speed/Parameters.MaxLevels"+(1.0-1.0*speed/Parameters.MaxLevels));
             
-            // Here's where the control system stuff comes in
-            
-            if(System.nanoTime() - LastDelayControlSwitchTime < 50 * 1000){
-                LastDelayControlSwitchTime = System.nanoTime();
-                if(PlayerControl){
-                    SetDelayPlayerControl(score, delay, GetDelayFromLevel(speed), GetIterationDelay(), UnpressPercent);
-                }
-                else{
-                    SetDelaySystemControl(score, delay);
-                }
-                PlayerControl=!PlayerControl;
-            }
-                    
-                                        
-                    
-            W("delay:" +delay);
-            
-            //old delay and level code below
-            /*
-            long delay = 1000 - score;
-            
-            if (delay < Parameters.MinimumDelayMilliseconds) delay = Parameters.MinimumDelayMilliseconds;
-            
-            speed = 0;            
-            speed = 10 - (delay/100);
-            if (speed < 0) speed = 0;
-            if (speed > Parameters.MaxLevels) speed = Parameters.MaxLevels;
-            */
             
             if (old_speed != speed){
                 TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000.0;
@@ -1241,18 +1238,16 @@ public class Tetris extends Applet{
                 StartTimeInLevel = System.nanoTime();
             }
             
-//            TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000;
 //            
-//            if (Parameters.MaxSecondsInLevel > 0) {
-//                
-//                if ((speed == Parameters.MaxLevels) & (TimeInLevel >= Parameters.MaxSecondsInLevel)) {
-//                    SwitchToFocusTask();
-//                }
-//                
-//            }
-//            
+
+            W("\nLEVEL: "+speed);
+            W("DELAY: "+delay);
+            W("KEY %: "+UnpressPercent);
+            W("SCORE: "+score);
+
             old_speed = speed;
             
+            score_label.setText(""+score);
             speed_label.setText(""+speed);
             level_duration_label.setText(""+TimeInLevel);
             timer.setDelay(delay);
@@ -1332,7 +1327,7 @@ public class Tetris extends Applet{
                                 // important ^^ does not trigger if you don't set MaxSecondsInLevel
                                 SwitchBasedOnCondition(SwitchCondition_Measure, SwitchCondition_Value, SwitchCondition_Comparison); 
                                 
-                                
+                                ControlSystem();
                                 
 				game_grid.repaint();
 			}
@@ -1444,7 +1439,7 @@ public class Tetris extends Applet{
                                   KeyUpQueue = ContainWithinTimeWindow(KeyUpQueue, (System.nanoTime()-StartTime)/1000000,KeyUpTimeWindow);
                                   //DisplayDropPercentList(KeyUpQueue, KeyUpTimeWindow,"outside");
                                   UnpressPercent=UnpressPercentSanitized(KeyUpQueue, KeyUpTimeWindow, (System.nanoTime()-StartTime)/1000000);
-                                  W("unpress_percent "+UnpressPercent);
+                                  //W("unpress_percent "+UnpressPercent);
                                 }
                                 
 				if(timer.isPaused()) //don't do anything if game is paused
