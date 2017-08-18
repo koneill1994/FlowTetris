@@ -1109,13 +1109,16 @@ public class Tetris extends Applet{
             
             //PreviousScoreSystemControl
             long output = delay;
+            
+            speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);            
+            
             if(score<PreviousScoreSystemControl){
                 // output = f(score)
                 // ^ set this to be the opposite of player control
-                //output = (long) score/100.0; // approx?
+                // output = (long) (score/100.0 - speed); // approx?
+                
+                output= (long) (GetDelayFromLevel(speed) + GetIterationDelay() * (score%100)/100.0);
             }
-            
-            speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
             
             PreviousScoreSystemControl=score;
             
@@ -1136,11 +1139,11 @@ public class Tetris extends Applet{
             
             //make sure to validate to make sure levels doesn't go outside bounds
             if(percent<extreme){
-                speed--;
+                if(speed>0) speed--;
                 PersistentDelay=delay;
             }
             else if(percent>(1.0-extreme)){
-                speed++;
+                if(speed<Parameters.MaxLevels) speed++;
                 PersistentDelay=delay;
             }
             else{
@@ -1150,6 +1153,8 @@ public class Tetris extends Applet{
             score = (int) (100*(speed + (usable_percent - (usable_percent_range/2))));
             
         }
+        
+        
         
         public long GetDelayFromLevel(long level){
             int minD = Parameters.MinimumDelayMilliseconds;
@@ -1180,7 +1185,7 @@ public class Tetris extends Applet{
                         SetDelayPlayerControl(score, PersistentDelay, GetDelayFromLevel(speed), GetIterationDelay(), UnpressPercent);
                     }
                     else{
-                        SetDelaySystemControl(score, PersistentDelay);
+                        SetDelaySystemControl(score, PersistentDelay, UnpressPercent);
                     }
                     PlayerControl=!PlayerControl;
                 }
@@ -1233,6 +1238,7 @@ public class Tetris extends Applet{
             
             if (old_speed != speed){
                 TimeInLevel = (System.nanoTime() - StartTimeInLevel)/1000000000.0;
+                W("old_speed:"+(int)old_speed);
                 TimeInLevelList.get((int)old_speed).add(TimeInLevel);
                 //DisplayTimeInLevelList(TimeInLevelList);
                 StartTimeInLevel = System.nanoTime();
