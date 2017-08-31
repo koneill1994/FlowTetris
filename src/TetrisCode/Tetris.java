@@ -1113,11 +1113,8 @@ public class Tetris extends Applet{
             speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);            
             
             if(score<PreviousScoreSystemControl){
-                // output = f(score)
-                // ^ set this to be the opposite of player control
-                // output = (long) (score/100.0 - speed); // approx?
                 
-                output= (long) (GetDelayFromLevel(speed) + GetIterationDelay() * (score%100)/100.0);
+                output = (long) (GetDelayFromLevel(speed) + GetIterationDelay() * (score%100)/100.0);
             }
             
             PreviousScoreSystemControl=score;

@@ -1,28 +1,32 @@
+
 package TetrisCode;
+
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
 /**
  *
- * @author rfgreen
+ * @author Kevin O'Neill
  */
-public class Data {
+public class ControlSystemLogFile {
     
     String SubjNo = "SUBJ1";
     char Tab = ',';
     boolean FirstWriteToFile = true;
     String ExpCond = "NONE";
-    public Data() {
-        
+    
+    public ControlSystemLogFile(){
     }
     
     public void W(String S) {
         System.out.println(S);
     }
-       
+    
+    
     public boolean OutputData(String Data) {
  
     	try{
@@ -33,7 +37,6 @@ public class Data {
             String FileName = "EXPERIMENT/DATA/" + "MYDATA" + ".csv";
 
             File file = new File(FileName);
-
 
             if (FirstWriteToFile) {
                 W("DELETING DATA");
@@ -46,7 +49,7 @@ public class Data {
             BufferedWriter BW = new BufferedWriter(fileWritter);
 
             if (FirstWriteToFile) {
-
+/*
                 String S = 
                       "DATA_FILE"+Tab+"DATA_TAG"+Tab+"PARAMETER_FILE"+Tab+"TIME"
                  +Tab+"SESSION_NO"
@@ -54,6 +57,16 @@ public class Data {
                  +Tab+"SCORE"+Tab+"DELAY"+Tab+"SPEED_LEVEL"
                  +Tab+"LEFT_KEY"+Tab+"RIGHT_KEY"+Tab+"UP_KEY"+Tab+"DOWN_KEY"
                  +Tab+"VERSION";
+*/
+
+                String S = 
+                        "TIME_BEFORE"+Tab+"DELAY_BEFORE"+Tab+"SCORE_BEFORE"+Tab+
+                        "KEY_UNPRESS_PERCENT_BEFORE"+Tab+"LEVEL_BEFORE"+Tab+
+                        "SWITCH_TO"+Tab+
+                        "TIME_AFTER"+Tab+"DELAY_AFTER"+Tab+"SCORE_AFTER"+Tab+
+                        "KEY_UNPRESS_PERCENT_AFTER"+Tab+"LEVEL_AFTER"
+                        ;
+                
 
                 S += "\r\n";
 
@@ -75,7 +88,7 @@ public class Data {
         
         //does not matter what you return, if data
         return false;
-
     }
+    
     
 }
