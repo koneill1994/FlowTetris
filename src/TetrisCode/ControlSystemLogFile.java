@@ -49,18 +49,9 @@ public class ControlSystemLogFile {
             BufferedWriter BW = new BufferedWriter(fileWritter);
 
             if (FirstWriteToFile) {
-/*
-                String S = 
-                      "DATA_FILE"+Tab+"DATA_TAG"+Tab+"PARAMETER_FILE"+Tab+"TIME"
-                 +Tab+"SESSION_NO"
-                 +Tab+"TOTAL_BLOCKS"+Tab+"TRAPPED_SPACES"
-                 +Tab+"SCORE"+Tab+"DELAY"+Tab+"SPEED_LEVEL"
-                 +Tab+"LEFT_KEY"+Tab+"RIGHT_KEY"+Tab+"UP_KEY"+Tab+"DOWN_KEY"
-                 +Tab+"VERSION";
-*/
 
                 String S = 
-                        "TIME_BEFORE"+Tab+"DELAY_BEFORE"+Tab+"SCORE_BEFORE"+Tab+
+                        "TIME"+Tab+"DELAY_BEFORE"+Tab+"SCORE_BEFORE"+Tab+
                         "KEY_UNPRESS_PERCENT_BEFORE"+Tab+"LEVEL_BEFORE"+Tab+
                         "SWITCH_TO"+Tab+
                         "TIME_AFTER"+Tab+"DELAY_AFTER"+Tab+"SCORE_AFTER"+Tab+

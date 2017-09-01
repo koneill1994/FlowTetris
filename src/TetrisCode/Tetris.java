@@ -38,6 +38,7 @@ public class Tetris extends Applet{
         public static int SessionNo = 1;
         Data D = new Data();
         FineData F = new FineData();
+        ControlSystemLogFile CSLF = new ControlSystemLogFile();
         char Tab = ',';
         static boolean isAdaptive = true;
                         
@@ -243,6 +244,10 @@ public class Tetris extends Applet{
                 +Tab+DropDurationQueue.peek()+Tab+ computeVariance(DropDurationQueue,queue_history)
                 +Tab+drop_percent+Tab+ControlCode.SubjNo);
         }
+        
+        private void LogSystemChange(String s){
+            CSLF.OutputData(s);
+        }        
         
         //returns current time from start in ms
         private long CurrentTime(){
@@ -1177,6 +1182,12 @@ public class Tetris extends Applet{
         public void ControlSystem(){
             if(UnpressPercent != null){
                 if(System.nanoTime() - LastDelayControlSwitchTime > 50 * 1000000){ //50 ms
+                    long last_delay = PersistentDelay;
+                    long last_score = score;
+                    double last_kppercent = UnpressPercent;
+                    long last_level = speed;
+                    String switchto = PlayerControl ? "Player" : "System";
+                    
                     LastDelayControlSwitchTime = System.nanoTime();
                     if(PlayerControl){
                         SetDelayPlayerControl(score, PersistentDelay, GetDelayFromLevel(speed), GetIterationDelay(), UnpressPercent);
@@ -1184,6 +1195,12 @@ public class Tetris extends Applet{
                     else{
                         SetDelaySystemControl(score, PersistentDelay, UnpressPercent);
                     }
+                    LogSystemChange(""+CurrentTime()+Tab+last_delay+Tab+last_score+Tab+
+                            last_kppercent+Tab+last_level+Tab+switchto+Tab+
+                            PersistentDelay+Tab+score+Tab+UnpressPercent+Tab+speed+Tab);
+                    
+                    
+                    
                     PlayerControl=!PlayerControl;
                 }
             }
