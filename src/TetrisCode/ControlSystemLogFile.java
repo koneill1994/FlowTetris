@@ -34,7 +34,7 @@ public class ControlSystemLogFile {
             String PreambleStr =
                    SubjNo + Tab + ExpCond + Tab + Parameters.ParameterFile + Tab;
 
-            String FileName = "EXPERIMENT/DATA/" + "MYDATA" + ".csv";
+            String FileName = "EXPERIMENT/DATA/" + "_CONTROL_LOG" + ".csv";
 
             File file = new File(FileName);
 
