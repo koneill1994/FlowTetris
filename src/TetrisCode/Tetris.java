@@ -38,7 +38,6 @@ public class Tetris extends Applet{
         public static int SessionNo = 1;
         Data D = new Data();
         FineData F = new FineData();
-        ControlSystemLogFile CSLF = new ControlSystemLogFile();
         char Tab = ',';
         static boolean isAdaptive = true;
                         
@@ -99,7 +98,8 @@ public class Tetris extends Applet{
         long tmp_start_time=0;
         long tmp_unpress_time=0;
         
-        int PreviousScoreSystemControl;
+        FlowControlSystem FCS = new FlowControlSystem();
+        
         
         private final static int EMPTY = -1;
 	//private final static int DELETED_ROWS_PER_LEVEL = 5;
@@ -223,7 +223,6 @@ public class Tetris extends Applet{
         boolean ControlKeyPressed = false;
         
         long LastDelayControlSwitchTime = 0;
-        Boolean PlayerControl = true;
         
         
         public void SetSubjectID(String SubjNo){
@@ -245,9 +244,7 @@ public class Tetris extends Applet{
                 +Tab+drop_percent+Tab+ControlCode.SubjNo);
         }
         
-        private void LogSystemChange(String s){
-            CSLF.OutputData(s);
-        }        
+ 
         
         //returns current time from start in ms
         private long CurrentTime(){
@@ -1105,108 +1102,10 @@ public class Tetris extends Applet{
             return d;
         }
         
-        // will set the delay and score based on the level
-        public void SetDelaySystemControl(int score, long delay, Double percent){
-            double extreme =.1;
-               
-            double usable_percent = percent-(2*extreme);
-            double usable_percent_range = 1.0-(2*extreme);
-            
-            //PreviousScoreSystemControl
-            long output = delay;
-            
-            speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);            
-            
-            if(score<PreviousScoreSystemControl){
-                
-                output = (long) (GetDelayFromLevel(speed) + GetIterationDelay() * (score%100)/100.0);
-            }
-            
-            PreviousScoreSystemControl=score;
-            
-            PersistentDelay=output;
-        }
-        
-        // level_delay : the normal delay that would be in place for a given level
-        // iteration_delay : the difference between level_delay's for adjacent levels (assuming the level-to-delay function is linear
-        
-        
-        // will set the delay and score based on the keypress percentage 
-        // will change level up or down if at an extreme end
-        public void SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent){
-            double extreme =.1;
-               
-            double usable_percent = percent-(2*extreme);
-            double usable_percent_range = 1.0-(2*extreme);
-            
-            //make sure to validate to make sure levels doesn't go outside bounds
-            if(percent<extreme){
-                if(speed>0) speed--;
-                PersistentDelay=delay;
-            }
-            else if(percent>(1.0-extreme)){
-                if(speed<Parameters.MaxLevels) speed++;
-                PersistentDelay=delay;
-            }
-            else{
-                PersistentDelay = level_delay + (iteration_delay* ((long) (usable_percent - (usable_percent_range/2))));
-            }
-            
-            score = (int) (100*(speed + (usable_percent - (usable_percent_range/2))));
-            
-        }
-        
-        
-        
-        public long GetDelayFromLevel(long level){
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
-            
-            return (long) ((maxD-minD)*(1.0-1.0*level/Parameters.MaxLevels)+minD);
-        }
-        
-        public long GetLevelFromDelay(long delay){
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
-            
-            return (long) (Parameters.MaxLevels * (1.0 - ((delay - minD)/(maxD-minD))));
-        }
-        
-        public long GetIterationDelay(){
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
-            
-            return (long) ((maxD-minD)*(1.0-1.0/Parameters.MaxLevels));
-        }
-        
-        public void ControlSystem(){
-            if(UnpressPercent != null){
-                if(System.nanoTime() - LastDelayControlSwitchTime > 50 * 1000000){ //50 ms
-                    long last_delay = PersistentDelay;
-                    long last_score = score;
-                    double last_kppercent = UnpressPercent;
-                    long last_level = speed;
-                    String switchto = PlayerControl ? "Player" : "System";
-                    
-                    LastDelayControlSwitchTime = System.nanoTime();
-                    if(PlayerControl){
-                        SetDelayPlayerControl(score, PersistentDelay, GetDelayFromLevel(speed), GetIterationDelay(), UnpressPercent);
-                    }
-                    else{
-                        SetDelaySystemControl(score, PersistentDelay, UnpressPercent);
-                    }
-                    LogSystemChange(""+CurrentTime()+Tab+last_delay+Tab+last_score+Tab+
-                            last_kppercent+Tab+last_level+Tab+switchto+Tab+
-                            PersistentDelay+Tab+score+Tab+UnpressPercent+Tab+speed+Tab);
-                    
-                    
-                    
-                    PlayerControl=!PlayerControl;
-                }
-            }
-        }     
-        
-        
+        //<A>
+        // flow control system used to be here
+        // moved to separate file for encapsulation and ease of maintaining
+        //</A>
         
         public void ComputeScoreAndDelay(int AddedScore) {
             System.out.println(UnpressPercent);
@@ -1347,7 +1246,7 @@ public class Tetris extends Applet{
                                 // important ^^ does not trigger if you don't set MaxSecondsInLevel
                                 SwitchBasedOnCondition(SwitchCondition_Measure, SwitchCondition_Value, SwitchCondition_Comparison); 
                                 
-                                ControlSystem();
+                                FCS.ControlSystem(UnpressPercent, LastDelayControlSwitchTime, score, speed, CurrentTime());
                                 
 				game_grid.repaint();
 			}
