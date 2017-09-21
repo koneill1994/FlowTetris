@@ -222,7 +222,6 @@ public class Tetris extends Applet{
 	private String Subject_ID;
         boolean ControlKeyPressed = false;
         
-        long LastDelayControlSwitchTime = 0;
         
         
         public void SetSubjectID(String SubjNo){
@@ -1246,7 +1245,7 @@ public class Tetris extends Applet{
                                 // important ^^ does not trigger if you don't set MaxSecondsInLevel
                                 SwitchBasedOnCondition(SwitchCondition_Measure, SwitchCondition_Value, SwitchCondition_Comparison); 
                                 
-                                FCS.ControlSystem(UnpressPercent, LastDelayControlSwitchTime, score, speed, CurrentTime());
+                                FCS.ControlSystem(UnpressPercent, score, speed, CurrentTime());
                                 
 				game_grid.repaint();
 			}

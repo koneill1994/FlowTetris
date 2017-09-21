@@ -18,13 +18,15 @@ public class FlowControlSystem {
     Boolean PlayerControl = true;
     ControlSystemLogFile CSLF = new ControlSystemLogFile();
     
+    long LastDelayControlSwitchTime = 0;
+    
     
         private void LogSystemChange(String s){
             CSLF.OutputData(s);
         }       
     // <A>
         // will set the delay and score based on the level
-        public void SetDelaySystemControl(int score, long delay, Double percent, int PreviousScoreSystemControl, long speed){
+        private void SetDelaySystemControl(int score, long delay, Double percent, int PreviousScoreSystemControl, long speed){
             double extreme =.1;
                
             double usable_percent = percent-(2*extreme);
@@ -54,7 +56,7 @@ public class FlowControlSystem {
         
         // will set the delay and score based on the keypress percentage 
         // will change level up or down if at an extreme end
-        public void SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent, long speed){
+        private void SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent, long speed){
             double extreme =.1;
                
             double usable_percent = percent-(2*extreme);
@@ -79,28 +81,28 @@ public class FlowControlSystem {
         
         
         
-        public long GetDelayFromLevel(long level){
+        private long GetDelayFromLevel(long level){
             int minD = Parameters.MinimumDelayMilliseconds;
             int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
             
             return (long) ((maxD-minD)*(1.0-1.0*level/Parameters.MaxLevels)+minD);
         }
         
-        public long GetLevelFromDelay(long delay){
+        private long GetLevelFromDelay(long delay){
             int minD = Parameters.MinimumDelayMilliseconds;
             int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
             
             return (long) (Parameters.MaxLevels * (1.0 - (((float) (delay - minD))/((float) (maxD-minD)))));
         }
         
-        public long GetIterationDelay(){
+        private long GetIterationDelay(){
             int minD = Parameters.MinimumDelayMilliseconds;
             int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
             
             return (long) ((maxD-minD)*(1.0-1.0/Parameters.MaxLevels));
         }
         
-        public void ControlSystem(Double UnpressPercent, long LastDelayControlSwitchTime, int score, long speed, long CurrentTime){
+        public void ControlSystem(Double UnpressPercent, int score, long speed, long CurrentTime){
             if(UnpressPercent != null){
                 if(System.nanoTime() - LastDelayControlSwitchTime > 50 * 1000000){ //50 ms
                     long last_delay = PersistentDelay;
@@ -127,6 +129,15 @@ public class FlowControlSystem {
             }
         }     
  
+        
+        // FCS.ControlSystem(UnpressPercent, LastDelayControlSwitchTime, score, speed, CurrentTime());
+
+        private void SetTetrisValues(){
+            
+            
+        }
+        
+        
         //</A>
         
 }
