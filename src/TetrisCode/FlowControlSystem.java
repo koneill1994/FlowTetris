@@ -5,7 +5,9 @@
  */
 package TetrisCode;
 
-import static TetrisCode.Tetris.PersistentDelay;
+//import static TetrisCode.Tetris.PersistentDelay;
+//no idea why this is here or what its for
+// NetBeans could be a bit more explicit about what it does and why
 
 /**
  *
@@ -19,7 +21,7 @@ public class FlowControlSystem {
     ControlSystemLogFile CSLF = new ControlSystemLogFile();
     
     long LastDelayControlSwitchTime = 0;
-    
+    long PersistentDelay;
     
         private void LogSystemChange(String s){
             CSLF.OutputData(s);
@@ -27,13 +29,8 @@ public class FlowControlSystem {
     // <A>
         // will set the delay and score based on the level
         private void SetDelaySystemControl(int score, long delay, Double percent, int PreviousScoreSystemControl, long speed){
-            double extreme =.1;
-               
-            double usable_percent = percent-(2*extreme);
-            double usable_percent_range = 1.0-(2*extreme);
             
             //PreviousScoreSystemControl
-            long output = delay;
             
             speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);            
             
@@ -131,12 +128,21 @@ public class FlowControlSystem {
  
         
         // FCS.ControlSystem(UnpressPercent, LastDelayControlSwitchTime, score, speed, CurrentTime());
-
-        private void SetTetrisValues(){
+/*
+        private void SetTetrisValues(int score2, long speed, long delay){
+            Tetris.score = score2;  
+            Tetris.PersistentDelay = delay;
+            Tetris.speed=speed;
             
+            // where the HECK is it getting this static thing from
+            // nothing is static here
+            // what is making it think its static
             
+            // I think because I don't have a Tetris object in FCS
+            // probably just have to return these values
+            // or access them from a method in Tetris
         }
-        
+       */ 
         
         //</A>
         

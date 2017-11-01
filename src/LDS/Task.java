@@ -61,6 +61,7 @@ public class Task {
     String Marker = "EMPTY";
     public static SwitchingTask ST = null;
     public static FocusTask FT = null;
+    public static AttentionalBlinkTask ABT = null;
     int Order[] = new int[1000];
     
     ArrayList BlockList = new ArrayList();
