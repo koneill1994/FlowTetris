@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 import TetrisCode.Tetris;
+import java.awt.event.KeyEvent;
 
 public class FocusTask {
     
@@ -90,7 +91,7 @@ public class FocusTask {
 
     boolean FirstTime = true;
     
-    Font SymbolFont = new Font("Helvetica", Font.BOLD, 40);
+    Font SymbolFont = new Font("Helvetica", Font.BOLD, 60);
     Font TextFont = new Font("Helvetica", Font.BOLD, 25);
     
     int Angle[] = new int[2];
@@ -183,13 +184,14 @@ public class FocusTask {
             Game = HIGH_FOCUS;
         }
         
-        if (Game == LOW_FOCUS) {
-            RingColor = Color.YELLOW;
-        }
-        
-        if (Game == HIGH_FOCUS) {
-            RingColor = Color.GREEN;
-        }
+//        if (Game == LOW_FOCUS) {  //rfg
+//            RingColor = Color.YELLOW;
+//        }
+//        
+//        if (Game == HIGH_FOCUS) {
+//            RingColor = Color.GREEN;
+//        }
+          RingColor = Color.WHITE;
         
         //build TargetString of numbers
         
@@ -282,8 +284,10 @@ public class FocusTask {
         double DTR = 2 * Math.PI / 360.0;
         double AngleInRadians = Angle[ImageNo] * DTR;
         
-        XTarget = Xo + (int)(Task.BIG_CIRCLE_RADIUS * Math.sin(AngleInRadians));
-        YTarget = Yo - (int)(Task.BIG_CIRCLE_RADIUS * Math.cos(AngleInRadians));
+//        XTarget = Xo + (int)(Task.BIG_CIRCLE_RADIUS * Math.sin(AngleInRadians)); //rfg
+//        YTarget = Yo - (int)(Task.BIG_CIRCLE_RADIUS * Math.cos(AngleInRadians));
+        XTarget = Xo;
+        YTarget = Yo;
         
         ControlCode.Util.KeepMouseFromTarget(MouseX, MouseY, XTarget, YTarget);
 
@@ -298,7 +302,7 @@ public class FocusTask {
             
         }
         
-        ControlCode.Util.DrawImage(g2, XTarget, YTarget, ImageNo, ControlCode.Util.FOCUS);
+        //ControlCode.Util.DrawImage(g2, XTarget, YTarget, ImageNo, ControlCode.Util.FOCUS);
         
         if (ImageChosen == ImageNo) {
         
@@ -306,7 +310,7 @@ public class FocusTask {
                
                 g2.setPaint(RingColor);
                 
-                g2.fillOval(
+                g2.fillOval( //rfg
                         XTarget-Task.SYMBOL_RADIUS, YTarget-Task.SYMBOL_RADIUS, 
                         2 * Task.SYMBOL_RADIUS, 2 * Task.SYMBOL_RADIUS);
                 
@@ -337,16 +341,16 @@ public class FocusTask {
                 double DisplayTime = CT.floatCurrentTimeMillis() - NumberDisplayStartTime;
                 
                 LastPosition = RIGHT_SIDE_UP;
-                if (Game == HIGH_FOCUS) LastPosition = UPSIDE_DOWN;
+//                if (Game == HIGH_FOCUS) LastPosition = UPSIDE_DOWN;
                 
                 if (DisplayTime < (B.SymbolDisplayTime * 16.6)) {
                     
                     int Position = RIGHT_SIDE_UP;
                     
-                    if (Game == HIGH_FOCUS) {
-                        if (TargetString.charAt(SymbolIndex) == SecondTargetLetter)
-                            Position = UPSIDE_DOWN;
-                    }
+//                    if (Game == HIGH_FOCUS) {
+//                        if (TargetString.charAt(SymbolIndex) == SecondTargetLetter)
+//                            Position = UPSIDE_DOWN;
+//                    }
                     
                     FontMetrics Fm = g2.getFontMetrics();
                     
@@ -418,7 +422,8 @@ public class FocusTask {
         
         if (Mode == MOUSE_MOVING_MODE) {
             
-            double Radius = Math.sqrt(Math.pow(XTarget - MouseX,2) + Math.pow(YTarget - MouseY,2));
+//            double Radius = Math.sqrt(Math.pow(XTarget - MouseX,2) + Math.pow(YTarget - MouseY,2));
+            double Radius = 0;
 
             //W("Radius="+Radius);            
             
@@ -506,6 +511,8 @@ public class FocusTask {
       g2 = g2in;
       B = Bin;
       
+      if (ControlCode.key == KeyEvent.VK_A) System.exit(99);
+      
 //      W("BLOCKNO="+BlockNo);
 //      W("ANGLE_0="+Angle[0]+" ANGLE_1="+Angle[1]);
 //      W("TRIAL_NO="+TrialNo);
@@ -556,11 +563,11 @@ public class FocusTask {
       g2.setFont(TextFont);
       
       //instructions
-      g2.setPaint(Color.YELLOW);
-      DrawString("RIGHT SIDE UP", Xo, Yoffset + 10);
-      g2.setPaint(Color.GREEN);
-      DrawString("UPSIDE DOWN", Xo, Yoffset + 50);
-      g2.setPaint(Color.WHITE);
+//      g2.setPaint(Color.YELLOW); //rfg
+//      DrawString("RIGHT SIDE UP", Xo, Yoffset + 10);
+//      g2.setPaint(Color.GREEN);
+//      DrawString("UPSIDE DOWN", Xo, Yoffset + 50);
+//      g2.setPaint(Color.WHITE);
       
       if (Parameters.DebugMode) {
           
@@ -582,7 +589,7 @@ public class FocusTask {
       g2.setFont(TextFont);
                   
       DrawPicture(0);
-      DrawPicture(1);
+//      DrawPicture(1); //rfg
      
       if (Mode == WAITING_TO_START_MODE) {
           //W("MouseX = "+MouseX + " MouseY="+MouseY+" Xo="+Xo+" Yo="+Yo);

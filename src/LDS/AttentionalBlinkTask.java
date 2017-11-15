@@ -133,7 +133,7 @@ public class AttentionalBlinkTask {
 //        do {
 //            FirstTargetIndex = R.nextInt(B.NoOfSymbols);
 //        } while ((FirstTargetIndex < Task.FirstLetterIndex[0]) | (FirstTargetIndex > Task.FirstLetterIndex[1]));
-        
+        /*
         int Distance = R.nextInt(Task.LetterIndex[1] - Task.LetterIndex[0]) + 1; //get a number from 1 to 13
         
         int LastPossibleStartingPosition = Task.LetterIndex[1] - Task.LetterIndex[0] - Distance;
@@ -184,7 +184,7 @@ public class AttentionalBlinkTask {
             }
             
         } else CorrectAnswerStr = "MIDDLE";
-                
+         */       
     }
     
     

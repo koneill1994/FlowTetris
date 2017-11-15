@@ -14,6 +14,9 @@ public class ControlCode extends JComponent
          WindowFocusListener, 
          WindowStateListener {
    
+  
+  public static int key = 0;
+   
   Tetris TetrisProgram = new Tetris();
     
   int IndentX = 300;
@@ -147,7 +150,7 @@ public class ControlCode extends JComponent
 
 //        KeyPressTime = CT.currentTimeMillis() - KeyPressStartTime;
         
-        int key = e.getKeyCode();
+        key = e.getKeyCode();
       //  System.out.println("KeyChar="+(char)key+" INT="+(int)key);  // was getting annoying
 //        Block.KeyChar = (char)key;
         
@@ -217,6 +220,7 @@ public class ControlCode extends JComponent
           if (key == KeyEvent.VK_SPACE) SpaceKeyPressed = true;
           
           if ((key >= KeyEvent.VK_0) & (key <= KeyEvent.VK_9)) KeyPressed = true;
+          if ((key >= KeyEvent.VK_A) & (key <= KeyEvent.VK_Z)) KeyPressed = true;
           
           //accept keypad entries
           if ((key >= KeyEvent.VK_NUMPAD0) & (key <= KeyEvent.VK_NUMPAD9)) {
