@@ -1,9 +1,12 @@
 package TetrisCode;
 
 /*
-Tetris Applet 
+Modification of Tetris Applet 
 by Melinda Green
 based on Guido Pellegrini's Summer 2000 term project
+Modified by Randy Green and Kevin O'Neill
+Under supervision by Ion Juvina
+Wright State University 2016-2017
 
 Use this code for anything you like.
 If you use it in a mission critical application and 
@@ -39,7 +42,7 @@ public class Tetris extends Applet{
         Data D = new Data();
         FineData F = new FineData();
         char Tab = ',';
-        static boolean isAdaptive = true;
+        static boolean isAdaptive = true; // this is the variable we're going to tie all the experimental/control condition stuff to
                         
         //logging
         static int queue_history =10; // how many items back the queue remembers
@@ -1245,7 +1248,7 @@ public class Tetris extends Applet{
                                 // important ^^ does not trigger if you don't set MaxSecondsInLevel
                                 SwitchBasedOnCondition(SwitchCondition_Measure, SwitchCondition_Value, SwitchCondition_Comparison); 
                                 
-                                FCS.ControlSystem(UnpressPercent, score, speed, CurrentTime());
+                                if(isAdaptive) FCS.ControlSystem(UnpressPercent, score, speed, CurrentTime());
                                 
 				game_grid.repaint();
 			}
