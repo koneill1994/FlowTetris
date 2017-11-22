@@ -556,13 +556,13 @@ public class Tetris extends Applet{
 		private AudioClip destroyRowSounds[] = new AudioClip[4];
 		private AudioClip gameOverSound = null;
 		private AudioClip getClip(String name) throws MalformedURLException {
-			System.out.println("INSIDE GETCLIP");
-                       // URL soundFileUrl = new URL(getCodeBase(), name);
-                        URL soundFileUrl = new URL(getCodeBase(), "file:///C:/Users/rfgreen/Desktop/"+name);
+			System.out.println("INSIDE GETCLIP for " + name);
+                        URL soundFileUrl = new URL("file://./src/TetrisCode/"+name);
+                        //URL soundFileUrl = new URL(getCodeBase(), "file:///C:/Users/rfgreen/Desktop/"+name);
 			System.out.println("INSIDE GETCLIP 2");
                         try {
 				AudioClip clip = getAudioClip(soundFileUrl);
-                                System.out.println("FOUND URL");
+                                System.out.println("FOUND AUDIOCLIP URL, "+soundFileUrl.getPath());
 				return clip;
 			} catch(NullPointerException npe) { 
                             System.out.println("CAN'T FIND URL");
@@ -586,6 +586,7 @@ public class Tetris extends Applet{
 			}
 			catch (Exception e) {
 				System.err.println("MESSAGE="+e.getMessage());
+                                e.printStackTrace();
 			}
 		}
 		public void playSoundtrack() {
