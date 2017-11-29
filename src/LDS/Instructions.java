@@ -76,6 +76,7 @@ public class Instructions {
             
         } catch (Exception e) { //Catch exception if any
             System.err.println("Parameter File Error: " + e.getMessage());
+             System.exit(4);
         }
         
   }

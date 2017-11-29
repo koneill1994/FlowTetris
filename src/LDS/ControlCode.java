@@ -74,6 +74,7 @@ public class ControlCode extends JComponent
   long RandomSeed = 0;
   boolean ControlKeyPressed = false;
   boolean ShiftKeyPressed = false;
+  public static boolean KeyPressed = false;
   
   public static String EntryStr[] = new String[4];
   boolean EntryUsed[] = new boolean[4];
@@ -215,29 +216,29 @@ public class ControlCode extends JComponent
         
         if (StartNo == 0) {
                       
-          boolean KeyPressed = false;
+          KeyPressed = false;
           
-          if (key == KeyEvent.VK_SPACE) SpaceKeyPressed = true;
+          if (key == KeyEvent.VK_ENTER) SpaceKeyPressed = true;
           
-          if ((key >= KeyEvent.VK_0) & (key <= KeyEvent.VK_9)) KeyPressed = true;
+//          if ((key >= KeyEvent.VK_0) & (key <= KeyEvent.VK_9)) KeyPressed = true;
           if ((key >= KeyEvent.VK_A) & (key <= KeyEvent.VK_Z)) KeyPressed = true;
-          
+          if (key == KeyEvent.VK_SPACE) KeyPressed = true;
           //accept keypad entries
-          if ((key >= KeyEvent.VK_NUMPAD0) & (key <= KeyEvent.VK_NUMPAD9)) {
-              
-              //translate to VK_0, etc.
-              int Keys[] = { KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, 
-                             KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9 }; 
-              
-              KeyPressed = true;
-              
-              key = Keys[key - KeyEvent.VK_NUMPAD0];
-              
-          }
+//          if ((key >= KeyEvent.VK_NUMPAD0) & (key <= KeyEvent.VK_NUMPAD9)) {
+//              
+//              //translate to VK_0, etc.
+//              int Keys[] = { KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, 
+//                             KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9 }; 
+//              
+//              KeyPressed = true;
+//              
+//              key = Keys[key - KeyEvent.VK_NUMPAD0];
+//              
+//          }
           
           if (KeyPressed) {
             
-          }
+          } else key = (char)0;
           
         }
         
@@ -387,7 +388,9 @@ public class ControlCode extends JComponent
 		 Thread.sleep(1);
 	   }
 	}
-	catch (InterruptedException ie) {}
+	catch (InterruptedException ie) {
+            System.exit(2);
+        }
   }
   
   public void W(String S) {
@@ -690,6 +693,8 @@ public class ControlCode extends JComponent
         }
         
         DrawFrameTime();
+        
+        key = (char)0;
         
     }
     

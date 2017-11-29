@@ -366,6 +366,7 @@ public class Parameters {
         } catch (Exception e) {
             ErrorCode = "LINE " + LineNo + " PARAMETER FILE ERROR: " + e.getMessage();
             System.err.println("LINE " + LineNo + "Parameter File Error: " + e.getMessage());
+             System.exit(9);
         }
             
     }

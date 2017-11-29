@@ -27,8 +27,10 @@ public class FocusTask {
     
     TextRotater TxtRot = new TextRotater();
     
-    String CorrectAnswerStr = "";
-    String SubjAnswerStr = "";
+    char CorrectAnswerChar1 = (char)0;
+    char CorrectAnswerChar2 = (char)0;
+    char SubjAnswerChar1 = (char)0;
+    char SubjAnswerChar2 = (char)0;
 
     long DisplayAnswerStartTime;
 
@@ -40,15 +42,17 @@ public class FocusTask {
     static int MOUSE_MOVING_MODE = 1;
     static int DISPLAY_COLOR_MODE = 2;
     static int DISPLAY_NUMBERS_MODE = 3;
-    static int WAITING_FOR_DECISION_MODE = 4;
-    static int SHOW_DECISION_MODE = 5;
+    static int WAITING_FOR_DECISION_MODE_1 = 4;
+    static int WAITING_FOR_DECISION_MODE_2 = 5;
+    static int SHOW_DECISION_MODE = 6;
     
     //timers needed
     static int WAITING_TO_START_TIME = 0;
     static int MOUSE_MOVING_TIME = 1;
     static int DISPLAY_COLOR_TIME = 2;
     static int TIME_TO_TARGET_TIME = 3;
-    static int GET_DECISION_TIME = 4;
+    static int GET_DECISION_TIME_1 = 4;
+    static int GET_DECISION_TIME_2 = 5;
 
     String ImageChosenString[] = {
         "IMAGE_0",
@@ -60,14 +64,16 @@ public class FocusTask {
         "MOUSE MOVING",
         "DISPLAY COLOR",
         "TIME TO TARGET",
-        "WAITING FOR DECISION",
+        "WAITING FOR DECISION 1",
+        "WAITING FOR DECISION 2",
         "SHOW DECISION"
     };
 
-    boolean AnswerGiven;
+    boolean Answer1Given;
+    boolean Answer2Given;
     
-    long StartTime[] = new long[5];
-    long StopTime[] = new long[5];
+    long StartTime[] = new long[6];
+    long StopTime[] = new long[6];
 
     public static int Mode = WAITING_TO_START_MODE;
     public static int OldMode = WAITING_TO_START_MODE;
@@ -266,16 +272,18 @@ public class FocusTask {
             SecondTargetLetterMemory = SecondTargetLetter;
             
             if (SecondTargetLetter < FirstTargetLetter) {
-                CorrectAnswerStr = "LEFT";
+//                CorrectAnswerStr = "LEFT";
                 FirstSecondLetterStr = "SECOND_LETTER_FIRST";
             }
         
             if (SecondTargetLetter > FirstTargetLetter) {
-                CorrectAnswerStr = "RIGHT";
+//                CorrectAnswerStr = "RIGHT";
                 FirstSecondLetterStr = "FIRST_LETTER_FIRST";
             }
             
-        } else CorrectAnswerStr = "MIDDLE";
+            CorrectAnswerChar1 = FirstTargetLetter;
+            
+        } else SecondTargetLetter = ' ';
                 
     }
     
@@ -319,7 +327,7 @@ public class FocusTask {
                 if (DisplayColorTime > 1000) {
                 
                     //start decision timer in case the target is in the 0 position
-                    StartTimer(GET_DECISION_TIME);
+//                    StartTimer(GET_DECISION_TIME);
                     StopTimer(DISPLAY_COLOR_TIME);
                     StartTimer(TIME_TO_TARGET_TIME);
                     NumberDisplayStartTime = CT.floatCurrentTimeMillis();
@@ -368,28 +376,28 @@ public class FocusTask {
                 
                     if (SymbolIndex == TargetString.length()) {
                         
-                        if (!SecondLetterIsPresentInTarget) {
-                            
-                            TargetNowKnown = true;
-                            
-                            StopTimer(TIME_TO_TARGET_TIME);
-                            StartTimer(GET_DECISION_TIME);
-                            Mode = WAITING_FOR_DECISION_MODE;
-
-                            //if answer is given before now and
-                            //no target in target string then decision
-                            //time is negative
-                            if (AnswerGiven) {
-                                NegativeDecisionTime = CT.currentTimeMillis() - AnswerStartTime;
-                                DecisionTimeIsNegative = true;
-                                //start display answer timer
-                                DisplayAnswerStartTime = CT.currentTimeMillis();
-                                //skip WAITING_FOR_DECISION mode cause answer is already given
-                                Mode = SHOW_DECISION_MODE;
-                            }
-                            
-                        } else
-                            Mode = WAITING_FOR_DECISION_MODE;
+//                        if (!SecondLetterIsPresentInTarget) {
+//                            
+//                            TargetNowKnown = true;
+//                            
+//                            StopTimer(TIME_TO_TARGET_TIME);
+//                            StartTimer(GET_DECISION_TIME_1);
+//                            Mode = WAITING_FOR_DECISION_MODE;
+//
+//                            //if answer is given before now and
+//                            //no target in target string then decision
+//                            //time is negative
+//                            if (AnswerGiven) {
+//                                NegativeDecisionTime = CT.currentTimeMillis() - AnswerStartTime;
+//                                DecisionTimeIsNegative = true;
+//                                //start display answer timer
+//                                DisplayAnswerStartTime = CT.currentTimeMillis();
+//                                //skip WAITING_FOR_DECISION mode cause answer is already given
+//                                Mode = SHOW_DECISION_MODE;
+//                            }
+//                            
+//                        } else
+                            Mode = WAITING_FOR_DECISION_MODE_1;
                                                 
                     } else {
                         
@@ -399,14 +407,14 @@ public class FocusTask {
 
                             TargetNowKnown = true;
                             
-                            //the subject has answered before target was shown
-                            if (AnswerGiven) {
-                                NegativeDecisionTime = CT.currentTimeMillis() - AnswerStartTime;
-                                DecisionTimeIsNegative = true;
-                            }
+//                            //the subject has answered before target was shown   rfg
+//                            if (AnswerGiven) {
+//                                NegativeDecisionTime = CT.currentTimeMillis() - AnswerStartTime;
+//                                DecisionTimeIsNegative = true;
+//                            }
 
                             StopTimer(TIME_TO_TARGET_TIME);
-                            StartTimer(GET_DECISION_TIME);
+//                            StartTimer(GET_DECISION_TIME);
 //                            Mode = GET_DECISION;
                         }                        
 
@@ -541,7 +549,8 @@ public class FocusTask {
           DisplayFirstSecondLetter();
           
           StartTimerNow = true;
-          AnswerGiven = false;
+          Answer1Given = false;
+          Answer2Given = false;
           
           boolean Start = ControlCode.Util.ReadNextButton(Xo, Yo, g2, MouseX, MouseY, Button1, OldButton1);
           
@@ -605,56 +614,53 @@ public class FocusTask {
           }
       }
       
-      if ((Mode >= DISPLAY_NUMBERS_MODE) & (!AnswerGiven)) {
+      if (Mode == WAITING_FOR_DECISION_MODE_1) {
           
-          if (Button1 & !OldButton1) {
-              AnswerGiven = true;
-              SubjAnswerStr = "LEFT";
+          if (ControlCode.KeyPressed & !Answer1Given) {
+              Answer1Given = true;
+              SubjAnswerChar1 = (char)ControlCode.key;
+              StopTimer(GET_DECISION_TIME_1);
+              StartTimer(GET_DECISION_TIME_2);
+              ControlCode.KeyPressed = false;
+              Mode = WAITING_FOR_DECISION_MODE_2;
           }
-          
-          if (Button2 & !OldButton2) {
-              AnswerGiven = true;
-              SubjAnswerStr = "MIDDLE";
-          }
-          
-          if (Button3 & !OldButton3) {
-              AnswerGiven = true;
-              SubjAnswerStr = "RIGHT";
-          }
-          
-          if (AnswerGiven) {
-              //get time of answer if given and target not shown yet
-              AnswerStartTime = CT.currentTimeMillis();
-              //if (DecisionTimeIsNegative) W("DECISION TIME IS NEGATIVE");
-              if (TargetNowKnown) {
-                  StopTimer(GET_DECISION_TIME);
-                  W("STOP GET DECISION TIMER");
-              }
-          }
-          
+      
       }
-
-      if (Mode == WAITING_FOR_DECISION_MODE) {
-                        
-          if (AnswerGiven) {
-              //start display answer timer
+          
+      if (Mode == WAITING_FOR_DECISION_MODE_2) {
+          
+          if (ControlCode.KeyPressed & Answer1Given & !Answer1Given) {
+              Answer2Given = true;
+              SubjAnswerChar2 = (char)ControlCode.key;
+              StopTimer(GET_DECISION_TIME_2);
+              ControlCode.KeyPressed = false;
               DisplayAnswerStartTime = CT.currentTimeMillis();
               Mode = SHOW_DECISION_MODE;
-          } 
-
+          }
+                    
       }
+
+//      if (Mode == WAITING_FOR_DECISION_MODE) {
+//                        
+//          if (AnswerGiven) {
+//              //start display answer timer
+//              DisplayAnswerStartTime = CT.currentTimeMillis();
+//              Mode = SHOW_DECISION_MODE;
+//          } 
+//
+//      }
       
       if (Mode == SHOW_DECISION_MODE) {
           
-          if (DecisionTimeIsNegative)
-              StopTime[GET_DECISION_TIME] = -NegativeDecisionTime;
+//          if (DecisionTimeIsNegative)
+//              StopTime[GET_DECISION_TIME] = -NegativeDecisionTime;
         
           Color CorrectColor = Color.RED;
           String CorrectStr = "INCORRECT";
           
           if (OldMode != SHOW_DECISION_MODE) B.TotalAnswered++;
           
-          if (CorrectAnswerStr.equals(SubjAnswerStr)) {
+          if (CorrectAnswerChar1 == SubjAnswerChar1) {
               CorrectColor = Color.GREEN;
               CorrectStr = "CORRECT";
               if (OldMode != SHOW_DECISION_MODE) B.TotalCorrect++;
@@ -771,7 +777,8 @@ public class FocusTask {
                  +Tab+"FIRST_TARGET_LETTER"+Tab+"FIRST_TARGET_INDEX"
                  +Tab+"SECOND_TARGET_LETTER"+Tab+"SECOND_TARGET_INDEX"
                  +Tab+"DISTANCE"
-                 +Tab+"CORRECT_ANSWER"+Tab+"SUBJ_ANSWER"+Tab+"ACCURACY"
+                 +Tab+"CORRECT_ANSWER_1"+Tab+"SUBJ_ANSWER_1"+Tab+"ACCURACY_1"
+                 +Tab+"CORRECT_ANSWER_2"+Tab+"SUBJ_ANSWER_2"+Tab+"ACCURACY_2"
                  +Tab+"VERSION"; //System.getProperty("user.dir");
 
                 S += "\r\n";
@@ -791,7 +798,9 @@ public class FocusTask {
             //System.out.println("Done");
 
     	}catch(IOException e){
+            W("EXCEPTION 2");
     		e.printStackTrace();
+                 System.exit(3);
     	}
         
         //does not matter what you return, if data
@@ -801,9 +810,18 @@ public class FocusTask {
     
     public void WriteDataLine() {
                         
-        String CorrectStr = "INCORRECT";
+        String CorrectStr1 = "INCORRECT";
+        String CorrectStr2 = "INCORRECT";
         
-        if (CorrectAnswerStr.equals(SubjAnswerStr)) CorrectStr = "CORRECT";
+        if (CorrectAnswerChar1 == SubjAnswerChar1) CorrectStr1 = "CORRECT";
+        if (CorrectAnswerChar2 == SubjAnswerChar2) CorrectStr2 = "CORRECT";
+        
+        if (!SecondLetterIsPresentInTarget) { //if no second letter then see if values switched, cause it is a good answer
+        
+            if (CorrectAnswerChar2 == SubjAnswerChar1) CorrectStr1 = "CORRECT";
+            if (CorrectAnswerChar1 == SubjAnswerChar2) CorrectStr2 = "CORRECT";
+          
+        }
         
         long StopTrialTime = CT.currentTimeMillis() - Task.MasterStartTime;
         
@@ -823,7 +841,8 @@ public class FocusTask {
                  + Tab + FirstTargetLetter + Tab + FirstTargetIndex
                  + Tab + SecondTargetLetter + Tab + SecondTargetIndex
                  + Tab + (SecondTargetIndex - FirstTargetIndex)
-                 + Tab + CorrectAnswerStr + Tab + SubjAnswerStr + Tab + CorrectStr
+                 + Tab + CorrectAnswerChar1 + Tab + SubjAnswerChar1 + Tab + CorrectStr1
+                 + Tab + CorrectAnswerChar2 + Tab + SubjAnswerChar2 + Tab + CorrectStr2
                  + Tab + System.getProperty("user.dir");
                 
         OutputData(S);

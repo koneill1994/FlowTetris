@@ -158,6 +158,7 @@ public class Survey {
         } catch (Exception e) {
             Parameters.ErrorCode = "Parameter File Error: " + e.getMessage();
             System.err.println("Parameter File Error: " + e.getMessage());
+             System.exit(6);
         }
             
     }
@@ -371,7 +372,9 @@ public class Survey {
             W("Done");
             
     	}catch(IOException e){
+            W("SURVEY ERROR 3");
     		e.printStackTrace();
+                 System.exit(5);
     	}
         
         //does not matter what you return, if data

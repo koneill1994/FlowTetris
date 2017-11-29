@@ -37,6 +37,7 @@ public class CalibrateMouse {
             
         } catch (Exception e) {
             System.err.println("Robot Create Error: " + e.getMessage());
+            System.exit(1);
         }
 
     }

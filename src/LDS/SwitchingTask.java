@@ -469,8 +469,10 @@ public class SwitchingTask {
 
             B.FirstWriteToFile = false;
 
-    	}catch(IOException e){
+    	}catch(IOException e) {
+            W("EXCEPTION 1");
     		e.printStackTrace();
+                 System.exit(7);
     	}
         
         //does not matter what you return, if data
