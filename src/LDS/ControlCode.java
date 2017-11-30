@@ -58,6 +58,7 @@ public class ControlCode extends JComponent
   Font TextFont = new Font("Helvetica", Font.BOLD, 14);
   
   public static JFrame Frame;
+
   
   int MouseX, MouseY;
   public static int MouseXin, MouseYin;
@@ -280,6 +281,7 @@ public class ControlCode extends JComponent
       
     ReadInStatus();
     
+    
     RandomSeed = R.nextLong();
     
     R.setSeed(RandomSeed);
@@ -351,7 +353,10 @@ public class ControlCode extends JComponent
 
         Frame.setVisible(true);
 //        t.suspend();
+
         Tetris.TetrisMain();
+        //System.exit(996);
+        
         
   }
   
@@ -382,6 +387,7 @@ public class ControlCode extends JComponent
     
   //routine to set up runtime thread
   public void run() {
+      //System.exit(997);
      try {
 	   while (true) {
 		 repaint(); //call paint component
@@ -678,7 +684,7 @@ public class ControlCode extends JComponent
                 
                 g2.setFont(StartFont);
                 g2.setPaint(Color.CYAN);
-                DrawString("PRESS SPACE BAR TO START", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
+                DrawString("PRESS ENTER TO START", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
                 if (SpaceKeyPressed) {
                     StartExperiment = true;
                     Task.MasterStartTime = CT.currentTimeMillis();

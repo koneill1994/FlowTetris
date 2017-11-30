@@ -144,7 +144,7 @@ public class FocusTask {
     public FocusTask(Task B, int NoOfBlocks) {
         
         //reset timers
-        for (int i = 0; i < 5; i++) StopTime[i] = -1;
+        for (int i = 0; i < 6; i++) StopTime[i] = -1;
     
         BlockNo = B.TaskCounter;
         
@@ -398,7 +398,9 @@ public class FocusTask {
 //                            
 //                        } else
                             Mode = WAITING_FOR_DECISION_MODE_1;
-                                                
+                            StopTimer(TIME_TO_TARGET_TIME);
+                            StartTimer(GET_DECISION_TIME_1);
+                            
                     } else {
                         
                         char C = TargetString.charAt(SymbolIndex);
@@ -413,7 +415,7 @@ public class FocusTask {
 //                                DecisionTimeIsNegative = true;
 //                            }
 
-                            StopTimer(TIME_TO_TARGET_TIME);
+//                            StopTimer(TIME_TO_TARGET_TIME);
 //                            StartTimer(GET_DECISION_TIME);
 //                            Mode = GET_DECISION;
                         }                        
@@ -519,7 +521,7 @@ public class FocusTask {
       g2 = g2in;
       B = Bin;
       
-      if (ControlCode.key == KeyEvent.VK_A) System.exit(99);
+      //if (ControlCode.key == KeyEvent.VK_A) System.exit(99);
       
 //      W("BLOCKNO="+BlockNo);
 //      W("ANGLE_0="+Angle[0]+" ANGLE_1="+Angle[1]);
@@ -585,7 +587,7 @@ public class FocusTask {
               if (i == Mode) g2.setPaint(Color.MAGENTA);
               g2.drawString(ModeStr[i], 890, Yoffset + 180 + i * 35);
               g2.setPaint(Color.MAGENTA);
-              if (i < 5) if (StopTime[i] != -1)
+              if (i < 6) if (StopTime[i] != -1)
                   g2.drawString(""+StopTime[i], 1220, Yoffset + 180 + i * 35);   //?????
           }
           g2.drawString("TRIAL_NO = " + (B.TrialNo + 1) + " OUT OF " + B.NoOfTrials, 
@@ -629,7 +631,7 @@ public class FocusTask {
           
       if (Mode == WAITING_FOR_DECISION_MODE_2) {
           
-          if (ControlCode.KeyPressed & Answer1Given & !Answer1Given) {
+          if (ControlCode.KeyPressed & Answer1Given & !Answer2Given) {
               Answer2Given = true;
               SubjAnswerChar2 = (char)ControlCode.key;
               StopTimer(GET_DECISION_TIME_2);
@@ -768,7 +770,7 @@ public class FocusTask {
                  +Tab+"TASK_NO"+Tab+"REPETITION_NO"+Tab+"BLOCK_NO"+Tab+"TRIAL_NO"
                  +Tab + "ANGLE_0" + Tab + "ANGLE_1"
                  +Tab + "IMAGE_0_PROB_HIGH_FOCUS" + Tab + "IMAGE_1_PROB_HIGH_FOCUS"       
-                 +Tab+"WAIT_FOR_MOUSE_TIME"+Tab+"ENTER_CIRCLE_TIME"+Tab+"TIME_TO_TARGET"+Tab+"DECISION_TIME"
+                 +Tab+"WAIT_FOR_MOUSE_TIME"+Tab+"ENTER_CIRCLE_TIME"+Tab+"TIME_TO_TARGET"+Tab+"DECISION_TIME_1"+Tab+"DECISION_TIME_2"
                  +Tab+"IMAGE_CHOSEN"
                  +Tab+"PROBABILITY"
                  +Tab+"FOCUS_TYPE"                        
@@ -779,6 +781,7 @@ public class FocusTask {
                  +Tab+"DISTANCE"
                  +Tab+"CORRECT_ANSWER_1"+Tab+"SUBJ_ANSWER_1"+Tab+"ACCURACY_1"
                  +Tab+"CORRECT_ANSWER_2"+Tab+"SUBJ_ANSWER_2"+Tab+"ACCURACY_2"
+                 +Tab+"SUBJ_ANSWERS_SWAPPED"
                  +Tab+"VERSION"; //System.getProperty("user.dir");
 
                 S += "\r\n";
@@ -813,15 +816,24 @@ public class FocusTask {
         String CorrectStr1 = "INCORRECT";
         String CorrectStr2 = "INCORRECT";
         
-        if (CorrectAnswerChar1 == SubjAnswerChar1) CorrectStr1 = "CORRECT";
-        if (CorrectAnswerChar2 == SubjAnswerChar2) CorrectStr2 = "CORRECT";
+        String AnswersSwapped = "FALSE";
         
         if (!SecondLetterIsPresentInTarget) { //if no second letter then see if values switched, cause it is a good answer
         
-            if (CorrectAnswerChar2 == SubjAnswerChar1) CorrectStr1 = "CORRECT";
-            if (CorrectAnswerChar1 == SubjAnswerChar2) CorrectStr2 = "CORRECT";
-          
-        }
+            if ((SubjAnswerChar1 == ' ') & (SubjAnswerChar2 != ' ')) {
+                
+                char Temp = SubjAnswerChar1;
+                SubjAnswerChar1 = SubjAnswerChar2;
+                SubjAnswerChar2 = Temp;
+                AnswersSwapped = "TRUE";
+                
+            }
+            
+        }           
+        
+        if (CorrectAnswerChar1 == SubjAnswerChar1) CorrectStr1 = "CORRECT";
+        if (CorrectAnswerChar2 == SubjAnswerChar2) CorrectStr2 = "CORRECT";
+        
         
         long StopTrialTime = CT.currentTimeMillis() - Task.MasterStartTime;
         
@@ -835,7 +847,7 @@ public class FocusTask {
                  + Tab + (Parameters.TaskCount+1)+ Tab + (B.RepetitionNo) + Tab + (B.BlockCount+1) + Tab + "" + (B.TrialNo+1) 
                  + Tab + Angle[0] + Tab + Angle[1]
                  + Tab + B.PresentGamePercent[0] + Tab + B.PresentGamePercent[1]
-                 + Tab + "" + StopTime[0] + Tab  + "" + StopTime[1] + Tab + "" + StopTime[2] + Tab + "" + StopTime[3]
+                 + Tab + "" + StopTime[0] + Tab  + "" + StopTime[1] + Tab + "" + StopTime[2] + Tab + "" + StopTime[3] + Tab + "" + StopTime[4]
                  + Tab + ImageChosenString[ImageChosen] + Tab + B.PresentGamePercent[ImageChosen] + Tab + GameStr[Game] 
                  + Tab + (TargetString + "!")
                  + Tab + FirstTargetLetter + Tab + FirstTargetIndex
@@ -843,6 +855,7 @@ public class FocusTask {
                  + Tab + (SecondTargetIndex - FirstTargetIndex)
                  + Tab + CorrectAnswerChar1 + Tab + SubjAnswerChar1 + Tab + CorrectStr1
                  + Tab + CorrectAnswerChar2 + Tab + SubjAnswerChar2 + Tab + CorrectStr2
+                 + Tab + AnswersSwapped
                  + Tab + System.getProperty("user.dir");
                 
         OutputData(S);

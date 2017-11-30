@@ -430,7 +430,9 @@ public class Tetris extends Applet{
 				try {
 					this.checkAccess();
 					this.interrupt(); // no exception, so OK to interrupt
-				} catch(SecurityException se) {}
+				} catch(SecurityException se) {
+                                System.exit(11);
+				}
 			}
 		}
 		public boolean isFast() { return m_fast; }
@@ -567,6 +569,7 @@ public class Tetris extends Applet{
 			} catch(NullPointerException npe) { 
                             System.out.println("CAN'T FIND URL");
 				System.err.println("exception " + npe); 
+                                System.exit(10);
 				return null; 
 			}
 //                        System.out.println("INSIDE GETCLIP 3");
@@ -1317,7 +1320,7 @@ public class Tetris extends Applet{
 	}
 	
 	public void init() {
-		sounds = new TetrisSound(); // NOTE: Must be initialized after Applet fully constructed!
+		//sounds = new TetrisSound(); // NOTE: Must be initialized after Applet fully constructed!
 		installNewPiece();
                 W("\n\n\n\nMAX LEVEL "+P.MaxLevels+"\n\n\n\n");
                 TimeInLevelList = CreateTimeInLevelList(P.MaxLevels);
