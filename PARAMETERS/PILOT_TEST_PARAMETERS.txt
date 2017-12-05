@@ -8,7 +8,7 @@ DEBUG_MODE,TRUE,
 /    (rows will be removed when it gets too high, so you can't lost)
 / if set to FALSE it will be in classic mode
 /
-ADAPTIVE_TETRIS,FALSE,
+ADAPTIVE_TETRIS,TRUE,
 /
 NUMBER_OF_COLUMNS,10,
 /

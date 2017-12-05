@@ -194,11 +194,11 @@ public class Tetris extends Applet{
         public static long StartTimeInLevel;            
         double TimeInLevel;
 	int SecondsInCurrentLevel;
-        int score;
+        static int score;
         int KeyCounter[] = new int[4];
         public static long StartTime = System.nanoTime();
         long TotalRunTime;
-        long speed = 0;
+        static long speed = 0;
         long old_speed = 0;
         boolean GameStarted;
         //private int count;
@@ -224,6 +224,8 @@ public class Tetris extends Applet{
 	final Button pause_resume_butt = new TetrisButton("Pause");									
 	private String Subject_ID;
         boolean ControlKeyPressed = false;
+        
+        static boolean MinusKeyPressed = false;
         
         
         
@@ -412,10 +414,10 @@ public class Tetris extends Applet{
 		public void setPaused(boolean pause) { 
 			m_paused = pause;
 			if(m_paused) {
-				sounds.stopSoundtrack();
+				//sounds.stopSoundtrack(); // sounds is left null (until I can fix it), so this throws errors
 			}
 			else {
-				sounds.playSoundtrack();
+				//sounds.playSoundtrack();
 				synchronized(this) {
 					this.notify();
 				}
@@ -652,7 +654,7 @@ public class Tetris extends Applet{
 		timer.setPaused(true);
 		pause_resume_butt.setEnabled(false);
 //		int score = Integer.parseInt(score_label.getText());
-		sounds.playGameOverSound();
+		// sounds.playGameOverSound();
                 LogEvent("game_over");
                 // add a way here to show the player that they got a game over
                 startGame();
@@ -919,7 +921,7 @@ public class Tetris extends Applet{
 		ComputeScoreAndDelay(COLUMNS * Parameters.PointsAddedPerRemovedBlockFromFullRow * n_full);
                 if(n_full == 0)
 		return;
-		sounds.playDestroyRows(n_full);
+		// sounds.playDestroyRows(n_full);
 //		if(num_rows_deleted / DELETED_ROWS_PER_LEVEL != (num_rows_deleted+n_full) / DELETED_ROWS_PER_LEVEL) {
 //			timer.faster();
 //			level_label.addValue(n_full / DELETED_ROWS_PER_LEVEL + 1);
@@ -1280,7 +1282,7 @@ public class Tetris extends Applet{
 		pause_resume_butt.setEnabled(true); // stays enabled from here on
 		pause_resume_butt.setLabel("Pause");
 		pause_resume_butt.validate();
-		sounds.playSoundtrack();
+		// sounds.playSoundtrack();
                 StartTimeInLevel = System.nanoTime();
                 LogEvent("start_game");
 	}
@@ -1305,7 +1307,7 @@ public class Tetris extends Applet{
 		timer.setPaused(true);
                 TotalRunTime += System.nanoTime() - StartTime;
 		pause_resume_butt.setLabel("Resume");
-		sounds.stopSoundtrack();
+		// sounds.stopSoundtrack();
                 
                 LogEvent("game_paused");
 	}
@@ -1314,7 +1316,7 @@ public class Tetris extends Applet{
 		timer.setPaused(false);
 		StartTime = System.nanoTime();
 		pause_resume_butt.setLabel("Pause");
-		sounds.playSoundtrack();
+		// sounds.playSoundtrack();
                 
                 LogEvent("game_resumed");
 	}
@@ -1406,6 +1408,7 @@ public class Tetris extends Applet{
                                     ControlKeyPressed = false;
                                     SwitchToFocusTask();
                                 }
+                                if (e.getKeyCode()==KeyEvent.VK_MINUS) MinusKeyPressed = true;
                                 
                                 
                                 LogEvent("key_press_"+ e.getKeyText(e.getKeyCode()));
@@ -1433,6 +1436,7 @@ public class Tetris extends Applet{
                                 DownQueue = removeOldFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
                             }
                             if (e.getKeyCode() == KeyEvent.VK_CONTROL) ControlKeyPressed = false;
+                            if (e.getKeyCode()==KeyEvent.VK_MINUS) MinusKeyPressed = false;
                             LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
                             
                         }

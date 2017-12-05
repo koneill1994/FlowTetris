@@ -23,6 +23,10 @@ public class FlowControlSystem {
     long LastDelayControlSwitchTime = 0;
     long PersistentDelay;
     
+    private void W(String s){
+        System.out.println(s);
+    }
+    
         private void LogSystemChange(String s){
             CSLF.OutputData(s);
         }       
@@ -51,7 +55,7 @@ public class FlowControlSystem {
         // iteration_delay : the difference between level_delay's for adjacent levels (assuming the level-to-delay function is linear
         
         
-        // will set the delay and score based on the keypress percentage 
+        // will raise or lower the delay and score based on the keypress percentage 
         // will change level up or down if at an extreme end
         private void SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent, long speed){
             double extreme =.1;
@@ -76,7 +80,27 @@ public class FlowControlSystem {
             
         }
         
-        
+        // Raise or lower the delay based on foot pedal input
+        // currently input is set to the minus key ["-"], VK_MINUS
+        private void SetDelayFootPedal(long delay, long speed){
+            //Tetris.MinusKeyPressed
+            //The analogy is of an accelerator in a car
+            // but for simplicity's sake we'll start off with a linear relationship
+            // instead of a second-order one such as would be implied by "acceleration"
+
+            long accel_interval = 10; // amount to increase fall speed by every tick that pedal is pressed
+            long accel_friction = 5;  // amount to decrease fall speed by every tick that pedal is not pressed
+            
+            if(Tetris.MinusKeyPressed){
+                PersistentDelay = delay - accel_interval; 
+            }
+            else{
+                PersistentDelay = delay + accel_friction;
+            }
+            
+            speed = GetLevelFromDelay(PersistentDelay);
+            
+        }
         
         private long GetDelayFromLevel(long level){
             int minD = Parameters.MinimumDelayMilliseconds;
@@ -106,6 +130,15 @@ public class FlowControlSystem {
                     long last_score = score;
                     double last_kppercent = UnpressPercent;
                     long last_level = speed;
+                    
+                    
+                    SetDelayFootPedal(PersistentDelay, speed);
+                    SetDelaySystemControl(score, PersistentDelay, UnpressPercent, PreviousScoreSystemControl, speed);
+                    W("FCS delay"+ PersistentDelay);
+                    
+                    SetTetrisValues(score, speed, PersistentDelay);
+                    
+                    /*
                     String switchto = PlayerControl ? "Player" : "System";
                     
                     LastDelayControlSwitchTime = System.nanoTime();
@@ -122,13 +155,15 @@ public class FlowControlSystem {
                     
                     
                     PlayerControl=!PlayerControl;
+                    */
+                    
                 }
             }
         }     
  
         
         // FCS.ControlSystem(UnpressPercent, LastDelayControlSwitchTime, score, speed, CurrentTime());
-/*
+
         private void SetTetrisValues(int score2, long speed, long delay){
             Tetris.score = score2;  
             Tetris.PersistentDelay = delay;
@@ -142,7 +177,7 @@ public class FlowControlSystem {
             // probably just have to return these values
             // or access them from a method in Tetris
         }
-       */ 
+       
         
         //</A>
         
