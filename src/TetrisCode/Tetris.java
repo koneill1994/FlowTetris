@@ -1126,9 +1126,9 @@ public class Tetris extends Applet{
             if(score > high_score)
 		high_score_label.setText("" + score);
 	    
-            long delay=1000;  // should probably make this set in parameters at some point
+            //long delay=1000;  // should probably make this set in parameters at some point
             
-            delay = PersistentDelay;
+            long delay = PersistentDelay;
             
             // speed and level code based on section 5.9 and 5.10 of Colin Fahey's Tetris article
             //   www.colinfahey.com/tetris/tetris.html
@@ -1167,10 +1167,14 @@ public class Tetris extends Applet{
             
 //            
 
+            /*
+            control system console logging
             W("\nLEVEL: "+speed);
             W("DELAY: "+delay);
             W("KEY %: "+UnpressPercent);
             W("SCORE: "+score);
+            */
+
 
             old_speed = speed;
             
