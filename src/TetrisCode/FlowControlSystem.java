@@ -16,7 +16,7 @@ package TetrisCode;
 public class FlowControlSystem {
     
     char Tab = ',';
-    int PreviousScoreSystemControl;
+    int PreviousScoreSystemControl = Parameters.MaximumDelayMilliseconds; //maxD in ms
     Boolean PlayerControl = true;
     ControlSystemLogFile CSLF = new ControlSystemLogFile();
     
@@ -35,7 +35,7 @@ public class FlowControlSystem {
         private void LogSystemChange(String s){
             CSLF.OutputData(s);
         }       
-    // <A>
+        
         // will set the delay and score based on the level
         private void SetDelaySystemControl(long delay, int PreviousScoreSystemControl){
             
@@ -43,16 +43,19 @@ public class FlowControlSystem {
             
             // set speed to either the corresponding speed for the given score
             // bounded by zero and the maximum level
-            FCS_speed = (long) Math.max(Math.min(Math.floor(FCS_score/100.0),Parameters.MaxLevels),0);            
+            FCS_speed = (long) Math.max(Math.min(Math.floor(FCS_score/100.0),Parameters.MaxLevels),Parameters.MinLevels);            
             
             // only decrease speed, never increase it
-            if(FCS_score<PreviousScoreSystemControl){
+            if(FCS_score>0 && FCS_score<PreviousScoreSystemControl){
                 PersistentDelay = (long) (GetDelayFromLevel(FCS_speed) + GetIterationDelay() * (FCS_score%100)/100.0);
                 // the delay for the given level + the delay corresponding to the progress towards the next level
             }
             else{
                 PersistentDelay = delay;
             }
+            
+            PersistentDelay = BoundDelay(PersistentDelay);
+
             
             PreviousScoreSystemControl=FCS_score;
             
@@ -97,8 +100,10 @@ public class FlowControlSystem {
             // but for simplicity's sake we'll start off with a linear relationship
             // instead of a second-order one such as would be implied by "acceleration"
 
+            // todo: add to parameters
             long accel_interval = 10; // amount to increase fall speed by every tick that pedal is pressed
             long accel_friction = 5;  // amount to decrease fall speed by every tick that pedal is not pressed
+            
             
             if(Tetris.MinusKeyPressed){
                 PersistentDelay = delay - accel_interval; 
@@ -107,20 +112,31 @@ public class FlowControlSystem {
                 PersistentDelay = delay + accel_friction;
             }
             
+            PersistentDelay = BoundDelay(PersistentDelay);
+            
             FCS_speed = GetLevelFromDelay(PersistentDelay);
             
         }
         
+        private long BoundDelay(long delay){
+            int minD = Parameters.MinimumDelayMilliseconds;
+            int maxD = Parameters.MaximumDelayMilliseconds; 
+            
+            if(delay>maxD) return maxD;
+            else if(delay<minD) return minD;
+            else return delay;            
+        }
+        
         private long GetDelayFromLevel(long level){
             int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
+            int maxD = Parameters.MaximumDelayMilliseconds; 
             
             return (long) ((maxD-minD)*(1.0-1.0*level/Parameters.MaxLevels)+minD);
         }
         
         private long GetLevelFromDelay(long delay){
             int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
+            int maxD = Parameters.MaximumDelayMilliseconds;
             
             return (long) (Parameters.MaxLevels * (1.0 - (((float) (delay - minD))/((float) (maxD-minD)))));
         }
@@ -130,56 +146,30 @@ public class FlowControlSystem {
         // (technically returns -m; m is negative because level and delay have an inverse relation)
         private long GetIterationDelay(){
             int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
+            int maxD = Parameters.MaximumDelayMilliseconds;
             
-            return (long) ((maxD-minD)/(Parameters.MaxLevels-1.0));
+            return (long) ((maxD-minD)/(Parameters.MaxLevels-Parameters.MinLevels));
         }
         
         public void ControlSystem(Double UnpressPercent, int score, long speed, long CurrentTime){
-            //if(UnpressPercent != null){
-                //if(System.nanoTime() - LastDelayControlSwitchTime > 50 * 1000000){ //50 ms
-                    //long last_delay = PersistentDelay;
-                    //long last_score = score;
-                    //double last_kppercent = UnpressPercent;
-                    //long last_level = speed;
+            
+            FCS_score=score;
+            FCS_speed=speed;
+            
+            SetDelayFootPedal(PersistentDelay);
+            ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "1");
+            
+            // somehow something is setting the level to like 19 when the score is -4
+            SetDelaySystemControl(PersistentDelay, PreviousScoreSystemControl);
+            ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "2");
+                                
+            SetTetrisValues(FCS_score, FCS_speed, PersistentDelay);
                     
-                    FCS_score=score;
-                    FCS_speed=speed;
-                    
-                    SetDelayFootPedal(PersistentDelay);
-                    SetDelaySystemControl(PersistentDelay, PreviousScoreSystemControl);
-                    
-                    ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay);
-                    
-                    SetTetrisValues(FCS_score, FCS_speed, PersistentDelay);
-                    
-                    /*
-                    String switchto = PlayerControl ? "Player" : "System";
-                    
-                    LastDelayControlSwitchTime = System.nanoTime();
-                    if(PlayerControl){
-                        SetDelayPlayerControl(score, PersistentDelay, GetDelayFromLevel(speed), GetIterationDelay(), UnpressPercent, speed);
-                    }
-                    else{
-                        SetDelaySystemControl(score, PersistentDelay, UnpressPercent, PreviousScoreSystemControl, speed);
-                    }
-                    LogSystemChange(""+CurrentTime+Tab+last_delay+Tab+last_score+Tab+
-                            last_kppercent+Tab+last_level+Tab+switchto+Tab+
-                            PersistentDelay+Tab+score+Tab+UnpressPercent+Tab+speed+Tab);
-                    
-                    
-                    
-                    PlayerControl=!PlayerControl;
-                    */
-                    
-                //}
-            //}
         }     
  
         
-        // FCS.ControlSystem(UnpressPercent, LastDelayControlSwitchTime, score, speed, CurrentTime());
-
-        private void ConsoleLogStatus(int score, long speed, long time, long delay){
+        private void ConsoleLogStatus(int score, long speed, long time, long delay, String marker){
+            W(marker+":");
             W("FCS status at "+time+" ms"); //current time is in ms
             W("  score: "+score);
             W("  level: "+speed);

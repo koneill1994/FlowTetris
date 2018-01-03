@@ -45,7 +45,9 @@ public class Parameters {
   static int RemoveBiggestPartialRowIfBlockInRow;
   static int PointsSubtractedPerEmptySpaceFromPartialRow;
   static int MinimumDelayMilliseconds;
+  static int MaximumDelayMilliseconds = 1000;
   static int TimeLimitInSeconds;
+  public static int MinLevels = 0;
   public static int MaxLevels;
   public static int MaxSecondsInLevel = 0;
   
@@ -124,6 +126,10 @@ public class Parameters {
                     MinimumDelayMilliseconds = GetInteger(2);
                 } else
                 
+                if (Cmd.equals("MAXIMUM_DELAY_MILLISECONDS")){
+                    MaximumDelayMilliseconds = GetInteger(2);
+                } else
+                            
                 if (Cmd.equals("TIME_LIMIT_IN_SECONDS")) {
                     TimeLimitInSeconds = GetInteger(2);
                     //System.out.println("TLIS="+TimeLimitInSeconds);
@@ -135,6 +141,11 @@ public class Parameters {
                     MaxLevels = GetInteger(2);
                 } else
         
+                if (Cmd.equals("MINIMUM_LEVEL")) {
+                    MinLevels = GetInteger(2);
+                } else
+                    
+                    
                 if (Cmd.equals("SECONDS_IN_MAXIMUM_LEVEL_TO_SWITCH_TO_FOCUS_TASK")) {
                     MaxSecondsInLevel = GetInteger(2);
                 } else
