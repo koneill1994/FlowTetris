@@ -5,10 +5,6 @@
  */
 package TetrisCode;
 
-//import static TetrisCode.Tetris.PersistentDelay;
-//no idea why this is here or what its for
-// NetBeans could be a bit more explicit about what it does and why
-
 /**
  *
  * @author Kevin
@@ -21,12 +17,23 @@ public class FlowControlSystem {
     ControlSystemLogFile CSLF = new ControlSystemLogFile();
     
     long LastDelayControlSwitchTime = 0;
-    long PersistentDelay; // FCS keeps its own persistent delay value
+    long PersistentDelay = Parameters.MaximumDelayMilliseconds; // FCS keeps its own persistent delay value
     // which is sent to Tetris.java to order the new delay
     
     int FCS_score;
     long FCS_speed; // grab our own copies of these
     // so we can just set them without worrying about functions returning them
+    
+    
+    int minD = Parameters.MinimumDelayMilliseconds;
+    int maxD = Parameters.MaximumDelayMilliseconds;
+    
+    int maxL = Parameters.MaxLevels;
+    int minL = Parameters.MinLevels;
+    
+    // ld for "Level to Delay transfer function"
+    double ld_slope = (double) (maxL-minL)/(minD-maxD);
+    double ld_intercept = 0.5 * (maxL + minL - ld_slope*(minD+maxD));
     
     private void W(String s){
         System.out.println(s);
@@ -45,14 +52,14 @@ public class FlowControlSystem {
             // bounded by zero and the maximum level
             FCS_speed = (long) Math.max(Math.min(Math.floor(FCS_score/100.0),Parameters.MaxLevels),Parameters.MinLevels);            
             
+            
+            long PossibleDelay = (long) (GetDelayFromLevel(FCS_speed) + GetIterationDelay() * (FCS_score%100)/100.0);
+            // the delay for the given level + the delay corresponding to the progress towards the next level
+            
             // only decrease speed, never increase it
-            if(FCS_score>0 && FCS_score<PreviousScoreSystemControl){
-                PersistentDelay = (long) (GetDelayFromLevel(FCS_speed) + GetIterationDelay() * (FCS_score%100)/100.0);
-                // the delay for the given level + the delay corresponding to the progress towards the next level
-            }
-            else{
-                PersistentDelay = delay;
-            }
+            if(PossibleDelay>delay) PersistentDelay = PossibleDelay;
+            else PersistentDelay = delay;
+            
             
             PersistentDelay = BoundDelay(PersistentDelay);
 
@@ -100,53 +107,41 @@ public class FlowControlSystem {
             // but for simplicity's sake we'll start off with a linear relationship
             // instead of a second-order one such as would be implied by "acceleration"
 
-            // todo: add to parameters
-            long accel_interval = 10; // amount to increase fall speed by every tick that pedal is pressed
-            long accel_friction = 5;  // amount to decrease fall speed by every tick that pedal is not pressed
-            
             
             if(Tetris.MinusKeyPressed){
-                PersistentDelay = delay - accel_interval; 
+                PersistentDelay = delay - Parameters.FootPedalAccelInterval; 
             }
             else{
-                PersistentDelay = delay + accel_friction;
+                PersistentDelay = delay + Parameters.FootPedalFrictionInterval;
             }
-            
             PersistentDelay = BoundDelay(PersistentDelay);
-            
             FCS_speed = GetLevelFromDelay(PersistentDelay);
             
         }
         
         private long BoundDelay(long delay){
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = Parameters.MaximumDelayMilliseconds; 
             
             if(delay>maxD) return maxD;
             else if(delay<minD) return minD;
             else return delay;            
         }
         
+        // better, but now its going to level 10 instead of level 20
+        
         private long GetDelayFromLevel(long level){
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = Parameters.MaximumDelayMilliseconds; 
             
-            return (long) ((maxD-minD)*(1.0-1.0*level/Parameters.MaxLevels)+minD);
+            return (long) Math.floor( (level-ld_intercept) /ld_slope);
         }
         
         private long GetLevelFromDelay(long delay){
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = Parameters.MaximumDelayMilliseconds;
             
-            return (long) (Parameters.MaxLevels * (1.0 - (((float) (delay - minD))/((float) (maxD-minD)))));
+            return (long) Math.floor( (ld_slope*delay) + ld_intercept);
         }
         
         // difference in milliseconds in delay between two adjacent levels
         // i.e. the m in y=mx+b for the function that maps speed/level to delay
         // (technically returns -m; m is negative because level and delay have an inverse relation)
         private long GetIterationDelay(){
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = Parameters.MaximumDelayMilliseconds;
             
             return (long) ((maxD-minD)/(Parameters.MaxLevels-Parameters.MinLevels));
         }
@@ -156,16 +151,18 @@ public class FlowControlSystem {
             FCS_score=score;
             FCS_speed=speed;
             
+            ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "0");
+            
             SetDelayFootPedal(PersistentDelay);
             ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "1");
             
-            // somehow something is setting the level to like 19 when the score is -4
+            // why is the delay going down without pressing vk_minus?
             SetDelaySystemControl(PersistentDelay, PreviousScoreSystemControl);
             ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "2");
                                 
             SetTetrisValues(FCS_score, FCS_speed, PersistentDelay);
-                    
-        }     
+            
+        }
  
         
         private void ConsoleLogStatus(int score, long speed, long time, long delay, String marker){
@@ -174,6 +171,8 @@ public class FlowControlSystem {
             W("  score: "+score);
             W("  level: "+speed);
             W("  delay: "+delay);
+            //W("    ld_slope: "+ld_slope);
+            //W("    ld_intercept: "+ld_intercept);
         }
         
         private void SetTetrisValues(int score2, long speed, long delay){

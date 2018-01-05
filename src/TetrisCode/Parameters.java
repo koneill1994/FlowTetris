@@ -50,7 +50,8 @@ public class Parameters {
   public static int MinLevels = 0;
   public static int MaxLevels;
   public static int MaxSecondsInLevel = 0;
-  
+  public static long FootPedalAccelInterval = 10; // amount to increase fall speed by every tick that pedal is pressed
+  public static long FootPedalFrictionInterval = 5; // amount to decrease fall speed by every tick that pedal is not pressed
   
   public Parameters(String ParameterFileName) {
         
@@ -220,6 +221,14 @@ public class Parameters {
                    Tetris.SwitchCondition_Measure = Cmd;
                    Tetris.SwitchCondition_Value = (double) GetInteger(2);
                    W("SCM HAS BEEN SET TO "+Cmd+"SO IT SHOULD BE"+Tetris.SwitchCondition_Measure);
+               } else
+                   
+               if (Cmd.equals("FOOT_PEDAL_ACCELERATION_INTERVAL")){
+                   FootPedalAccelInterval = (long) GetInteger(2);
+               } else
+                   
+               if (Cmd.equals("FOOT_PEDAL_FRICTION_INTERVAL")){
+                   FootPedalFrictionInterval = (long) GetInteger(2);
                } else
                     
 ////////////////////////////////////////////////////////////////////////////////                    
