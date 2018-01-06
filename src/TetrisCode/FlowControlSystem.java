@@ -12,7 +12,7 @@ package TetrisCode;
 public class FlowControlSystem {
     
     char Tab = ',';
-    int PreviousScoreSystemControl = Parameters.MaximumDelayMilliseconds; //maxD in ms
+    long PreviousDelaySystemControl = Parameters.MaximumDelayMilliseconds; //maxD in ms
     Boolean PlayerControl = true;
     ControlSystemLogFile CSLF = new ControlSystemLogFile();
     
@@ -44,7 +44,7 @@ public class FlowControlSystem {
         }       
         
         // will set the delay and score based on the level
-        private void SetDelaySystemControl(long delay, int PreviousScoreSystemControl){
+        private void SetDelaySystemControl(long delay){
             
             //PreviousScoreSystemControl
             
@@ -57,14 +57,13 @@ public class FlowControlSystem {
             // the delay for the given level + the delay corresponding to the progress towards the next level
             
             // only decrease speed, never increase it
-            if(PossibleDelay>delay) PersistentDelay = PossibleDelay;
+            if(PossibleDelay>PreviousDelaySystemControl) PersistentDelay = PossibleDelay;
             else PersistentDelay = delay;
             
             
             PersistentDelay = BoundDelay(PersistentDelay);
 
-            
-            PreviousScoreSystemControl=FCS_score;
+            PreviousDelaySystemControl=PersistentDelay;
             
             FCS_speed = GetLevelFromDelay(PersistentDelay);
         }
@@ -157,7 +156,7 @@ public class FlowControlSystem {
             ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "1");
             
             // why is the delay going down without pressing vk_minus?
-            SetDelaySystemControl(PersistentDelay, PreviousScoreSystemControl);
+            SetDelaySystemControl(PersistentDelay);
             ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "2");
                                 
             SetTetrisValues(FCS_score, FCS_speed, PersistentDelay);
