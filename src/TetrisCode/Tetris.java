@@ -102,6 +102,7 @@ public class Tetris extends Applet{
         long tmp_unpress_time=0;
         
         FlowControlSystem FCS = new FlowControlSystem();
+        Sound snd = new Sound();
         
         
         private final static int EMPTY = -1;
@@ -241,7 +242,8 @@ public class Tetris extends Applet{
         private void LogEvent(String event){
             Double drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000);
 
-            F.LogEvent(""+ CurrentTime() + Tab + event+Tab
+            F.LogEvent("" + Subject_ID + Tab + isAdaptive
+                    + CurrentTime() + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
                 +speed+Tab+accumulationHeight+Tab+computeVariance(HeightQueue,queue_history)
                 +Tab+DropDurationQueue.peek()+Tab+ computeVariance(DropDurationQueue,queue_history)
@@ -1074,42 +1076,8 @@ public class Tetris extends Applet{
             
             
         }
-        
-        public long DelayFromUnpressPercentBounds(long delay, Double percent, Double lb, Double ub){
-            if(percent==null) return delay;
-            W("lb: "+lb+", ub: "+ub);
-            long d = delay;
-            long iterate_value = 10; // 10 ms iteration value
-            if(percent>ub){  // the player is pressing less, so they need more time to think
-                d+=iterate_value;
-            }
-            else if(percent<lb){ // the player is pressing more, they need more of a challenge
-                d-=iterate_value;
-            }
-            
-            //sanitize the delay so it doesn't get too big or too small
-            if(d<Parameters.MinimumDelayMilliseconds) d=Parameters.MinimumDelayMilliseconds;
-            //if(d>1000) d=1000;
-            
-            return d;
-        }
-        
-        public long DelayDromUnpressPercentLinear(long delay, Double percent){
-            long d = delay;
-            
-            if(percent==null) return d;
-                        
-            
-            speed = (long) Math.max(Math.min(Math.floor(score/100.0),Parameters.MaxLevels),0);
-            
-            int minD = Parameters.MinimumDelayMilliseconds;
-            int maxD = 1000; // maximum delay is set to 1000 milliseconds for now
-            
-            d = (long) ((maxD-minD)*(percent)+minD);
-            
-            return d;
-        }
-        
+                
+
         //<A>
         // flow control system used to be here
         // moved to separate file for encapsulation and ease of maintaining

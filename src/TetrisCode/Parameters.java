@@ -95,6 +95,7 @@ public class Parameters {
                 if (Cmd.equals("ADAPTIVE_TETRIS")) {
                     if (GetString(2).equals("FALSE")) Tetris.isAdaptive = false;
                     else if (GetString(2).equals("TRUE")) Tetris.isAdaptive = true;
+                    else if (GetString(2).equals("RANDOM")) Tetris.isAdaptive = (Math.random() > 0.5d);
                 } else
                     
 //------------------------------------------------------------------------------                

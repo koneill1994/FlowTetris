@@ -39,7 +39,8 @@ public class FineData {
     // edit this to add more columns
     // make sure you also change the logging to make sure
     // it logs the same number of items as this list's length
-    List<String> HeaderLabels = Arrays.asList("TimeStamp", "EventLabel",
+    List<String> HeaderLabels = Arrays.asList("SubjectID","IsAdaptive",
+            "TimeStamp", "EventLabel",
             "SizeLastRowRemoved","SizeLastRowRemovedVariance",
             "SpeedLevel",
             "AccumulationHeight","HeightVariance",

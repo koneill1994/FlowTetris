@@ -62,8 +62,6 @@ public class FlowControlSystem {
             
             
             PersistentDelay = BoundDelay(PersistentDelay);
-
-            PreviousDelaySystemControl=PersistentDelay;
             
             FCS_speed = GetLevelFromDelay(PersistentDelay);
         }
@@ -158,7 +156,10 @@ public class FlowControlSystem {
             // why is the delay going down without pressing vk_minus?
             SetDelaySystemControl(PersistentDelay);
             ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "2");
-                                
+            
+            PreviousDelaySystemControl=PersistentDelay;
+
+            
             SetTetrisValues(FCS_score, FCS_speed, PersistentDelay);
             
         }
