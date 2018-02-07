@@ -41,7 +41,7 @@ public class Sound {
             //snd[0] = new URL("file:" + ControlCode.MainDir + 
             //        "/WAVES/" + Wave + ".wav");
             snd[0] = new URL("file:" + 
-                    "/SETUP/WAVES/" + Wave + ".wav");
+                    "EXPERIMENT/AUDIO/" + Wave + ".wav");
         } catch (Exception e) {
             System.err.println(e);
         }

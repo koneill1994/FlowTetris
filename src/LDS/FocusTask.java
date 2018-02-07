@@ -513,10 +513,7 @@ public class FocusTask {
     public boolean Update(Graphics2D g2in, int mXin, int mYin, boolean Button1In, boolean Button2In, boolean Button3In,
             Task Bin) {
         
-        W(""+ControlCode.KeyPressed);
-        // W(""+ControlCode.key);
-        // even when holding down a key, its only not vk code 0 for 1 in every 5 update cycles
-        // when holding down 2 only the second one is registered
+        
         
       MouseX = mXin;
       MouseY = mYin;
@@ -758,7 +755,7 @@ public class FocusTask {
             }
 
             if (B.FirstWriteToFile) {
-                W("DELTING DATA");
+                W("DELETING DATA");
                 file.delete();
                 file.createNewFile();
             }

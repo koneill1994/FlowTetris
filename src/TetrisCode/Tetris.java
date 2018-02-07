@@ -104,6 +104,7 @@ public class Tetris extends Applet{
         FlowControlSystem FCS = new FlowControlSystem();
         Sound snd = new Sound();
         
+        boolean SoundKeyPressed = false;
         
         private final static int EMPTY = -1;
 	//private final static int DELETED_ROWS_PER_LEVEL = 5;
@@ -1343,6 +1344,18 @@ public class Tetris extends Applet{
                                 
 				if(timer.isPaused()) //don't do anything if game is paused
 					return;
+                                
+                                if (e.getKeyCode() >= 37 & e.getKeyCode() <= 40){
+                                    if(!SoundKeyPressed){
+                                        snd.PlayWave("bip");
+                                    }
+                                    SoundKeyPressed=true;
+                                    // need a way to make sure this doesn't keep firing if they hold down the button
+                                }
+                                else{
+                                    SoundKeyPressed=false;
+                                }
+                                
 				if (e.getKeyCode() == 37 || e.getKeyCode() == 39) { //left or right arrow pressed
                                         if (e.getKeyCode() == 37) KeyCounter[0]++;
 					if (e.getKeyCode() == 39) KeyCounter[1]++;
