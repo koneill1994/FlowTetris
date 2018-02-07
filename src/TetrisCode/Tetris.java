@@ -1351,6 +1351,7 @@ public class Tetris extends Applet{
                                     }
                                     SoundKeyPressed=true;
                                     // need a way to make sure this doesn't keep firing if they hold down the button
+                                    // this isn't working
                                 }
                                 else{
                                     SoundKeyPressed=false;
