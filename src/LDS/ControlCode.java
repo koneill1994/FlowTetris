@@ -153,7 +153,7 @@ public class ControlCode extends JComponent
 //        KeyPressTime = CT.currentTimeMillis() - KeyPressStartTime;
         
         key = e.getKeyCode();
-      //  System.out.println("KeyChar="+(char)key+" INT="+(int)key);  // was getting annoying
+        System.out.println("KeyChar="+(char)key+" INT="+(int)key);  // was getting annoying
 //        Block.KeyChar = (char)key;
         
         if (key == KeyEvent.VK_ESCAPE) {

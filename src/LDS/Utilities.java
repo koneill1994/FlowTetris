@@ -141,14 +141,14 @@ public class Utilities {
             
         //Mouse outside target circle?
         if (Radius > Task.IMAGE_RADIUS - 10) {
-            W("OUTSIDE");
+            //W("OUTSIDE");
             
         } else {
-            W("INSIDE");
+            //W("INSIDE");
             if (!Parameters.DebugMode) MouseRobot.mouseMove(LastMouseX + CalibrateMouse.XDifference, LastMouseY + CalibrateMouse.YDifference);        
         }
         
-        W("LastMouseY="+LastMouseY+" LastMouseX="+LastMouseX+" MouseX="+MouseX+" MouseY="+MouseY);
+        //W("LastMouseY="+LastMouseY+" LastMouseX="+LastMouseX+" MouseX="+MouseX+" MouseY="+MouseY);
     
     }
     

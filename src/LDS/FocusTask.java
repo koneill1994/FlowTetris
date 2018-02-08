@@ -72,6 +72,8 @@ public class FocusTask {
     boolean Answer1Given;
     boolean Answer2Given;
     
+    boolean AcceptInput;
+    
     long StartTime[] = new long[6];
     long StopTime[] = new long[6];
 
@@ -516,6 +518,11 @@ public class FocusTask {
     public boolean Update(Graphics2D g2in, int mXin, int mYin, boolean Button1In, boolean Button2In, boolean Button3In,
             Task Bin) {
         
+        W(""+ControlCode.KeyPressed);
+        // W(""+ControlCode.key);
+        // even when holding down a key, its only not vk code 0 for 1 in every 5 update cycles
+        // when holding down 2 only the second one is registered
+        
       MouseX = mXin;
       MouseY = mYin;
       g2 = g2in;
@@ -553,6 +560,8 @@ public class FocusTask {
           StartTimerNow = true;
           Answer1Given = false;
           Answer2Given = false;
+          
+          AcceptInput = false;
           
           boolean Start = ControlCode.Util.ReadNextButton(Xo, Yo, g2, MouseX, MouseY, Button1, OldButton1);
           
@@ -617,10 +626,11 @@ public class FocusTask {
       }
       
       if (Mode == WAITING_FOR_DECISION_MODE_1) {
-          
-          if (ControlCode.KeyPressed & !Answer1Given) {
+          AcceptInput = true;
+          if (ControlCode.KeyPressed & !Answer1Given & AcceptInput) {
               Answer1Given = true;
               SubjAnswerChar1 = (char)ControlCode.key;
+              //W(""+SubjAnswerChar1);
               StopTimer(GET_DECISION_TIME_1);
               StartTimer(GET_DECISION_TIME_2);
               ControlCode.KeyPressed = false;
@@ -631,7 +641,7 @@ public class FocusTask {
           
       if (Mode == WAITING_FOR_DECISION_MODE_2) {
           
-          if (ControlCode.KeyPressed & Answer1Given & !Answer2Given) {
+          if (ControlCode.KeyPressed & Answer1Given & !Answer2Given & AcceptInput) {
               Answer2Given = true;
               SubjAnswerChar2 = (char)ControlCode.key;
               StopTimer(GET_DECISION_TIME_2);
@@ -724,7 +734,7 @@ public class FocusTask {
           g2.drawString("FOCUS TASK", 900, Yoffset + 50);
       
       }
-      
+      ControlCode.KeyPressed = false;
       return false;       
 
     }
