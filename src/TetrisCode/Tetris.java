@@ -1228,6 +1228,7 @@ public class Tetris extends Applet{
                                 SwitchBasedOnCondition(SwitchCondition_Measure, SwitchCondition_Value, SwitchCondition_Comparison); 
                                 
                                 if(isAdaptive) FCS.ControlSystem(UnpressPercent, score, speed, CurrentTime());
+                                else FCS.SetVarsVanillaTetris(num_rows_deleted, score);
                                 
 				game_grid.repaint();
 			}
@@ -1345,8 +1346,10 @@ public class Tetris extends Applet{
 				if(timer.isPaused()) //don't do anything if game is paused
 					return;
                                 
-                                W("SKP"+SoundKeyPressed);
-                                
+                                /*              
+                                // this code has problems
+                                // we may still add sound in the future if we have time
+                                // for now its dummied out
                                 if (e.getKeyCode() >= 37 & e.getKeyCode() <= 40){
                                     if(!SoundKeyPressed[e.getKeyCode()-37] ){
                                         snd.PlayWave("bip");
@@ -1354,7 +1357,7 @@ public class Tetris extends Applet{
                                     }
                                     SoundKeyPressed[e.getKeyCode()-37]=true;
                                 }
-                                
+                                */
 				if (e.getKeyCode() == 37 || e.getKeyCode() == 39) { //left or right arrow pressed
                                         if (e.getKeyCode() == 37) KeyCounter[0]++;
 					if (e.getKeyCode() == 39) KeyCounter[1]++;

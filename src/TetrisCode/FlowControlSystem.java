@@ -43,6 +43,25 @@ public class FlowControlSystem {
             CSLF.OutputData(s);
         }       
         
+        // set game variables based on a modified version of vanilla tetris
+        // as described in http://colinfahey.com/tetris/tetris.html
+        // it works but the new level only kicks in after a new piece drops
+        public void SetVarsVanillaTetris(int linesCompleted, int score){
+            if (linesCompleted <=0){
+                FCS_speed = minL;
+            }
+            else if ((linesCompleted >= 1) && (linesCompleted <= 90)){
+                FCS_speed = minL + linesCompleted*(maxL-minL)/91;
+            }
+            else if (linesCompleted >=91){
+                FCS_speed = maxL;
+            }
+            PersistentDelay = GetDelayFromLevel(FCS_speed);
+            
+            SetTetrisValues(score, FCS_speed, PersistentDelay);
+ 
+       }
+        
         // will set the delay and score based on the level
         private void SetDelaySystemControl(long delay){
             
@@ -64,6 +83,7 @@ public class FlowControlSystem {
             PersistentDelay = BoundDelay(PersistentDelay);
             
             FCS_speed = GetLevelFromDelay(PersistentDelay);
+            
         }
         
         // level_delay : the normal delay that would be in place for a given level
@@ -73,6 +93,7 @@ public class FlowControlSystem {
         // will raise or lower the delay and score based on the keypress percentage 
         // will change level up or down if at an extreme end
         // DEPRECATED as of current experimental design
+        /*
         private void SetDelayPlayerControl(int score, long delay, long level_delay, long iteration_delay, Double percent, long speed){
             double extreme =.1;
                
@@ -95,6 +116,7 @@ public class FlowControlSystem {
             score = (int) (100*(speed + (usable_percent - (usable_percent_range/2))));
             
         }
+        */
         
         // Raise or lower the delay based on foot pedal input
         // currently input is set to the minus key ["-"], VK_MINUS

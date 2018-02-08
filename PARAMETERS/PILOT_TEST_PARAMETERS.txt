@@ -7,8 +7,9 @@ DEBUG_MODE,TRUE,
 / Tetris will be in adaptive mode
 /    (rows will be removed when it gets too high, so you can't lost)
 / if set to FALSE it will be in classic mode
+/ if set to RANDOM it will pick one of the two at the start
 /
-ADAPTIVE_TETRIS,RANDOM,
+ADAPTIVE_TETRIS,FALSE,
 /
 NUMBER_OF_COLUMNS,10,
 /
