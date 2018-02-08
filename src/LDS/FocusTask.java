@@ -400,6 +400,7 @@ public class FocusTask {
 //                            
 //                        } else
                             Mode = WAITING_FOR_DECISION_MODE_1;
+                            ControlCode.KeyPressed = false;
                             StopTimer(TIME_TO_TARGET_TIME);
                             StartTimer(GET_DECISION_TIME_1);
                             
@@ -734,7 +735,7 @@ public class FocusTask {
           g2.drawString("FOCUS TASK", 900, Yoffset + 50);
       
       }
-      ControlCode.KeyPressed = false;
+      
       return false;       
 
     }
