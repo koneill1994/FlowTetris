@@ -273,20 +273,14 @@ public class FocusTask {
 
             SecondTargetLetterMemory = SecondTargetLetter;
             
-            if (SecondTargetLetter < FirstTargetLetter) {
-//                CorrectAnswerStr = "LEFT";
-                FirstSecondLetterStr = "SECOND_LETTER_FIRST";
-            }
-        
-            if (SecondTargetLetter > FirstTargetLetter) {
-//                CorrectAnswerStr = "RIGHT";
-                FirstSecondLetterStr = "FIRST_LETTER_FIRST";
-            }
-            
-            CorrectAnswerChar1 = FirstTargetLetter;
+            FirstSecondLetterStr = "FIRST_LETTER_FIRST";
             
         } else SecondTargetLetter = ' ';
                 
+        
+        CorrectAnswerChar1 = FirstTargetLetter;
+        CorrectAnswerChar2 = SecondTargetLetter;
+        
     }
     
     public void DrawPicture(int ImageNo) {
@@ -673,7 +667,12 @@ public class FocusTask {
           
           if (OldMode != SHOW_DECISION_MODE) B.TotalAnswered++;
           
-          if (CorrectAnswerChar1 == SubjAnswerChar1) {
+          if (CorrectAnswerChar1 == SubjAnswerChar1 & CorrectAnswerChar2 == SubjAnswerChar2) {
+              CorrectColor = Color.GREEN;
+              CorrectStr = "CORRECT";
+              if (OldMode != SHOW_DECISION_MODE) B.TotalCorrect++;
+          }
+          if(SubjAnswerChar1 == ' ' & CorrectAnswerChar2 == ' ' & CorrectAnswerChar1 == SubjAnswerChar2) {
               CorrectColor = Color.GREEN;
               CorrectStr = "CORRECT";
               if (OldMode != SHOW_DECISION_MODE) B.TotalCorrect++;
