@@ -104,7 +104,7 @@ public class Tetris extends Applet{
         FlowControlSystem FCS = new FlowControlSystem();
         Sound snd = new Sound();
         
-        boolean SoundKeyPressed = false;
+        boolean SoundKeyPressed[] = {false,false,false,false}; // keycodes 37, 38, 39, and 40, respectively
         
         private final static int EMPTY = -1;
 	//private final static int DELETED_ROWS_PER_LEVEL = 5;
@@ -1345,16 +1345,14 @@ public class Tetris extends Applet{
 				if(timer.isPaused()) //don't do anything if game is paused
 					return;
                                 
+                                W("SKP"+SoundKeyPressed);
+                                
                                 if (e.getKeyCode() >= 37 & e.getKeyCode() <= 40){
-                                    if(!SoundKeyPressed){
+                                    if(!SoundKeyPressed[e.getKeyCode()-37] ){
                                         snd.PlayWave("bip");
+                                        // this works correctly but when buttons are pressed a bunch in quick succession it slows down the main loop
                                     }
-                                    SoundKeyPressed=true;
-                                    // need a way to make sure this doesn't keep firing if they hold down the button
-                                    // this isn't working
-                                }
-                                else{
-                                    SoundKeyPressed=false;
+                                    SoundKeyPressed[e.getKeyCode()-37]=true;
                                 }
                                 
 				if (e.getKeyCode() == 37 || e.getKeyCode() == 39) { //left or right arrow pressed
@@ -1402,6 +1400,10 @@ public class Tetris extends Applet{
 			}
                         
                         public void keyReleased(KeyEvent e) {
+                            
+                            if (e.getKeyCode() >= 37 & e.getKeyCode() <= 40){
+                                SoundKeyPressed[e.getKeyCode()-37]=false;
+                            }                            
                             
                             LastButtonUnpressTime=(System.nanoTime()- StartTime)/1000000;
                             

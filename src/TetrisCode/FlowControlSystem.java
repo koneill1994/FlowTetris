@@ -148,14 +148,14 @@ public class FlowControlSystem {
             FCS_score=score;
             FCS_speed=speed;
             
-            ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "0");
+            //ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "0");
             
             SetDelayFootPedal(PersistentDelay);
-            ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "1");
+            //ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "1");
             
             // why is the delay going down without pressing vk_minus?
             SetDelaySystemControl(PersistentDelay);
-            ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "2");
+            //ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "2");
             
             PreviousDelaySystemControl=PersistentDelay;
 
