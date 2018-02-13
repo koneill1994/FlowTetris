@@ -146,7 +146,7 @@ public class FocusTask {
     public FocusTask(Task B, int NoOfBlocks) {
         
         //reset timers
-        for (int i = 0; i < 6; i++) StopTime[i] = -1;
+        for (int i = 0; i < StopTime.length; i++) StopTime[i] = -1;
     
         BlockNo = B.TaskCounter;
         
@@ -588,7 +588,7 @@ public class FocusTask {
               if (i == Mode) g2.setPaint(Color.MAGENTA);
               g2.drawString(ModeStr[i], 890, Yoffset + 180 + i * 35);
               g2.setPaint(Color.MAGENTA);
-              if (i < 6) if (StopTime[i] != -1)
+              if (i < StopTime.length) if (StopTime[i] != -1)
                   g2.drawString(""+StopTime[i], 1220, Yoffset + 180 + i * 35);   //?????
           }
           g2.drawString("TRIAL_NO = " + (B.TrialNo + 1) + " OUT OF " + B.NoOfTrials, 
@@ -608,7 +608,7 @@ public class FocusTask {
           if ((Math.abs(MouseX - Xo) > 10) | (Math.abs(MouseY - Yo) > 10)) {
               
               //reset timers
-              for (int i = 0; i < 5; i++) StopTime[i] = -1;
+              for (int i = 0; i < StopTime.length; i++) StopTime[i] = -1;
         
               StopTimer(WAITING_TO_START_TIME);
               StartTimer(MOUSE_MOVING_TIME);
