@@ -9,7 +9,7 @@
 /  focus task
 /    survey
 /
-DEBUG_MODE,TRUE,
+DEBUG_MODE,FALSE,
 /
 /
 /for TEXT_TASKs
