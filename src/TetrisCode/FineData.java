@@ -47,7 +47,7 @@ public class FineData {
             "LastDropDuration","DropDurationVariance",
             "DropPercentage","SubjNo");
     
-    String FileName = "EXPERIMENT/DATA/" + "FineData" + ".csv";
+    String FileName = "EXPERIMENT/DATA/" + "TETRIS_FINEDATA_" + Tetris.Subject_ID + ".csv";
 
     File file = new File(FileName);
     /*

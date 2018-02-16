@@ -73,7 +73,7 @@ MAXIMUM_LEVEL,20,
 /
 / stop condition based on database of previous times spent in each level
 /
-TIME_IN_LEVEL,
+/TIME_IN_LEVEL,
 /
 /
 /

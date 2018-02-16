@@ -50,20 +50,16 @@ TAKE_SURVEY,FLOW_SCALE_FULL,BEFORE_TETRIS,2,TRUE,
 BEGIN_TEXT_TASK,
 TEXT_ON_LINE,0,                                            TUTORIAL
 TEXT_ON_LINE,2,Press the NEXT button to start the trial.
-TEXT_ON_LINE,3,Choose an image by moving the mouse cursor inside of it.
-TEXT_ON_LINE,4,A green or yellow circle will appear in the selected image.
-TEXT_ON_LINE,5,A stream of 20 digits will appear in the circle which might contain one or two target letters.
-TEXT_ON_LINE,6,If the circle is yellow, the 2nd target will be right side up.
-TEXT_ON_LINE,7,If the circle is green, the 2nd target letter will be upside down.
-TEXT_ON_LINE,8,If the 2nd target letter is to the left of the first letter in the alphabet, then press the left mouse button.
-TEXT_ON_LINE,9,If the 2nd target letter is to the right of the first letter in the alphabet, then press the right mouse button.
-TEXT_ON_LINE,10,If there is no 2nd target letter, then press the middle mouse button.
-TEXT_ON_LINE,12,Another way to explain this task:
-TEXT_ON_LINE,14,A letter is said to be higher than another letter if it appears after the other letter in the alphabet.
-TEXT_ON_LINE,15,Forexample, Dis higher than B.
-TEXT_ON_LINE,17,If the 1st target letter is higher than the 2nd target letter, then press the left mouse button.
-TEXT_ON_LINE,18,If the 2nd target letter is higher than the 1st target letter, then press the right mouse button.
-TEXT_ON_LINE,19,If there is no 2nd target letter, then press the middle mouse button.
+TEXT_ON_LINE,3,
+TEXT_ON_LINE,4,A stream of 20 digits will appear in the circle which might contain one or two target letters.
+TEXT_ON_LINE,5,When the sequence has stopped displaying, press the letters on the keyboard that you saw in the sequence,
+TEXT_ON_LINE,6,If there was only one letter in the sequence, press the letter and then the space bar,
+TEXT_ON_LINE,7,(Or the space bar and then the letter),
+TEXT_ON_LINE,8,For example if in the sequence you saw the letters D and B (in that order)
+TEXT_ON_LINE,9,Then you would press the D and B keys on the keyboard (in that order)
+TEXT_ON_LINE,10,If you saw only the letter Q,
+TEXT_ON_LINE,11,You would press the letter Q and then the space bar,
+TEXT_ON_LINE,13,To practice, you be given a number of practice trials before starting the real task,
 END_TASK,
 /--------------------------------------------------------------------
 /
@@ -86,20 +82,15 @@ END_TASK,
 BEGIN_TEXT_TASK,
 TEXT_ON_LINE,0,                                            TASK 1
 TEXT_ON_LINE,2,Press the NEXT button to start the trial.
-TEXT_ON_LINE,3,Choose an image by moving the mouse cursor inside of it.
-TEXT_ON_LINE,4,A green or yellow circle will appear in the selected image.
-TEXT_ON_LINE,5,A stream of 20 digits will appear in the circle which might contain one or two target letters.
-TEXT_ON_LINE,6,If the circle is yellow, the 2nd target will be right side up.
-TEXT_ON_LINE,7,If the circle is green, the 2nd target letter will be upside down.
-TEXT_ON_LINE,8,If the 2nd target letter is to the left of the first letter in the alphabet, then press the left mouse button.
-TEXT_ON_LINE,9,If the 2nd target letter is to the right of the first letter in the alphabet, then press the right mouse button.
-TEXT_ON_LINE,10,If there is no 2nd target letter, then press the middle mouse button.
-TEXT_ON_LINE,12,Another way to explain this task:
-TEXT_ON_LINE,14,A letter is said to be higher than another letter if it appears after the other letter in the alphabet.
-TEXT_ON_LINE,15,Forexample, Dis higher than B.
-TEXT_ON_LINE,17,If the 1st target letter is higher than the 2nd target letter, then press the left mouse button.
-TEXT_ON_LINE,18,If the 2nd target letter is higher than the 1st target letter, then press the right mouse button.
-TEXT_ON_LINE,19,If there is no 2nd target letter, then press the middle mouse button.
+TEXT_ON_LINE,3,
+TEXT_ON_LINE,4,A stream of 20 digits will appear in the circle which might contain one or two target letters.
+TEXT_ON_LINE,5,When the sequence has stopped displaying, press the letters on the keyboard that you saw in the sequence,
+TEXT_ON_LINE,6,If there was only one letter in the sequence, press the letter and then the space bar,
+TEXT_ON_LINE,7,(Or the space bar and then the letter),
+TEXT_ON_LINE,8,For example if in the sequence you saw the letters D and B (in that order)
+TEXT_ON_LINE,9,Then you would press the D and B keys on the keyboard (in that order)
+TEXT_ON_LINE,10,If you saw only the letter Q,
+TEXT_ON_LINE,11,You would press the letter Q and then the space bar,
 END_TASK,
 /--------------------------------------------------------------------
 /
@@ -118,20 +109,15 @@ END_TASK,
 BEGIN_TEXT_TASK,
 TEXT_ON_LINE,0,                                            TASK 2
 TEXT_ON_LINE,2,Press the NEXT button to start the trial.
-TEXT_ON_LINE,3,Choose an image by moving the mouse cursor inside of it.
-TEXT_ON_LINE,4,A green or yellow circle will appear in the selected image.
-TEXT_ON_LINE,5,A stream of 20 digits will appear in the circle which might contain one or two target letters.
-TEXT_ON_LINE,6,If the circle is yellow, the 2nd target will be right side up.
-TEXT_ON_LINE,7,If the circle is green, the 2nd target letter will be upside down.
-TEXT_ON_LINE,8,If the 2nd target letter is to the left of the first letter in the alphabet, then press the left mouse button.
-TEXT_ON_LINE,9,If the 2nd target letter is to the right of the first letter in the alphabet, then press the right mouse button.
-TEXT_ON_LINE,10,If there is no 2nd target letter, then press the middle mouse button.
-TEXT_ON_LINE,12,Another way to explain this task:
-TEXT_ON_LINE,14,A letter is said to be higher than another letter if it appears after the other letter in the alphabet.
-TEXT_ON_LINE,15,Forexample, Dis higher than B.
-TEXT_ON_LINE,17,If the 1st target letter is higher than the 2nd target letter, then press the left mouse button.
-TEXT_ON_LINE,18,If the 2nd target letter is higher than the 1st target letter, then press the right mouse button.
-TEXT_ON_LINE,19,If there is no 2nd target letter, then press the middle mouse button.
+TEXT_ON_LINE,3,
+TEXT_ON_LINE,4,A stream of 20 digits will appear in the circle which might contain one or two target letters.
+TEXT_ON_LINE,5,When the sequence has stopped displaying, press the letters on the keyboard that you saw in the sequence,
+TEXT_ON_LINE,6,If there was only one letter in the sequence, press the letter and then the space bar,
+TEXT_ON_LINE,7,(Or the space bar and then the letter),
+TEXT_ON_LINE,8,For example if in the sequence you saw the letters D and B (in that order)
+TEXT_ON_LINE,9,Then you would press the D and B keys on the keyboard (in that order)
+TEXT_ON_LINE,10,If you saw only the letter Q,
+TEXT_ON_LINE,11,You would press the letter Q and then the space bar,
 END_TASK,
 /--------------------------------------------------------------------
 /

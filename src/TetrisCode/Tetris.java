@@ -224,7 +224,7 @@ public class Tetris extends Applet{
 	final Button start_newgame_butt = new TetrisButton("Start");
 	//public static final Button pause_resume_butt = new TetrisButton("Pause");									
 	final Button pause_resume_butt = new TetrisButton("Pause");									
-	private String Subject_ID;
+	public static String Subject_ID;
         boolean ControlKeyPressed = false;
         
         static boolean MinusKeyPressed = false;
