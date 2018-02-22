@@ -243,7 +243,7 @@ public class Tetris extends Applet{
         private void LogEvent(String event){
             Double drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000);
 
-            F.LogEvent("" + Subject_ID + Tab + isAdaptive
+            F.LogEvent("" + Subject_ID + Tab + isAdaptive + Tab
                     + CurrentTime() + Tab + event+Tab
                 +SizeLastRowRemoved+Tab+computeVariance(RowRemovalQueue,queue_history)+Tab
                 +speed+Tab+accumulationHeight+Tab+computeVariance(HeightQueue,queue_history)
@@ -550,7 +550,8 @@ public class Tetris extends Applet{
                                 System.out.println("MaxSecondsInLevel: "+Parameters.MaxSecondsInLevel);
                                 System.out.println("TimeLimit="+(Parameters.TimeLimitInSeconds)); // * 1000000000));
                                 System.out.println("RunTime="+RunTime);
-                                System.exit(121);
+                                SwitchToFocusTask();
+                                //System.exit(121);
                             }
                         }
                         frame.setSize(489, 841);
