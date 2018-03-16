@@ -42,7 +42,7 @@ public class Tetris extends Applet{
         Data D = new Data();
         FineData F = new FineData();
         char Tab = ',';
-        static boolean isAdaptive = true; // this is the variable we're going to tie all the experimental/control condition stuff to
+        public static boolean isAdaptive = true; // this is the variable we're going to tie all the experimental/control condition stuff to
                         
         //logging
         static int queue_history =10; // how many items back the queue remembers

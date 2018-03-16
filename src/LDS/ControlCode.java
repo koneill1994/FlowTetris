@@ -170,6 +170,12 @@ public class ControlCode extends JComponent
               //TetrisProgram.AddDataToTILData();  // i give up
               System.exit(0);
         }
+        if (e.getKeyCode() == KeyEvent.VK_F && ControlKeyPressed){
+            ControlKeyPressed = false;
+            // debug task skip
+            Parameters.TaskCount++;
+            return false;
+        }
                                                                       
         if (StartNo == -1) {
             
@@ -575,7 +581,7 @@ public class ControlCode extends JComponent
             EntryUsed[2] = true;
             EntryUsed[3] = true;
 
-            g2.drawString("DATA FILE", x, y);
+            g2.drawString("DATA FILE XYZ", x, y);
             g2.drawString("DATA TAG", x, y+100);
             g2.drawString("EXPER 1", x, y+200);
             g2.drawString("EXPER 2", x, y+300);

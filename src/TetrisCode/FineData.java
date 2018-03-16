@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.nio.file.*;
 
 
 /**
@@ -47,9 +48,11 @@ public class FineData {
             "LastDropDuration","DropDurationVariance",
             "DropPercentage","SubjNo");
     
-    String FileName = "EXPERIMENT/DATA/" + "TETRIS_FINEDATA_" + Tetris.Subject_ID + ".csv";
+    String FileName = "EXPERIMENT/DATA/TETRIS_FINEDATA_" + Tetris.Subject_ID + ".csv";
 
     File file = new File(FileName);
+    
+    
     /*
     FileWriter fileWritter;
     BufferedWriter BW;

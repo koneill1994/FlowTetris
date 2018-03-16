@@ -2,6 +2,7 @@ package LDS;
 
 import java.awt.*;
 import java.util.ArrayList;
+import TetrisCode.Tetris;
 
 public class Task {
     
@@ -72,6 +73,7 @@ public class Task {
     static int SWITCHING_TASK = 0;
     static int FOCUS_TASK = 1;
     static int TEXT_TASK = 2;
+    static int TETRIS_TEXT_TASK = 3;
     int TaskMode;
  
     String FileName = "";
@@ -86,18 +88,19 @@ public class Task {
     
     boolean SkipTetris=false;
     boolean SkipTask=false;
+    boolean AdaptiveTextFork=false;
     
     int TotalCorrect;
     int TotalAnswered;
     double PercentCorrect;
     
     public Task(int ModeIn) {
-                
+        
         BlockNo = BlockCounter++;
         
         TaskMode = ModeIn;
-         
-        if (TaskMode == TEXT_TASK) {
+        
+        if ((TaskMode == TEXT_TASK) | (TaskMode == TETRIS_TEXT_TASK)) {
             
             ContinueBtn.AddBtn("DONE");
             
@@ -110,8 +113,14 @@ public class Task {
         
         }
         
-       
-        for (int i = 0; i < 1000; i++) Order[i] = i;
+        if(AdaptiveTextFork && Tetris.isAdaptive){
+            for (int i = 0; i < 1000; i++) Order[i] = i-50;
+            // Dijkstra have mercy on my soul
+            // I know this is a hack but its orders of magnitude faster than
+            //   trying to shift through and rewrite a mountain of spaghetti code to fix it
+        } else{
+            for (int i = 0; i < 1000; i++) Order[i] = i;
+        }
 
     }
     
@@ -169,6 +178,7 @@ public class Task {
 //     W("IN BLOCK");
      
       if (IsTextBlock) {
+          
 
           FocusTask.LastCorrectStr = "";
           FocusTask.LastAccuracyStr = "";
@@ -201,6 +211,7 @@ public class Task {
 
           if (ContinueNo == 0) {
               ContinueBtn.SelectBtn(-1);
+              //System.exit(123);
               return true;
           }
 

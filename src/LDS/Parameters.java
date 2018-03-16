@@ -9,7 +9,10 @@ import TetrisCode.Tetris;
 public class Parameters {
 
   long OldTime;
-    
+  boolean RunTetrisInstructions;
+  boolean TerminateTetrisInstructions;
+  boolean TerminateRunTetrisSurvey;
+  
   public static int LDS_MODE = 0;
   public static int TETRIS_MODE = 1;  
   public static int Mode = LDS_MODE;
@@ -30,6 +33,7 @@ public class Parameters {
   
   static int TaskCount = 0;
   Task B = null;
+  Task B_TetrisInstructions = null;
   
   static boolean ExperimentDone;
   boolean SeeExperimenter;
@@ -95,6 +99,15 @@ public class Parameters {
                     // program running tetris at all or only lds?
                     //------------------------------------------------------------------------------                
                
+                if (Cmd.equals("BEGIN_TETRIS_TEXT_TASK")) {
+                    if (InsideTask) {
+                        ErrorCode = "LINE " + LineNo + " MISSING END_TASK STATEMENT";
+                        return;
+                    }
+                    B = new Task(Task.TETRIS_TEXT_TASK);
+                    InsideTask = true;
+                } else
+               
                 if (Cmd.equals("BEGIN_TEXT_TASK")) {
                     if (InsideTask) {
                         ErrorCode = "LINE " + LineNo + " MISSING END_TASK STATEMENT";
@@ -144,6 +157,10 @@ public class Parameters {
                      }
                 } else
                     
+                if (Cmd.equals("SKIP_TASK")){
+                    B.SkipTask=true;
+                } else
+                    
 //------------------------------------------------------------------------------
 
                 if (Cmd.equals("BEGIN_SWITCHING_TASK")) {
@@ -179,7 +196,10 @@ public class Parameters {
                         ErrorCode = "LINE " + LineNo + " MISSING TASK STATEMENT";
                         return;
                     }
-                    TaskList.add(B);
+                    if (B.TaskMode == Task.TETRIS_TEXT_TASK) 
+                        B_TetrisInstructions = B;
+                    else 
+                        TaskList.add(B);
                     InsideTask = false;
                 } else
                     
@@ -489,229 +509,328 @@ public class Parameters {
       
 
     public boolean Update(Graphics2D g2in, int mXin, int mYin, boolean Button1, boolean Button2, boolean Button3) {
-        
-      MouseX = mXin;
-      MouseY = mYin;
-      g2 = g2in;
-      
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
-                          RenderingHints.VALUE_ANTIALIAS_ON);
 
-      if (!ErrorCode.equals("")) {
-          g2.setPaint(Color.RED);
-          g2.setFont(BigFont);
-          DrawString(ErrorCode, 
-                  ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, TextFontHeight);
-          return false;
-      } 
-          
-      //System.out.println("Mode = "+Mode);
-      long Lag = System.nanoTime() - OldTime;
-      //W("TIME="+(Lag / 1000000.0));
-      OldTime = System.nanoTime();
-      
-      //W("EXPERIMENT DONE="+ExperimentDone);
-      //W("TASK COUNT = "+TaskCount);
-      //W("Rep no "+B.RepetitionNo);
-      
-     // W("SurveyArrayList.size()="+SurveyArrayList.size());
+        MouseX = mXin;
+        MouseY = mYin;
+        g2 = g2in;
 
-      if (SurveyArrayList.size() > 0) {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
+                            RenderingHints.VALUE_ANTIALIAS_ON);
 
-          Survey SurveyCode = (Survey)SurveyArrayList.get(0);
+        if (!ErrorCode.equals("")) {
+            g2.setPaint(Color.RED);
+            g2.setFont(BigFont);
+            DrawString(ErrorCode, 
+                    ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, TextFontHeight);
+            return false;
+        } 
 
-          boolean RunSurvey = false;
-          
-          //W("BEFORE MODE:"+SurveyCode.BeforeMode);
-          //W("FocusTask.SessionNo: "+FocusTask.SessionNo);
-          //W("TetrisCode.Tetris.SessionNo: "+TetrisCode.Tetris.SessionNo);
-          
-          if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_LDS) & 
-                  (Mode == LDS_MODE) &
-                  ((SurveyCode.SessionNo - 0)== FocusTask.SessionNo)) 
-              RunSurvey = true;
-          
-          if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_TETRIS) & 
-                  (Mode == TETRIS_MODE) &
-                  ((SurveyCode.SessionNo - 0) == TetrisCode.Tetris.SessionNo))
-              RunSurvey = true;
-          
-          if (RunSurvey) {
-          
-              //ControlCode.Frame.setSize(1680, 1024);
- 
-              if (SurveyCode.Update(g2, MouseX, MouseY, Button1)) {
+        //System.out.println("Mode = "+Mode);
+        long Lag = System.nanoTime() - OldTime;
+        //W("TIME="+(Lag / 1000000.0));
+        OldTime = System.nanoTime();
 
-                  W("SURVEY DONE");
+        //W("EXPERIMENT DONE="+ExperimentDone);
+        //W("TASK COUNT = "+TaskCount);
+        //W("Rep no "+B.RepetitionNo);
 
-                  SurveyArrayList.remove(0);
+       // W("SurveyArrayList.size()="+SurveyArrayList.size());
 
-                  //W("2 SurveyArrayList.size()="+SurveyArrayList.size());
+        if (SurveyArrayList.size() > 0) {
 
-                  if (TaskCount == TaskList.size()) {
-                    ExperimentDone = true;
-                  }
-                  
-                  else if (Mode == TETRIS_MODE) SwitchToTetris();
-                  //return;
+            Survey SurveyCode = (Survey)SurveyArrayList.get(0);
 
-              }
-              
-              return false; //return if running survey, do not run experiment
-          
-          } else if (Mode == TETRIS_MODE) SwitchToTetris();
+            boolean RunLDSSurvey = false;
+            boolean RunTetrisSurvey = false;
+            boolean RunSurvey = false;
+            //W("BEFORE MODE:"+SurveyCode.BeforeMode);
+            //W("FocusTask.SessionNo: "+FocusTask.SessionNo);
+            //W("TetrisCode.Tetris.SessionNo: "+TetrisCode.Tetris.SessionNo);
 
-      } else if (Mode == TETRIS_MODE && !ExperimentDone) SwitchToTetris();
+            if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_LDS) & 
+                    (Mode == LDS_MODE) &
+                    ((SurveyCode.SessionNo - 0)== FocusTask.SessionNo)) {
+                RunLDSSurvey = true;
+                RunSurvey = true;
+            }
+
+            if ((SurveyCode.BeforeMode == SurveyCode.BEFORE_TETRIS) & 
+                    (Mode == TETRIS_MODE) &
+                    ((SurveyCode.SessionNo - 0) == TetrisCode.Tetris.SessionNo)) {
+                
+                    //if (!TerminateRunTetrisSurvey) {
+                        RunTetrisSurvey = true;
+                        RunSurvey = true;
+                    //} else {
+                        //RunTetrisInstructions = true;
+                    //}
+                    
+            }
+            
+W("RUNNING="+RunTetrisInstructions);
+W(" ");
+//            if (RunTetrisInstructions) {
+//
+//                W("IN TETRIS INSTRUCTIONS");
+//                //ControlCode.Frame.setSize(1680, 1024);
+//
+//                if (B_TetrisInstructions.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
+//
+//                    W("TETRIS_INSTRUCTIONS DONE");
+//
+//                    //TerminateTetrisInstructions = true;
+//                    RunTetrisInstructions = false;
+//                    //RunSurvey = true;
+//                    //SurveyArrayList.remove(0);
+//
+//                    //W("2 SurveyArrayList.size()="+SurveyArrayList.size());
+//
+////                    if (TaskCount == TaskList.size()) {
+////                      ExperimentDone = true;
+////                    }
+////W("Mode="+Mode);
+////System.exit(999);
+//
+//                    //if (Mode == TETRIS_MODE) 
+//                    SwitchToTetris();
+//                    //return;
+//
+//                }
+//
+//                return false; //return if running survey, do not run experiment
+//
+//            } else //else if (Mode == TETRIS_MODE) SwitchToTetris();
+            
+                if (RunTetrisInstructions) {
+                    
+                
+                    if (B_TetrisInstructions.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
+
+                        W("TETRIS_INSTRUCTIONS DONE");
+
+                        RunTetrisInstructions = false;
+                        
+    //W("Mode="+Mode);
+    //System.exit(999);
+
+                        if (Mode == TETRIS_MODE) 
+                            SwitchToTetris();
+                        //return;
+
+                    }
+                 
+                    return false;
+                    
+                }
+                
+                    
+            if (RunSurvey) {
+
+//                if (RunTetrisInstructions) {
+//                    
+//                
+//                    if (B_TetrisInstructions.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
+//
+//                        W("TETRIS_INSTRUCTIONS DONE");
+//
+//                        RunTetrisInstructions = false;
+//                        
+//    //W("Mode="+Mode);
+//    //System.exit(999);
+//
+//                        if (Mode == TETRIS_MODE) 
+//                            SwitchToTetris();
+//                        //return;
+//
+//                    }
+//
+//                } else {
+                
+                //ControlCode.Frame.setSize(1680, 1024);
+
+                    if (SurveyCode.Update(g2, MouseX, MouseY, Button1)) {
+
+                        W("SURVEY DONE");
+
+                        SurveyArrayList.remove(0);
+
+                        //W("2 SurveyArrayList.size()="+SurveyArrayList.size());
+
+                        if (TaskCount == TaskList.size()) {
+                          ExperimentDone = true;
+                        }
+
+                        else {
+                            if (RunLDSSurvey) {
+                                if (Mode == TETRIS_MODE) SwitchToTetris();
+                            }
+                            if (RunTetrisSurvey) RunTetrisInstructions = true;
+                        }
+                        //return;
+
+                    }
+
+                    return false; //return if running survey, do not run experiment
+                    
+                //}
+
+            } else if (Mode == TETRIS_MODE) SwitchToTetris();
+
+//            if (RunTetrisSurvey) {
+//
+//                //ControlCode.Frame.setSize(1680, 1024);
+//
+//                if (SurveyCode.Update(g2, MouseX, MouseY, Button1)) {
+//
+//                    W("SURVEY DONE");
+//
+//                    SurveyArrayList.remove(0);
+//
+//                    //W("2 SurveyArrayList.size()="+SurveyArrayList.size());
+//
+//                    if (TaskCount == TaskList.size()) {
+//                      ExperimentDone = true;
+//                    }
+//
+//                    //else if (Mode == TETRIS_MODE) SwitchToTetris();
+//                    else if (Mode == TETRIS_MODE) RunTetrisInstructions = true;
+//                    
+//                    W("END OF SURVEY RunTetrisInstructions="+RunTetrisInstructions);
+//                    System.exit(567);
+//                    //return;
+//
+//                }
+//
+//                return false; //return if running survey, do not run experiment
+//
+//            } else if (Mode == TETRIS_MODE) SwitchToTetris();
+
+        } else if (Mode == TETRIS_MODE && !ExperimentDone) SwitchToTetris();
 
 
-      if(OnlyTetris) {
-        SwitchToTetris();
-      }
-      //W("Skiptask: "+B.SkipTask);
-      if(B.SkipTask){
-          if(TaskCount<TaskList.size()) TaskCount++; //just to stop it from shooting upwards when the experiment is done
-          //W("taskcount: "+TaskCount);
-          //W("tasklist size: "+TaskList.size());
-          if((TaskCount >= TaskList.size())){
-              g2.setFont(ErrorFont);
-              g2.setPaint(Color.CYAN);
-              DrawString("EXPERIMENT DONE", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
-              return false;
-          }
-          else{
-            SwitchToTetris();
-          }
-      }
-      
-      // ^^ set this to true when you want to test just tetris
+        if(OnlyTetris) {
+          SwitchToTetris();
+        }
+        //W("Skiptask: "+B.SkipTask);
+        if(B.SkipTask){
+            if(TaskCount<TaskList.size()) TaskCount++; //just to stop it from shooting upwards when the experiment is done
+            //W("taskcount: "+TaskCount);
+            //W("tasklist size: "+TaskList.size());
+            if((TaskCount >= TaskList.size())){
+                g2.setFont(ErrorFont);
+                g2.setPaint(Color.CYAN);
+                DrawString("EXPERIMENT DONE", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
+                return false;
+            }
+            else{
+              SwitchToTetris();
+            }
+        }
 
-     // W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
+        // ^^ set this to true when you want to test just tetris
+
+       // W("BLOCK_COUNT="+TaskCount + " Size"+BlockList.size());
 
 
-     
-     
-      if (!ExperimentDone) {
-  
-          if (Mode == TETRIS_MODE) return false;
-          
-          
-          
-          B = (Task)TaskList.get(TaskCount); 
-          
-          if (B.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
-              
-              B.RepetitionNo++;
-              
-              B.TrialNo = 0;
-              B.BlockCount = 0;
-              
-              B.TotalAnswered = B.TotalCorrect = 0;
-              
-              //W("IsTetrisTask="+FocusTask.IsTetrisTask);
-              W("CRITERION_PERCENT == "+B.CriterionPercent+"  Filename: "+B.FileName);
-              //criterionPercent is somehow being set to 0 before it gets here
-                            
-              if (!FocusTask.IsTetrisTask) {
-              
-                  if (B.TrialsToCriterion) {
 
-                      if (B.PercentCorrect >= B.CriterionPercent) {
 
-                          TaskCount++;
+        if (!ExperimentDone) {
 
-                      } else {
+            if (Mode == TETRIS_MODE) return false;
 
-                          if (B.TrialsLimited) {
 
-                              if (B.RepetitionNo > B.CriterionToTrials) {
-                                  ExperimentDone = true;
-                                  SeeExperimenter = true;
-                              } else  
-                                  TaskCount -= B.TasksToSkipBackwards;
 
-                          } else
+            B = (Task)TaskList.get(TaskCount); 
 
-                              TaskCount -= B.TasksToSkipBackwards;
+            if (B.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
 
-                      }
+                B.RepetitionNo++;
 
-                  } else TaskCount++;
-                  
-              } else { //IsTetrisTask
-                  //this block runs when the program includes Tetris (in the param file)
-                  // it should always run this block and not the other one
-                  
-                  // THERE SHOULD BE NO CONDITIONAL STOP
-                  // both pre- and post-Tetris conditions should have the same number of trials
-                  //they should simply stop when the required number is reached
-                  
-                  if (B.IsTextBlock) {
-                      TaskCount++;
-                      return false;
-                  }
-                  
-                  if(B.TrialsLimited){
-                      if (B.RepetitionNo > B.CriterionToTrials) {
-                          if(TaskCount < TaskList.size() && !B.SkipTetris) Mode = TETRIS_MODE;
-                          TaskCount++;
-                          B.RepetitionNo=1;
-                      }
-                  }
-                  
-                     /*                   
-                  if (B.PercentCorrect >= FocusTask.ThreshHoldInAccuracyToDecreaseTheDelay) {
+                B.TrialNo = 0;
+                B.BlockCount = 0;
 
-                      if (Task.SymbolDisplayTime > 0) {
-                          
-                          Task.SymbolDisplayTime -= FocusTask.HowMuchToDecreaseTheDelay;
-                          if (Task.SymbolDisplayTime < 0) Task.SymbolDisplayTime = 0;
- 
-                          TaskCount -= 1;
-                          
-                      }
+                B.TotalAnswered = B.TotalCorrect = 0;
 
-                  }
-                  
-                  if (B.PercentCorrect <= FocusTask.ThreshHoldForSwitchingToTetris) {
-                      
-                      B.RepetitionNo = 1;
-                      B.RandomizeTrials = true;
-                      // SwitchToTetris();
-                      if(TaskCount < TaskList.size()) Mode = TETRIS_MODE;
-                      TaskCount += 1;
-                      
-                  }
+                //W("IsTetrisTask="+FocusTask.IsTetrisTask);
+                W("CRITERION_PERCENT == "+B.CriterionPercent+"  Filename: "+B.FileName);
+                //criterionPercent is somehow being set to 0 before it gets here
 
-                */
-                  
-              }
-          
-          }
-          
-          g2.setPaint(Color.WHITE);
-          g2.setFont(ErrorFont);
-          if (DebugMode) g2.drawString("TASK "+(TaskCount + 1), 60, 40);
-          
-      } else {
-          
-          g2.setFont(ErrorFont);
-          g2.setPaint(Color.CYAN);
-          
-          if (SeeExperimenter)
-              DrawString("SEE EXPERIMENTER", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
-          else
-              DrawString("EXPERIMENT DONE", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
-          
-          return false;
-      
-      }
-      
-      if (TaskCount == TaskList.size()) {
-          ExperimentDone = true;
-      }
-      
-      return false;
-      
+                if (!FocusTask.IsTetrisTask) {
+
+                    if (B.TrialsToCriterion) {
+
+                        if (B.PercentCorrect >= B.CriterionPercent) {
+
+                            TaskCount++;
+
+                        } else {
+
+                            if (B.TrialsLimited) {
+
+                                if (B.RepetitionNo > B.CriterionToTrials) {
+                                    ExperimentDone = true;
+                                    SeeExperimenter = true;
+                                } else  
+                                    TaskCount -= B.TasksToSkipBackwards;
+
+                            } else
+
+                                TaskCount -= B.TasksToSkipBackwards;
+
+                        }
+
+                    } else TaskCount++;
+
+                } else { //IsTetrisTask
+                    //this block runs when the program includes Tetris (in the param file)
+                    // it should always run this block and not the other one
+
+                    // THERE SHOULD BE NO CONDITIONAL STOP
+                    // both pre- and post-Tetris conditions should have the same number of trials
+                    //they should simply stop when the required number is reached
+
+                    if (B.IsTextBlock) {
+                        TaskCount++;
+                        return false;
+                    }
+
+                    if(B.TrialsLimited){
+                        if (B.RepetitionNo > B.CriterionToTrials) {
+                            if(TaskCount < TaskList.size() && !B.SkipTetris) Mode = TETRIS_MODE;
+                            TaskCount++;
+                            B.RepetitionNo=1;
+                        }
+                    }
+
+
+                }
+
+            }
+
+            g2.setPaint(Color.WHITE);
+            g2.setFont(ErrorFont);
+            if (DebugMode) g2.drawString("TASK "+(TaskCount + 1), 60, 40);
+
+        } else {
+
+            g2.setFont(ErrorFont);
+            g2.setPaint(Color.CYAN);
+
+            if (SeeExperimenter)
+                DrawString("SEE EXPERIMENTER", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
+            else
+                DrawString("EXPERIMENT DONE", ControlCode.ScreenSizeX/2, ControlCode.ScreenSizeY/2, 0);
+
+            return false;
+
+        }
+
+        if (TaskCount == TaskList.size()) {
+            ExperimentDone = true;
+        }
+
+        return false;
+
     }  
     
     public void SwitchToTetris() {
