@@ -13,19 +13,14 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/LDS/Parameters.java</file>
-            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/TetrisCode/Sound.java</file>
-            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/TetrisCode/Data.java</file>
-            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/TetrisCode/FlowControlSystem.java</file>
-            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/LDS/Survey.java</file>
             <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/LDS/ControlCode.java</file>
-            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/LDS/Instructions.java</file>
             <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/TetrisCode/FineData.java</file>
             <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/LDS/Task.java</file>
-            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/TetrisCode/ControlSystemLogFile.java</file>
             <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/LDS/FocusTask.java</file>
-            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/TetrisCode/Parameters.java</file>
+            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/LDS/Parameters.java</file>
+            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/TetrisCode/Data.java</file>
             <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/TetrisCode/Tetris.java</file>
+            <file>file:/C:/Users/Kevin/Documents/FlowTetris/src/LDS/Survey.java</file>
         </group>
     </open-files>
 </project-private>

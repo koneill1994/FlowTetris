@@ -9,7 +9,7 @@ DEBUG_MODE,TRUE,
 / if set to FALSE it will be in classic mode
 / if set to RANDOM it will pick one of the two at the start
 /
-ADAPTIVE_TETRIS,FALSE,
+ADAPTIVE_TETRIS,TRUE,
 /
 NUMBER_OF_COLUMNS,10,
 /

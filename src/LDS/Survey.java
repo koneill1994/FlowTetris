@@ -1,6 +1,7 @@
 
 package LDS;
 
+import TetrisCode.Tetris;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -338,7 +339,7 @@ public class Survey {
                    ControlCode.SubjNo + Tab + ControlCode.ExpCond + Tab + Parameters.ParameterFile + Tab
                    + "" + SessionNo;
             
-            String OutputFileName = "EXPERIMENT/DATA/" + FileName + " " + 
+            String OutputFileName = "EXPERIMENT/DATA/" + Tetris.Subject_ID + "_" + FileName + "_" + 
                     ControlCode.SubjNo + " " + (++SurveyOutputNo) + ".csv";
             
             W("Writing to file: " + OutputFileName);

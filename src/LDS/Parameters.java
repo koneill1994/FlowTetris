@@ -567,8 +567,8 @@ public class Parameters {
                     
             }
             
-W("RUNNING="+RunTetrisInstructions);
-W(" ");
+//W("RUNNING="+RunTetrisInstructions);
+//W(" ");
 //            if (RunTetrisInstructions) {
 //
 //                W("IN TETRIS INSTRUCTIONS");

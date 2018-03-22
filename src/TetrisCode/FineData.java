@@ -34,24 +34,22 @@ public class FineData {
     char Tab = ',';
     boolean FirstWriteToFile = true;
     String ExpCond = "NONE";
-
+    String FileName;
+    File file;
     
     // these are the header columns to be used
     // edit this to add more columns
     // make sure you also change the logging to make sure
     // it logs the same number of items as this list's length
-    List<String> HeaderLabels = Arrays.asList("SubjectID","IsAdaptive",
-            "TimeStamp", "EventLabel",
-            "SizeLastRowRemoved","SizeLastRowRemovedVariance",
-            "SpeedLevel",
-            "AccumulationHeight","HeightVariance",
-            "LastDropDuration","DropDurationVariance",
-            "DropPercentage","SubjNo");
-    
-    String FileName = "EXPERIMENT/DATA/TETRIS_FINEDATA_" + Tetris.Subject_ID + ".csv";
 
-    File file = new File(FileName);
-    
+    List<String> HeaderLabels = Arrays.asList("SubjectID","IsAdaptive",
+        "TimeStamp", "EventLabel",
+        "SizeLastRowRemoved","SizeLastRowRemovedVariance",
+        "SpeedLevel",
+        "AccumulationHeight","HeightVariance",
+        "LastDropDuration","DropDurationVariance",
+        "DropPercentage","SubjNo");
+
     
     /*
     FileWriter fileWritter;
@@ -62,7 +60,6 @@ public class FineData {
     // Parameters.RemoveBiggestPartialRowIfBlockInRow
     
     public FineData() {
-        CreateLogHeader();
     }
     
     // This function writes S to system output
@@ -77,6 +74,12 @@ public class FineData {
     // this will be run once when the program starts
     // to create the headers on the data file
     public boolean CreateLogHeader(){
+        
+        
+        String FileName = "EXPERIMENT/DATA/"  + ControlCode.SubjNo + "_TETRIS_FINEDATA.csv";
+
+        File file = new File(FileName);
+        
         String Line = "";
         for(String Label: HeaderLabels){
             Line+=Label+Tab;
@@ -104,6 +107,12 @@ public class FineData {
     // the data to log will be passed in as an argument,
     // formatted, and then added as a line in the data file
     public boolean LogEvent(String Data){
+        
+        
+        String FileName = "EXPERIMENT/DATA/"  + Tetris.Subject_ID + "_TETRIS_FINEDATA.csv";
+
+        File file = new File(FileName);
+        
         try{          
             
             FileWriter fileWritter = new FileWriter(FileName,true);

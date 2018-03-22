@@ -745,7 +745,7 @@ public class FocusTask {
 
             if (IsTetrisTask) PreambleStr += "" + SessionNo + Tab;
             
-            String FileName = "EXPERIMENT/DATA/" + B.FileName + " FOCUS_TASK " + ControlCode.SubjNo + ".csv";
+            String FileName = "EXPERIMENT/DATA/" + ControlCode.SubjNo + "_" + B.FileName + " FOCUS_TASK " + ".csv";
 
             File file = new File(FileName);
 

@@ -30,7 +30,7 @@ public class Data {
             String PreambleStr =
                    SubjNo + Tab + ExpCond + Tab + Parameters.ParameterFile + Tab;
 
-            String FileName = "EXPERIMENT/DATA/" + "TETRIS_ROUGHDATA_" + Tetris.Subject_ID + ".csv";
+            String FileName = "EXPERIMENT/DATA/" + Tetris.Subject_ID + "_TETRIS_ROUGHDATA.csv";
 
             File file = new File(FileName);
 

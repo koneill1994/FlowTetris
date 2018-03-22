@@ -88,7 +88,7 @@ public class Task {
     
     boolean SkipTetris=false;
     boolean SkipTask=false;
-    boolean AdaptiveTextFork=false;
+    boolean AdaptiveTextFork=true;
     
     int TotalCorrect;
     int TotalAnswered;
@@ -113,15 +113,28 @@ public class Task {
         
         }
         
+        /*
+        //THIS CODE IS IMPORTANT & WHAT WE WANT
+        //it needs to go right before text tasks are displayed
+        //will throw an error if not a text task
+        
         if(AdaptiveTextFork && Tetris.isAdaptive){
-            for (int i = 0; i < 1000; i++) Order[i] = i-50;
+            W("__SETTING TO ADAPTIVE TETRIS INSTRUCTIONS");
+            for (int i = 0; i < 1000; i++){
+                if(i>=50){
+                    TextLines[i] = TextLines[i-50];
+                }
+            }
             // Dijkstra have mercy on my soul
             // I know this is a hack but its orders of magnitude faster than
             //   trying to shift through and rewrite a mountain of spaghetti code to fix it
         } else{
-            for (int i = 0; i < 1000; i++) Order[i] = i;
+            W("__SETTING TO NON-ADAPTIVE TETRIS INSTRUCTIONS");
         }
-
+        */
+        
+        for (int i = 0; i < 1000; i++) Order[i] = i;
+        
     }
     
     public void MakeTrials(int NoOfTrialsIn) {

@@ -581,7 +581,7 @@ public class ControlCode extends JComponent
             EntryUsed[2] = true;
             EntryUsed[3] = true;
 
-            g2.drawString("DATA FILE XYZ", x, y);
+            g2.drawString("DATA FILE", x, y);
             g2.drawString("DATA TAG", x, y+100);
             g2.drawString("EXPER 1", x, y+200);
             g2.drawString("EXPER 2", x, y+300);

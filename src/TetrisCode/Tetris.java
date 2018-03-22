@@ -229,7 +229,7 @@ public class Tetris extends Applet{
         
         static boolean MinusKeyPressed = false;
         
-        
+        boolean FineDatLogHeader_Made = false;
         
         public void SetSubjectID(String SubjNo){
             Subject_ID = SubjNo;
@@ -241,6 +241,12 @@ public class Tetris extends Applet{
         }
         
         private void LogEvent(String event){
+            
+            if(!FineDatLogHeader_Made){
+                F.CreateLogHeader();
+                FineDatLogHeader_Made=true;
+            }
+
             Double drop_percent =  DropPercentSanitized(DownQueue, DropPercentageTimeWindow, (System.nanoTime()-StartTime)/1000000);
 
             F.LogEvent("" + Subject_ID + Tab + isAdaptive + Tab
@@ -249,6 +255,7 @@ public class Tetris extends Applet{
                 +speed+Tab+accumulationHeight+Tab+computeVariance(HeightQueue,queue_history)
                 +Tab+DropDurationQueue.peek()+Tab+ computeVariance(DropDurationQueue,queue_history)
                 +Tab+drop_percent+Tab+ControlCode.SubjNo);
+
         }
         
  
