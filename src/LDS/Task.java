@@ -73,7 +73,8 @@ public class Task {
     static int SWITCHING_TASK = 0;
     static int FOCUS_TASK = 1;
     static int TEXT_TASK = 2;
-    static int TETRIS_TEXT_TASK = 3;
+    static int NONADAPTIVE_TETRIS_TEXT_TASK = 3;
+    static int ADAPTIVE_TETRIS_TEXT_TASK = 4;
     int TaskMode;
  
     String FileName = "";
@@ -100,7 +101,7 @@ public class Task {
         
         TaskMode = ModeIn;
         
-        if ((TaskMode == TEXT_TASK) | (TaskMode == TETRIS_TEXT_TASK)) {
+        if ((TaskMode == TEXT_TASK) | (TaskMode == ADAPTIVE_TETRIS_TEXT_TASK) | (TaskMode == NONADAPTIVE_TETRIS_TEXT_TASK)) {
             
             ContinueBtn.AddBtn("DONE");
             

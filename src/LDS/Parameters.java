@@ -99,12 +99,21 @@ public class Parameters {
                     // program running tetris at all or only lds?
                     //------------------------------------------------------------------------------                
                
-                if (Cmd.equals("BEGIN_TETRIS_TEXT_TASK")) {
+                if (Cmd.equals("BEGIN_ADAPTIVE_TETRIS_TEXT_TASK")) {
                     if (InsideTask) {
                         ErrorCode = "LINE " + LineNo + " MISSING END_TASK STATEMENT";
                         return;
                     }
-                    B = new Task(Task.TETRIS_TEXT_TASK);
+                    B = new Task(Task.ADAPTIVE_TETRIS_TEXT_TASK);
+                    InsideTask = true;
+                } else
+                    
+                if (Cmd.equals("BEGIN_NONADAPTIVE_TETRIS_TEXT_TASK")) {
+                    if (InsideTask) {
+                        ErrorCode = "LINE " + LineNo + " MISSING END_TASK STATEMENT";
+                        return;
+                    }
+                    B = new Task(Task.NONADAPTIVE_TETRIS_TEXT_TASK);
                     InsideTask = true;
                 } else
                
@@ -196,10 +205,14 @@ public class Parameters {
                         ErrorCode = "LINE " + LineNo + " MISSING TASK STATEMENT";
                         return;
                     }
-                    if (B.TaskMode == Task.TETRIS_TEXT_TASK) 
+                    if (TetrisCode.Tetris.isAdaptive && (B.TaskMode == Task.ADAPTIVE_TETRIS_TEXT_TASK)) 
                         B_TetrisInstructions = B;
-                    else 
-                        TaskList.add(B);
+                    else {
+                        if (!TetrisCode.Tetris.isAdaptive && (B.TaskMode == Task.NONADAPTIVE_TETRIS_TEXT_TASK)) 
+                            B_TetrisInstructions = B;
+                        else
+                            TaskList.add(B);
+                    }
                     InsideTask = false;
                 } else
                     
