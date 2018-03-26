@@ -37,13 +37,13 @@ THRESHHOLD_FOR_SWITCHING_TO_TETRIS,75,
 / could be BEFORE_LDS or BEFORE_TETRIS, then session number
 /
 /
-TAKE_SURVEY,SURVEYTEST,BEFORE_LDS,1,TRUE,
+TAKE_SURVEY,DISPOSITIONAL_FLOW_SCALE,BEFORE_LDS,1,TRUE,
 /
-TAKE_SURVEY,SURVEYTEST,BEFORE_TETRIS,1,TRUE,
+TAKE_SURVEY,FLOW_SCALE_FULL,BEFORE_TETRIS,1,TRUE,
 /
-TAKE_SURVEY,SURVEYTEST,BEFORE_LDS,2,TRUE,
+TAKE_SURVEY,FLOW_SCALE_FULL,BEFORE_LDS,2,TRUE,
 /
-TAKE_SURVEY,SURVEYTEST,BEFORE_TETRIS,2,TRUE,
+TAKE_SURVEY,FLOW_SCALE_FULL,BEFORE_TETRIS,2,TRUE,
 /
 /
 /--------------------------------------------------------------------
@@ -68,7 +68,7 @@ BEGIN_FOCUS_TASK,TUTORIAL,
 SKIP_TETRIS
 /
 SET_NO_OF_BLOCKS,1,
-SET_NO_OF_TRIALS,1,
+SET_NO_OF_TRIALS,20,
 SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
 /
 SHOW_ACCURACY,TRUE,
@@ -96,8 +96,8 @@ END_TASK,
 /
 BEGIN_FOCUS_TASK,FOCUS_TASK,
 /
-SET_NO_OF_BLOCKS,1,
-SET_NO_OF_TRIALS,1,
+SET_NO_OF_BLOCKS,6,
+SET_NO_OF_TRIALS,20,
 SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
 /
 SHOW_ACCURACY,TRUE,
@@ -107,7 +107,8 @@ END_TASK,
 /
 /--------------------------------
 BEGIN_ADAPTIVE_TETRIS_TEXT_TASK,
-TEXT_ON_LINE,0,   TETRIS ADAPTIVE INSTRUCTIONS
+TEXT_ON_LINE,0,   TETRIS INSTRUCTIONS
+/
 TEXT_ON_LINE,2,In this next task you will be playing a version of the video game Tetris.  
 TEXT_ON_LINE,3,This is a falling block puzzle game, where you have to arrange pieces falling from the top of the screen into a pile 
 TEXT_ON_LINE,4,at the bottom of the screen.  
@@ -127,7 +128,9 @@ END_TASK,
 /
 /--------------------------------
 BEGIN_NONADAPTIVE_TETRIS_TEXT_TASK,
-TEXT_ON_LINE,0,   TETRIS NONADAPTIVE INSTRUCTIONS
+/
+TEXT_ON_LINE,0,   TETRIS INSTRUCTIONS
+/
 TEXT_ON_LINE,2,In this next task you will be playing a version of the video game Tetris.  
 TEXT_ON_LINE,3,This is a falling block puzzle game, where you have to arrange pieces falling from the top of the screen into a pile 
 TEXT_ON_LINE,4,at the bottom of the screen.  
@@ -138,10 +141,6 @@ TEXT_ON_LINE,8,The left and right arrows move the piece left and right, the up-a
 TEXT_ON_LINE,9,and the down arrow drops the piece faster.  
 /
 END_TASK,
-/
-/
-/
-/
 /
 /--------------------------------------------------------------------
 BEGIN_TEXT_TASK,
@@ -161,8 +160,8 @@ END_TASK,
 /
 BEGIN_FOCUS_TASK,FOCUS_TASK2,
 /
-SET_NO_OF_BLOCKS,1,
-SET_NO_OF_TRIALS,1,
+SET_NO_OF_BLOCKS,6,
+SET_NO_OF_TRIALS,20,
 SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
 /
 SHOW_ACCURACY,TRUE,

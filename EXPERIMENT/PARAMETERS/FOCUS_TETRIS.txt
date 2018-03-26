@@ -113,10 +113,42 @@ CRITERION_TO_TRIALS,1,
 END_TASK,
 /
 /--------------------------------
-BEGIN_TETRIS_TEXT_TASK,
-TEXT_ON_LINE,0,   TETRIS INSTRUCTIONS NON_ADAPTIVE
-TEXT_ON_LINE,50,   TETRIS INSTRUCTIONS ADAPTIVE
+BEGIN_ADAPTIVE_TETRIS_TEXT_TASK,
+TEXT_ON_LINE,0,   TETRIS ADAPTIVE INSTRUCTIONS
+/
+TEXT_ON_LINE,2,In this next task you will be playing a version of the video game Tetris.  
+TEXT_ON_LINE,3,This is a falling block puzzle game, where you have to arrange pieces falling from the top of the screen into a pile 
+TEXT_ON_LINE,4,at the bottom of the screen.  
+TEXT_ON_LINE,5,When you completely fill a row with blocks, the row will disappear and your points will go up.  
+/
+TEXT_ON_LINE,7,To move the falling blocks into place, you will use the arrow keys on the keyboard.  
+TEXT_ON_LINE,8,The left and right arrows move the piece left and right, the up-arrow rotates the piece, 
+TEXT_ON_LINE,9,and the down arrow drops the piece faster.  
+/
+TEXT_ON_LINE,11,In this version of Tetris, a pedal on the floor will let you adjust the speed at which the pieces fall.  
+TEXT_ON_LINE,12,Pressing the pedal will make the pieces fall faster.  
+/
+TEXT_ON_LINE,14,Rows will be removed if the pile gets too close to the top, so you will never get a game over.  
+/
+/
 END_TASK,
+/
+/--------------------------------
+BEGIN_NONADAPTIVE_TETRIS_TEXT_TASK,
+/
+TEXT_ON_LINE,0,   TETRIS NONADAPTIVE INSTRUCTIONS
+/
+TEXT_ON_LINE,2,In this next task you will be playing a version of the video game Tetris.  
+TEXT_ON_LINE,3,This is a falling block puzzle game, where you have to arrange pieces falling from the top of the screen into a pile 
+TEXT_ON_LINE,4,at the bottom of the screen.  
+TEXT_ON_LINE,5,When you completely fill a row with blocks, the row will disappear and your points will go up.  
+/
+TEXT_ON_LINE,7,To move the falling blocks into place, you will use the arrow keys on the keyboard.  
+TEXT_ON_LINE,8,The left and right arrows move the piece left and right, the up-arrow rotates the piece, 
+TEXT_ON_LINE,9,and the down arrow drops the piece faster.  
+/
+END_TASK,
+/
 /--------------------------------------------------------------------
 BEGIN_TEXT_TASK,
 TEXT_ON_LINE,0,                                            TASK 2
