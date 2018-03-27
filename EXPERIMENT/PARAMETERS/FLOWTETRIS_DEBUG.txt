@@ -1,0 +1,177 @@
+/ FOCUS_TETRIS.txt PARAMETER FILE
+/
+/    survey
+/  focus task tutorial
+/  focus task
+/    survey
+/  tetris
+/    survey
+/  focus task
+/    survey
+/
+DEBUG_MODE,FALSE,
+/
+/
+/for TEXT_TASKs
+TEXT_BACKGROUND_COLOR_RGB,0,0,0,  
+TEXT_COLOR_RGB,150,150,255,           
+TEXT_FONT_SIZE,25,
+TEXT_X_START,250,
+TEXT_Y_START,40,
+TEXT_Y_SPACING,45,
+/
+/setup for focus tasks
+NO_OF_SYMBOLS,20,
+FIRST_LETTERS,ABCDEFGHJKLMNPQRTUVWXYZ,
+SECOND_LETTERS,ABCDEFGHJKLNPQRTUVXYZ,
+LETTER_INDEX,6,19,
+SYMBOL_DISPLAY_TIME,6,
+/
+/setup for tetris
+HOW_MUCH_TO_DECREASE_THE_DELAY,1,
+THRESHHOLD_IN_ACCURACY_TO_DECREASE_THE_DELAY,50,
+THRESHHOLD_FOR_SWITCHING_TO_TETRIS,75,
+/
+/--------------------------------------------------------------------
+/
+/ could be BEFORE_LDS or BEFORE_TETRIS, then session number
+/
+/
+TAKE_SURVEY,SURVEYTEST,BEFORE_LDS,1,TRUE,
+/
+TAKE_SURVEY,SURVEYTEST,BEFORE_TETRIS,1,TRUE,
+/
+TAKE_SURVEY,SURVEYTEST,BEFORE_LDS,2,TRUE,
+/
+TAKE_SURVEY,SURVEYTEST,BEFORE_TETRIS,2,TRUE,
+/
+/
+/--------------------------------------------------------------------
+BEGIN_TEXT_TASK,
+TEXT_ON_LINE,0,                                            TUTORIAL
+TEXT_ON_LINE,2,Press the NEXT button to start the trial.
+TEXT_ON_LINE,3,
+TEXT_ON_LINE,4,A stream of 20 digits will appear in the circle which might contain one or two target letters.
+TEXT_ON_LINE,5,When the sequence has stopped displaying, press the letters on the keyboard that you saw in the sequence,
+TEXT_ON_LINE,6,If there was only one letter in the sequence, press the letter and then the space bar,
+TEXT_ON_LINE,7,(Or the space bar and then the letter),
+TEXT_ON_LINE,8,For example if in the sequence you saw the letters D and B (in that order)
+TEXT_ON_LINE,9,Then you would press the D and B keys on the keyboard (in that order)
+TEXT_ON_LINE,10,If you saw only the letter Q,
+TEXT_ON_LINE,11,You would press the letter Q and then the space bar,
+TEXT_ON_LINE,13,To practice, you be given a number of practice trials before starting the real task,
+END_TASK,
+/--------------------------------------------------------------------
+/
+BEGIN_FOCUS_TASK,TUTORIAL,
+/
+SKIP_TETRIS
+/
+SET_NO_OF_BLOCKS,1,
+SET_NO_OF_TRIALS,1,
+SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
+/
+SHOW_ACCURACY,TRUE,
+CRITERION_TO_TRIALS,1,
+/
+END_TASK,
+/
+/
+/
+/--------------------------------------------------------------------
+BEGIN_TEXT_TASK,
+TEXT_ON_LINE,0,                                            TASK 1
+TEXT_ON_LINE,2,Press the NEXT button to start the trial.
+TEXT_ON_LINE,3,
+TEXT_ON_LINE,4,A stream of 20 digits will appear in the circle which might contain one or two target letters.
+TEXT_ON_LINE,5,When the sequence has stopped displaying, press the letters on the keyboard that you saw in the sequence,
+TEXT_ON_LINE,6,If there was only one letter in the sequence, press the letter and then the space bar,
+TEXT_ON_LINE,7,(Or the space bar and then the letter),
+TEXT_ON_LINE,8,For example if in the sequence you saw the letters D and B (in that order)
+TEXT_ON_LINE,9,Then you would press the D and B keys on the keyboard (in that order)
+TEXT_ON_LINE,10,If you saw only the letter Q,
+TEXT_ON_LINE,11,You would press the letter Q and then the space bar,
+END_TASK,
+/--------------------------------------------------------------------
+/
+BEGIN_FOCUS_TASK,FOCUS_TASK,
+/
+SET_NO_OF_BLOCKS,1,
+SET_NO_OF_TRIALS,1,
+SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
+/
+SHOW_ACCURACY,TRUE,
+CRITERION_TO_TRIALS,1,
+/
+END_TASK,
+/
+/--------------------------------
+BEGIN_ADAPTIVE_TETRIS_TEXT_TASK,
+TEXT_ON_LINE,0,   TETRIS INSTRUCTIONS
+/
+TEXT_ON_LINE,2,In this next task you will be playing a version of the video game Tetris.  
+TEXT_ON_LINE,3,This is a falling block puzzle game, where you have to arrange pieces falling from the top of the screen into a pile 
+TEXT_ON_LINE,4,at the bottom of the screen.  
+TEXT_ON_LINE,5,When you completely fill a row with blocks, the row will disappear and your points will go up.  
+/
+TEXT_ON_LINE,7,To move the falling blocks into place, you will use the arrow keys on the keyboard.  
+TEXT_ON_LINE,8,The left and right arrows move the piece left and right, the up-arrow rotates the piece, 
+TEXT_ON_LINE,9,and the down arrow drops the piece faster.  
+/
+TEXT_ON_LINE,11,In this version of Tetris, a pedal on the floor will let you adjust the speed at which the pieces fall.  
+TEXT_ON_LINE,12,Pressing the pedal will make the pieces fall faster.  
+/
+TEXT_ON_LINE,14,Rows will be removed if the pile gets too close to the top, so you will never get a game over.  
+/
+/
+END_TASK,
+/
+/--------------------------------
+BEGIN_NONADAPTIVE_TETRIS_TEXT_TASK,
+/
+TEXT_ON_LINE,0,   TETRIS INSTRUCTIONS
+/
+TEXT_ON_LINE,2,In this next task you will be playing a version of the video game Tetris.  
+TEXT_ON_LINE,3,This is a falling block puzzle game, where you have to arrange pieces falling from the top of the screen into a pile 
+TEXT_ON_LINE,4,at the bottom of the screen.  
+TEXT_ON_LINE,5,When you completely fill a row with blocks, the row will disappear and your points will go up.  
+/
+TEXT_ON_LINE,7,To move the falling blocks into place, you will use the arrow keys on the keyboard.  
+TEXT_ON_LINE,8,The left and right arrows move the piece left and right, the up-arrow rotates the piece, 
+TEXT_ON_LINE,9,and the down arrow drops the piece faster.  
+/
+END_TASK,
+/
+/--------------------------------------------------------------------
+BEGIN_TEXT_TASK,
+TEXT_ON_LINE,0,                                            TASK 2
+TEXT_ON_LINE,2,Press the NEXT button to start the trial.
+TEXT_ON_LINE,3,
+TEXT_ON_LINE,4,A stream of 20 digits will appear in the circle which might contain one or two target letters.
+TEXT_ON_LINE,5,When the sequence has stopped displaying, press the letters on the keyboard that you saw in the sequence,
+TEXT_ON_LINE,6,If there was only one letter in the sequence, press the letter and then the space bar,
+TEXT_ON_LINE,7,(Or the space bar and then the letter),
+TEXT_ON_LINE,8,For example if in the sequence you saw the letters D and B (in that order)
+TEXT_ON_LINE,9,Then you would press the D and B keys on the keyboard (in that order)
+TEXT_ON_LINE,10,If you saw only the letter Q,
+TEXT_ON_LINE,11,You would press the letter Q and then the space bar,
+END_TASK,
+/--------------------------------------------------------------------
+/
+BEGIN_FOCUS_TASK,FOCUS_TASK2,
+/
+SET_NO_OF_BLOCKS,1,
+SET_NO_OF_TRIALS,1,
+SET_RANDOM_PROBABILITY_OF_HIGH_FOCUS,10,90,
+/
+SHOW_ACCURACY,TRUE,
+CRITERION_TO_TRIALS,1,
+/
+END_TASK,
+/
+/
+/
+/
+STOP,
+/
+/
