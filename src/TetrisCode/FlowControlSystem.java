@@ -62,29 +62,6 @@ public class FlowControlSystem {
  
        }
         
-        // will set the delay and score based on the level
-        private void SetDelaySystemControl(long delay){
-            
-            //PreviousScoreSystemControl
-            
-            // set speed to either the corresponding speed for the given score
-            // bounded by zero and the maximum level
-            FCS_speed = (long) Math.max(Math.min(Math.floor(FCS_score/100.0),Parameters.MaxLevels),Parameters.MinLevels);            
-            
-            
-            long PossibleDelay = (long) (GetDelayFromLevel(FCS_speed) + GetIterationDelay() * (FCS_score%100)/100.0);
-            // the delay for the given level + the delay corresponding to the progress towards the next level
-            
-            // only decrease speed, never increase it
-            if(PossibleDelay>PreviousDelaySystemControl) PersistentDelay = PossibleDelay;
-            else PersistentDelay = delay;
-            
-            
-            PersistentDelay = BoundDelay(PersistentDelay);
-            
-            FCS_speed = GetLevelFromDelay(PersistentDelay);
-            
-        }
         
         // level_delay : the normal delay that would be in place for a given level
         // iteration_delay : the difference between level_delay's for adjacent levels (assuming the level-to-delay function is linear
@@ -118,19 +95,48 @@ public class FlowControlSystem {
         }
         */
         
+        
+        // will set the delay and score based on the level
+        private void SetDelaySystemControl(long delay){
+            
+            //PreviousScoreSystemControl
+            
+            // set speed to either the corresponding speed for the given score
+            // bounded by zero and the maximum level
+            FCS_speed = (long) Math.max(Math.min(Math.floor(FCS_score/100.0),Parameters.MaxLevels),Parameters.MinLevels);            
+            
+            
+            long PossibleDelay = (long) (GetDelayFromLevel(FCS_speed) + GetIterationDelay() * (FCS_score%100)/100.0);
+            // the delay for the given level + the delay corresponding to the progress towards the next level
+            
+            // only decrease speed, never increase it
+            if(PossibleDelay>PreviousDelaySystemControl) PersistentDelay = PossibleDelay;
+            else PersistentDelay = delay;
+            
+            
+            PersistentDelay = BoundDelay(PersistentDelay);
+            
+            FCS_speed = GetLevelFromDelay(PersistentDelay);
+            
+        }
+        
+
+        
         // Raise or lower the delay based on foot pedal input
-        // currently input is set to the minus key ["-"], VK_MINUS
+        // currently input is set to the dash key ["-"], VK_SUBTRACT
         private void SetDelayFootPedal(long delay){
             //Tetris.MinusKeyPressed
             //The analogy is of an accelerator in a car
             // but for simplicity's sake we'll start off with a linear relationship
             // instead of a second-order one such as would be implied by "acceleration"
 
-            
+            W("delay "+PersistentDelay);
             if(Tetris.MinusKeyPressed){
+                W("Minus key pressed");
                 PersistentDelay = delay - Parameters.FootPedalAccelInterval; 
             }
             else{
+                W("Minus key not pressed");
                 PersistentDelay = delay + Parameters.FootPedalFrictionInterval;
             }
             PersistentDelay = BoundDelay(PersistentDelay);
@@ -176,7 +182,7 @@ public class FlowControlSystem {
             //ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "1");
             
             // why is the delay going down without pressing vk_minus?
-            SetDelaySystemControl(PersistentDelay);
+           // if(!Tetris.MinusKeyPressed) SetDelaySystemControl(PersistentDelay);
             //ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "2");
             
             PreviousDelaySystemControl=PersistentDelay;

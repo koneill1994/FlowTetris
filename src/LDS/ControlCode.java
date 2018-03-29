@@ -101,7 +101,7 @@ public class ControlCode extends JComponent
       
 	public void keyPressed(KeyEvent ke) {
         	char i = ke.getKeyChar();
-                System.out.println("KeyChar="+(char)i+"//");
+                //System.out.println("KeyChar="+(char)i+"//");
         }
   
   }
@@ -153,7 +153,7 @@ public class ControlCode extends JComponent
 //        KeyPressTime = CT.currentTimeMillis() - KeyPressStartTime;
         
         key = e.getKeyCode();
-        System.out.println("KeyChar="+(char)key+" INT="+(int)key);  // was getting annoying
+        //System.out.println("KeyChar="+(char)key+" INT="+(int)key);  // was getting annoying
 //        Block.KeyChar = (char)key;
         
         if (key == KeyEvent.VK_ESCAPE) {
@@ -371,13 +371,13 @@ public class ControlCode extends JComponent
 
  public void keyReleased(KeyEvent evt) {
         int key = evt.getKeyCode();
-               System.out.println("Released KeyChar="+(char)key+"//");
+               //System.out.println("Released KeyChar="+(char)key+"//");
 
  }
  
  public void keyTyped(KeyEvent evt) {
         int key = evt.getKeyCode();
-               System.out.println("Typed KeyChar="+(char)key+"//");
+               //System.out.println("Typed KeyChar="+(char)key+"//");
  }
 
   public void mouseDragged(MouseEvent e) {     

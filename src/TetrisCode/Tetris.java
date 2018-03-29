@@ -1403,7 +1403,7 @@ public class Tetris extends Applet{
                                     ControlKeyPressed = false;
                                     SwitchToFocusTask();
                                 }
-                                if (e.getKeyCode()==KeyEvent.VK_MINUS) MinusKeyPressed = true;
+                                if (e.getKeyCode()==KeyEvent.VK_SUBTRACT) MinusKeyPressed = true;
                                 
                                 
                                 LogEvent("key_press_"+ e.getKeyText(e.getKeyCode()));
@@ -1435,7 +1435,7 @@ public class Tetris extends Applet{
                                 DownQueue = removeOldFromQueue(DownQueue,(System.nanoTime()-StartTime)/1000000,DropPercentageTimeWindow);
                             }
                             if (e.getKeyCode() == KeyEvent.VK_CONTROL) ControlKeyPressed = false;
-                            if (e.getKeyCode()==KeyEvent.VK_MINUS) MinusKeyPressed = false;
+                            if (e.getKeyCode()==KeyEvent.VK_SUBTRACT) MinusKeyPressed = false;
                             LogEvent("key_release_"+ e.getKeyText(e.getKeyCode()));
                             
                         }
