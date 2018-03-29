@@ -59,7 +59,7 @@ TEXT_ON_LINE,8,For example if in the sequence you saw the letters D and B (in th
 TEXT_ON_LINE,9,Then you would press the D and B keys on the keyboard (in that order)
 TEXT_ON_LINE,10,If you saw only the letter Q,
 TEXT_ON_LINE,11,You would press the letter Q and then the space bar,
-TEXT_ON_LINE,13,To practice, you be given a number of practice trials before starting the real task,
+TEXT_ON_LINE,13,To practice, you will be given a number of practice trials before starting the real task,
 END_TASK,
 /--------------------------------------------------------------------
 /

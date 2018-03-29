@@ -182,7 +182,7 @@ public class FlowControlSystem {
             //ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "1");
             
             // why is the delay going down without pressing vk_minus?
-           // if(!Tetris.MinusKeyPressed) SetDelaySystemControl(PersistentDelay);
+            SetDelaySystemControl(PersistentDelay);
             //ConsoleLogStatus(FCS_score, FCS_speed, CurrentTime, PersistentDelay, "2");
             
             PreviousDelaySystemControl=PersistentDelay;
