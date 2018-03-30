@@ -119,10 +119,11 @@ TEXT_ON_LINE,8,The left and right arrows move the piece left and right, the up-a
 TEXT_ON_LINE,9,and the down arrow drops the piece faster.  
 /
 TEXT_ON_LINE,11,In this version of Tetris, a pedal on the floor will let you adjust the speed at which the pieces fall.  
-TEXT_ON_LINE,12,Pressing the pedal will make the pieces fall faster.  
+TEXT_ON_LINE,12,It acts like a gas pedal; pressing the pedal will make the pieces fall faster, 
+TEXT_ON_LINE,13,and when you aren't pressing it, the pieces will slow down.  
 /
-TEXT_ON_LINE,14,Rows will be removed if the pile gets too close to the top, so you will never get a game over.  
-/
+TEXT_ON_LINE,15,Rows will be removed if the pile gets too close to the top, so you will never get a game over.  
+TEXT_ON_LINE,16,There's no need to press the "Start New Game" button.  
 /
 END_TASK,
 /
@@ -139,6 +140,9 @@ TEXT_ON_LINE,5,When you completely fill a row with blocks, the row will disappea
 TEXT_ON_LINE,7,To move the falling blocks into place, you will use the arrow keys on the keyboard.  
 TEXT_ON_LINE,8,The left and right arrows move the piece left and right, the up-arrow rotates the piece, 
 TEXT_ON_LINE,9,and the down arrow drops the piece faster.  
+/
+TEXT_ON_LINE,11,If the pile reaches the top, you will get a game over.  
+TEXT_ON_LINE,12,When this happens, you will have to click on the button that says "Start New Game"
 /
 END_TASK,
 /
