@@ -170,13 +170,16 @@ public class ControlCode extends JComponent
               //TetrisProgram.AddDataToTILData();  // i give up
               System.exit(0);
         }
+        /*
         if (e.getKeyCode() == KeyEvent.VK_F && ControlKeyPressed){
             ControlKeyPressed = false;
             // debug task skip
             Parameters.TaskCount++;
             return false;
         }
-                                                                      
+        */
+          
+
         if (StartNo == -1) {
             
           if (key == KeyEvent.VK_DELETE) {

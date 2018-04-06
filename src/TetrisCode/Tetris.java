@@ -951,6 +951,7 @@ public class Tetris extends Applet{
                 AddDataToTILData();
                 SessionNo++;
                 LDS.Parameters.Mode = LDS.Parameters.LDS_MODE;
+                //System.exit(999);
                 pauseGame();
                 frame.setVisible(false);
                 ControlCode.Frame.setVisible(true);
@@ -1004,6 +1005,11 @@ public class Tetris extends Applet{
             }
             if(switchTask){
                 SwitchToFocusTask();
+
+                W("Mode="+LDS.Parameters.Mode);
+                
+                //System.exit(997);
+
             }
         }
         
@@ -1257,7 +1263,7 @@ public class Tetris extends Applet{
                 GameStarted = true;
 		timer.setDelay(INITIAL_DELAY);
 		timer.setPaused(false);
-                StartTime = System.nanoTime();
+                //StartTime = System.nanoTime();
                 GameStarted = true;
                 TotalRunTime = 0;
 		start_newgame_butt.setLabel("Start New Game");
@@ -1278,7 +1284,7 @@ public class Tetris extends Applet{
 		level_duration_label.setText("0");
                 score_label.setText("0");
 		speed_label.setText("0");
-		StartTime = System.nanoTime();
+		//StartTime = System.nanoTime();
                 GameStarted = true;
                 TotalRunTime = 0;
                 LogEvent("new_game");
@@ -1296,7 +1302,7 @@ public class Tetris extends Applet{
 	
 	public void resumeGame() {
 		timer.setPaused(false);
-		StartTime = System.nanoTime();
+		//StartTime = System.nanoTime();
 		pause_resume_butt.setLabel("Pause");
 		// sounds.playSoundtrack();
                 
@@ -1402,6 +1408,9 @@ public class Tetris extends Applet{
                                 if (e.getKeyCode() == KeyEvent.VK_F && ControlKeyPressed){
                                     ControlKeyPressed = false;
                                     SwitchToFocusTask();
+                                    W("Mode="+LDS.Parameters.Mode);
+                                    //return; // REMOVE LATER MAYBE
+                                    //System.exit(998);
                                 }
                                 if (e.getKeyCode()==KeyEvent.VK_SUBTRACT) MinusKeyPressed = true;
                                 

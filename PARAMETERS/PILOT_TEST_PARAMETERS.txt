@@ -87,7 +87,9 @@ MAXIMUM_LEVEL,20,
 /
 /
 /
-RUN_UNTIL_TIME_LIMIT,3600,
+RUN_UNTIL_TIME_LIMIT,12,
+/
+/  This is the one that triggers
 /
 /
 / time window, in ms, over which to average the percentage of time spent with the drop key down

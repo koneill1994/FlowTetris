@@ -205,15 +205,21 @@ public class Parameters {
                         ErrorCode = "LINE " + LineNo + " MISSING TASK STATEMENT";
                         return;
                     }
-                    if (TetrisCode.Tetris.isAdaptive && (B.TaskMode == Task.ADAPTIVE_TETRIS_TEXT_TASK)) 
-                        B_TetrisInstructions = B;
-                    else {
+                    
+                    
+                    if ((B.TaskMode == Task.ADAPTIVE_TETRIS_TEXT_TASK) | (B.TaskMode == Task.NONADAPTIVE_TETRIS_TEXT_TASK)) {
+                   
+                        if (TetrisCode.Tetris.isAdaptive && (B.TaskMode == Task.ADAPTIVE_TETRIS_TEXT_TASK)) 
+                            B_TetrisInstructions = B;
+                    
                         if (!TetrisCode.Tetris.isAdaptive && (B.TaskMode == Task.NONADAPTIVE_TETRIS_TEXT_TASK)) 
                             B_TetrisInstructions = B;
-                        else
+                    
+                    } else
                             TaskList.add(B);
-                    }
+                    
                     InsideTask = false;
+                
                 } else
                     
                 if (Cmd.equals("SET_NO_OF_BLOCKS")) {
@@ -614,9 +620,15 @@ public class Parameters {
 //
 //            } else //else if (Mode == TETRIS_MODE) SwitchToTetris();
             
+W("BEFORE TETRIS INSTRUCTIONS");
+
                 if (RunTetrisInstructions) {
                     
-                
+                    W("RUNNING TETRIS INSTRUCTIONS");
+                    
+                    W("________________________MODE = "+Mode);
+                    
+                    
                     if (B_TetrisInstructions.Update(g2, MouseX, MouseY, Button1, Button2, Button3)) {
 
                         W("TETRIS_INSTRUCTIONS DONE");
@@ -675,9 +687,15 @@ public class Parameters {
 
                         else {
                             if (RunLDSSurvey) {
-                                if (Mode == TETRIS_MODE) SwitchToTetris();
+                                if (Mode == TETRIS_MODE) {
+                                    SwitchToTetris();
+                                    //System.exit(9);
+                                }
                             }
-                            if (RunTetrisSurvey) RunTetrisInstructions = true;
+                            if (RunTetrisSurvey) {
+                                RunTetrisSurvey = false;
+                                RunTetrisInstructions = true;
+                            }
                         }
                         //return;
 
